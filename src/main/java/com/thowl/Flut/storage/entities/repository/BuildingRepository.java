@@ -1,5 +1,8 @@
 package com.thowl.Flut.storage.entities.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.thowl.Flut.expections.NoSuchBuildingException;
@@ -12,4 +15,5 @@ import com.thowl.Flut.storage.entities.Building;
 @Repository
 public interface BuildingRepository {
     public Building findbyId(int id) throws NoSuchBuildingException;
+    public ArrayList<Building> findBuildings();
 }

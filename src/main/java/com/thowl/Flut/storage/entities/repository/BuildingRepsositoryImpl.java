@@ -1,6 +1,7 @@
 package com.thowl.Flut.storage.entities.repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Repository
 public class BuildingRepsositoryImpl implements BuildingRepository {
+
     private ArrayList<Building> buildings;
 
     public BuildingRepsositoryImpl(){
@@ -26,5 +28,9 @@ public class BuildingRepsositoryImpl implements BuildingRepository {
                         }
                 }
 		throw new NoSuchBuildingException("this Building with this id does not exist");
+    }
+
+    public ArrayList<Building> findBuildings(){
+        return buildings;
     }
 }

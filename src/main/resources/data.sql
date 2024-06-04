@@ -20,6 +20,35 @@ INSERT INTO
 VALUES
     (2, 'Biberdamm', 2, 5, 1200, 150);
 
+INSERT INTO
+    buildings(id, name, level, maxWaterlevel, cost, hp)
+VALUES
+    (3, 'Sandsack', 2, 5, 1200, 150);
+
+INSERT INTO
+    buildings(id, name, level, maxWaterlevel, cost, hp)
+VALUES
+    (4, 'Staudamm', 2, 5, 1200, 150);
+
+INSERT INTO
+    buildings(id, name, level, maxWaterlevel, cost, hp)
+VALUES
+    (5, 'Begradigung', 2, 5, 1200, 150);
+
+INSERT INTO
+    buildings(id, name, level, maxWaterlevel, cost, hp)
+VALUES
+    (6, 'Renaturierung', 2, 5, 1200, 150);
+
+INSERT INTO
+    buildings(id, name, level, maxWaterlevel, cost, hp)
+VALUES
+    (7, 'Deich', 2, 5, 1200, 150);
+
+INSERT INTO
+    buildings(id, name, level, maxWaterlevel, cost, hp)
+VALUES
+    (8, 'Rueckhaltebecken', 2, 5, 1200, 150);
 
 /*
 CREATE TABLE IF NOT EXISTS maps(
