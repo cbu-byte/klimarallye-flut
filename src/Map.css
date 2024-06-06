@@ -1,0 +1,42 @@
+.Map {
+    text-align: center;
+    background: url('/path/to/your/map-image.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    color: white;
+  }
+  
+  .wave-button {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .map {
+    position: relative;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .river {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    background-color: blue;
+    bottom: 10%;
+  }
+  
+  .slots {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .measure-slot {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+  }
