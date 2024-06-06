@@ -1,4 +1,4 @@
-import mapImage from '../../src/main/resources/static/images/Map.jpg';
+import mapImage from './Map.jpg';
 
 function Spiel() {
 
@@ -18,4 +18,4 @@ function Spiel() {
   )
 }
 
-export default App
+export default Spiel;

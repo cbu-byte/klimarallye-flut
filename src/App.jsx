@@ -1,46 +1,43 @@
 import Navbar from './Navbar';
 import React from 'react';
+import Home from './Home';
+import Spiel from './Spiel';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
+// function startGame() {
+//   // Hier kannst du den Code für das Spiel ausführen
+//   console.log("Spiel gestartet!");
+  
+//   <Spiel />
 
+//   // Weitere Logik hier...
+// }
+function startGame() {
+  // Hier kannst du die Logik für das Spiel ausführen
+  console.log("Spiel gestartet!");
 
+  // Weiterleitung zur "/Spiel"-Seite
+  window.location.href = "/Spiel";
+}
 function App() {
 
   return (
-    <div className="App">
-      <Navbar></Navbar>
-      <div className="content">
+    <Router>
+      <div className="App">
+        <Navbar/>
+        <div className="content">
         
-        {/* <img src={image} className='Startmenue' alt='start' /> */}
-        <h1>Die Flut kommt</h1>
+          <Routes>
+            <Route exact path="/" element = {<Home/>}/>
+            <Route path="/Spiel" element = {<Spiel/>}/>
+          </Routes>
+          
+        </div>
       </div>
+ 
+      </Router>
       
-    <div className='spielstarten'>
-    
-    
-    <label for="difficulty">Wähle die Schwierigkeitsstufe:</label>
-    <select id="difficulty">
-        <option value="easy">Einfach</option>
-        <option value="medium">Mittel</option>
-        <option value="hard">Schwer</option>
-    </select>
-    
-    <button onclick="startGame()">Spiel starten</button>
-    
-    
-    
-    </div>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    </div>
-  )
+  );
 }
 
 export default App

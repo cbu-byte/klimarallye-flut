@@ -1,0 +1,3 @@
+[submodule "src/React"]
+	path = src/React
+	url = https://github.com/cbu-byte/FlutReact.git

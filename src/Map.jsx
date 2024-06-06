@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Map.css'; // Stylesheet für die Anwendung
 
+
 const Map = () => {
     const [measures, setMeasures] = useState([
       { name: 'Measure 1', level: 0 },
