@@ -1,20 +1,45 @@
-import mapImage from '../../src/main/resources/static/images/Map.jpg';
+import Navbar from './Navbar';
+import React from 'react';
+
+
 
 function App() {
 
   return (
-    <div className="hero min-h-screen" style={{ backgroundImage: `url(${mapImage})` }}>
-
-    <div className="hero-overlay bg-opacity-60"></div>
-    <div className="hero-content text-center text-neutral-content">
-      <div className="max-w-md">
-        <h1 className="mb-5 text-5xl font-bold">Hello there</h1>
-        <p className="mb-5">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-        <button className="btn btn-primary">Get Started</button>
+    <div className="App">
+      <Navbar></Navbar>
+      <div className="content">
+        
+        {/* <img src={image} className='Startmenue' alt='start' /> */}
+        <h1>Die Flut kommt</h1>
       </div>
+      
+    <div className='spielstarten'>
+    
+    
+    <label for="difficulty">Wähle die Schwierigkeitsstufe:</label>
+    <select id="difficulty">
+        <option value="easy">Einfach</option>
+        <option value="medium">Mittel</option>
+        <option value="hard">Schwer</option>
+    </select>
+    
+    <button onclick="startGame()">Spiel starten</button>
+    
+    
+    
     </div>
-  </div>
-   
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    </div>
   )
 }
 
