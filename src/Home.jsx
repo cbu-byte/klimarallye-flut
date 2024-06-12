@@ -15,12 +15,12 @@ const Home = () => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center', // Corrected typo: 'backgroundposition' to 'backgroundPosition'
         }}>
-            <div className="Home text-center text-red-500" style={{ paddingTop: '25%' }}>
-                <div className='text-5xl'>
+            <div className="Home text-center text-red-500" style={{ paddingBottom: '70%' }}>
+                <div className='text-7xl'>
                 <h1>Die Flut kommt</h1>
                 </div>
-                <div className="spielstarten text-red-500">
-                <label htmlFor="difficulty" className="text-red-500">Wähle die Schwierigkeitsstufe:</label>
+                <div className="spielstarten text-black-500 text-xl">
+                <label htmlFor="difficulty" className="text-black-500 text-xl" >Wähle die Schwierigkeitsstufe:</label>
                 <p></p>
                 <select id="difficulty">
                     <option value="easy">Einfach</option>
