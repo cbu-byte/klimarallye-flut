@@ -37,10 +37,10 @@
   padding: 20px;
 }
 .App{
-  background-image: url(./Titlescreen.png);
+  /* background-image: url(./Titlescreen.png);
   background-repeat: no-repeat;
   /* background-size: cover;  */
-  background-position: center;
+  /*background-position: center; */
   color: #f1356d;
 }
 .App h1 {
