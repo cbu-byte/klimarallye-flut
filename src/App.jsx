@@ -2,6 +2,7 @@ import Navbar from './Navbar';
 import React from 'react';
 import Home from './Home';
 import Spiel from './Spiel';
+import Bonusfragen from './Bonusfragen';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 // function startGame() {
@@ -30,6 +31,7 @@ function App() {
           <Routes>
             <Route exact path="/" element = {<Home/>}/>
             <Route path="/Spiel" element = {<Spiel/>}/>
+            <Route path="/fragen" element = {<Bonusfragen/>}/>
           </Routes>
           
         </div>

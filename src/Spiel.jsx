@@ -60,6 +60,7 @@ function Spiel() {
           transform: 'translate(-50%, -50%) rotate(90deg)', // Hier wird das Hintergrundbild um 90 Grad gedreht und zentriert
           width: 'auto', // Automatische Breite, um das Bild im Container zu skalieren
           height: '100%', // Vollständige Höhe, um den Container zu füllen
+          objectFit: 'cover' // Das Bild proportional skalieren und das Seitenverhältnis beibehalten
         }}
       />
 
