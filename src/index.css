@@ -54,3 +54,40 @@
   align-items: center; /* Vertikal zentrieren */
   justify-content: center; /* Horizontal zentrieren */
 }
+.red {
+  color:rgb(255, 0, 0)
+}
+.btn-square {
+  width: 50px; /* Ändere die Breite nach Bedarf */
+  height: 50px; /* Ändere die Höhe nach Bedarf */
+  border-radius: 8px; /* Optional: Füge abgerundete Ecken hinzu */
+  background-color: #ccc; /* Ändere die Hintergrundfarbe nach Bedarf */
+  color: #333; /* Ändere die Textfarbe nach Bedarf */
+  font-size: 16px; /* Ändere die Schriftgröße nach Bedarf */
+  border: none; /* Optional: Entferne die Rahmen */
+  cursor: pointer;
+}
+
+.btn-square:hover {
+  background-color: #ddd; /* Ändere die Hintergrundfarbe im Hover-Zustand nach Bedarf */
+}
+/* styles.css */
+
+/* Stile für gefüllte Buttons */
+/* styles.css */
+
+/* Stile für gefüllte Buttons */
+.menu-btn.biberdamm {
+  background-color: brown; /* Rote Hintergrundfarbe für Biberdamm-Button */
+  color: #ffffff; /* Weiße Textfarbe */
+}
+
+.menu-btn.staudamm {
+  background-color: grey; /* Grüne Hintergrundfarbe für Staudamm-Button */
+  color: #ffffff; /* Weiße Textfarbe */
+}
+
+.menu-btn.sandsack {
+  background-color: beige; /* Blaue Hintergrundfarbe für Sandsack-Button */
+  color: black; /* Weiße Textfarbe */
+}

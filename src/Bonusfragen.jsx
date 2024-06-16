@@ -1,7 +1,7 @@
 // von https://github.com/chrisblakely01/quiz-app/blob/master/final/src/App.js
 // https://www.freecodecamp.org/news/how-to-build-a-quiz-app-using-react/
 import React, { useState } from 'react';
-import './Bonusfragen.css'
+//import './Bonusfragen.css'
 const Bonusfragen = () => {
     const questions = [
         {
@@ -14,13 +14,13 @@ const Bonusfragen = () => {
             correctAnswer: 'Die Bega ist 43,9km lang'
         },
         {
-            questionText: 'Wo entspringt die Bega?',
+            questionText: 'Wo mündet die Bega?',
             answerOptions: [
-                { answerText: 'Im Teutoburger Wald', isCorrect: false },
-                { answerText: 'In den Weserbergland-Hügeln', isCorrect: false },
-                { answerText: 'In den Eggegebirge', isCorrect: true },
+                { answerText: 'Donau', isCorrect: false },
+                { answerText: 'Rhein', isCorrect: false },
+                { answerText: 'Werre', isCorrect: true },
             ],
-            correctAnswer: 'In den Eggegebirge'
+            correctAnswer: 'In die Werre'
         },
         {
             questionText: 'Welche historische Bedeutung hat die Bega für Lemgo?',
@@ -146,27 +146,31 @@ const Bonusfragen = () => {
     };
 
     return (
-        <div className='app'>
+        <div className='app bg-gray-900 min-h-screen flex items-center justify-center text-white'>
             {showScore ? (
-                <div className='score-section'>
+                <div className='score-section text-white text-xl text-white'>
                     You scored {score} out of {questions.length}
                 </div>
             ) : (
                 <>
-                    <div className='question-section'>
-                        <div className='question-count'>
-                            <span>Question {currentQuestion + 1}</span>/{questions.length}
-                        </div>
-                        <div className='question-text'>{questions[currentQuestion].questionText}</div>
+                    <div className='question-section mb-6 text-white'>
+                    <div className='question-count text-xl'>
+    <span className='text-white'>Question {currentQuestion + 1}</span>/{questions.length}
+</div>
+                        <div className='question-text text-2xl text-white'>{questions[currentQuestion].questionText}</div>
                     </div>
-                    <div className='answer-section'>
+                    <div className='answer-section text-white'>
                         {showAnswer && (
-                            <div className='correct-answer'>
+                            <div className='correct-answer text-xl mb-4 text-white'>
                                 Correct Answer: {questions[currentQuestion].correctAnswer}
                             </div>
                         )}
                         {questions[currentQuestion].answerOptions.map((answerOption, index) => (
-                            <button key={index} onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}>
+                            <button 
+                                key={index} 
+                                onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}
+                                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 text-white'
+                            >
                                 {answerOption.answerText}
                             </button>
                         ))}
