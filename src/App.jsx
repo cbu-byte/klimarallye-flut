@@ -3,6 +3,7 @@ import React from 'react';
 import Home from './Home';
 import Spiel from './Spiel';
 import Bonusfragen from './Bonusfragen';
+import Map from './Map.jsx'; 
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 // function startGame() {
@@ -32,6 +33,7 @@ function App() {
             <Route exact path="/" element = {<Home/>}/>
             <Route path="/Spiel" element = {<Spiel/>}/>
             <Route path="/fragen" element = {<Bonusfragen/>}/>
+            <Route path="/map" element = {<Map/>}/>
           </Routes>
           
         </div>

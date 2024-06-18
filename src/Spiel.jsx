@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import mapImage from './Map.jpg';
 import sandsackImage from './Sandsack.jpg'; // Importiere das Bild für den Sandsack
 
+import Map from './Map.jsx';
+
 function Spiel() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [sandsackShown, setSandsackShown] = useState(false); // Zustand für die Anzeige des Sandsack-Bildes
@@ -63,9 +65,10 @@ function Spiel() {
           objectFit: 'cover' // Das Bild proportional skalieren und das Seitenverhältnis beibehalten
         }}
       />
-
+      
       <div className="hero-content text-center text-neutral-content">
         <div className="max-w-md">
+          
           {/* Hier wird der Button als quadratischer Button mit der Klasse 'btn-square' gestaltet */}
           <button className="btn btn-square" onClick={toggleMenu}>
             {menuOpen && !sandsackShown ? 'Schließen' : 'Menü öffnen'}
@@ -94,7 +97,7 @@ function Spiel() {
           )}
         </div>
       </div>
-
+          
       {/* Das Sandsack-Bild wird nur angezeigt, wenn sandsackShown true ist */}
       {sandsackShown && (
         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>

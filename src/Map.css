@@ -3,7 +3,7 @@
     background: url('/path/to/your/map-image.jpg') no-repeat center center;
     background-size: cover;
     height: 100vh;
-    color: white;
+    color: rgb(0, 0, 0);
   }
   
   .wave-button {
