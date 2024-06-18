@@ -8,36 +8,36 @@ function Map() {
   const [waveActive, setWaveActive] = useState(false);
   const [currentWave, setCurrentWave] = useState(1);
   const [currentLevel, setCurrentLevel] = useState(1);
-  const [currentWaterLevel, setCurrentWaterLevel] = useState(1);
-  const [maxWaterLevel, setMaxWaterLevel] = useState(1.1);
+  const [currentWaterLevel, setCurrentWaterLevel] = useState(1); // Anfangs Wasserstand Platzhalter
+  const [maxWaterLevel, setMaxWaterLevel] = useState(1.4); //maximaler Wasserstand ohne Maßnahmen  Platzhalter
   const [timer, setTimer] = useState(0);
 
+  //
   useEffect(() => {
     let timerInterval;
     if (waveActive) {
-      timerInterval = setInterval(() => {
+      timerInterval = setInterval(() => { // setInterval: Reduziert den Timer jede Sekunde
         setTimer(prev => {
           if (prev <= 1) {
-            setWaveActive(false);
+            setWaveActive(false); // relevant dafür, ob timer angezeigt wird
             if (currentWave === 3) {
               setCurrentLevel(4); // Spiel gewonnen
             } else {
-              setCurrentWave(prevWave => prevWave + 1);
-              setCurrentWaterLevel(1);
+              setCurrentWave(prevWave => prevWave + 1); // erhöht aktuelle Welle
               setTimer(0);
             }
             return 0;
           } else {
-            return prev - 1;
+            return prev - 1; // Sekunde anzeige innerhalb des Timers
           }
         });
-      }, 1000);
+      }, 1000); // 1000 millisekunden == 1 Seknude
     }
 
-    return () => clearInterval(timerInterval);
+    return () => clearInterval(timerInterval); //setzt Effect auf inaktiv
   }, [waveActive, currentWave]);
 
-  useEffect(() => {
+  useEffect(() => { // erhöht aktuellen Wasserstand alle 10s um 0.1
     let waterLevelInterval;
     if (waveActive) {
       waterLevelInterval = setInterval(() => {
@@ -51,10 +51,10 @@ function Map() {
             return prev;
           }
         });
-      }, 10000);
+      }, 10000); // 10 Sekunden 
     }
 
-    return () => clearInterval(waterLevelInterval);
+    return () => clearInterval(waterLevelInterval); //setzt Effect auf inaktiv
   }, [waveActive, maxWaterLevel]);
 
   const toggleMenu = () => {
@@ -85,7 +85,7 @@ function Map() {
 
   const startWave = () => {
     setWaveActive(true);
-    setTimer(30); // 30 Sekunden
+    setTimer(30); // 30 Sekunden Platzhalter
   };
 
   return (
@@ -145,34 +145,36 @@ function Map() {
         </div>
       )}
 
+      {/* Die beiden anzeigen für den aktuellen. und den maximalen Wasserstand */}
       <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
         <div className="text-xl">Aktueller Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
         <div className="text-xl">Maximaler Wasserstand: {maxWaterLevel}m</div>
       </div>
 
-      <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
+      {/* aktuelle Welle anzeige */}
+      <div style={{ position: 'absolute', top: '10px', left: '10px' }}> 
         <div className="text-xl">Aktuelle Welle: {currentWave}/3</div>
       </div>
 
-      {!waveActive && currentLevel < 4 && currentLevel < 5 && (
+      {!waveActive && currentLevel < 4 && currentLevel < 5 && ( //Welle starten Button
         <div style={{ position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)' }}>
           <button className="btn btn-primary" onClick={startWave}>Welle starten</button>
         </div>
       )}
 
-      {waveActive && (
+      {waveActive && ( // Timer
         <div style={{ position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)' }}>
           <div className="text-xl">Zeit: {timer}s</div>
         </div>
       )}
 
-      {currentLevel === 4 && (
+      {currentLevel === 4 && ( // Spiel gewonnen
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl text-green-500">
           Spiel gewonnen
         </div>
       )}
 
-      {currentLevel === 5 && (
+      {currentLevel === 5 && ( //Spielende 
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl text-red-500">
           Game Over
         </div>
