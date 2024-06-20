@@ -1,10 +1,20 @@
-FROM openjdk:21-jdk-slim
-
+# Stage 1: Build the React app with Vite
+FROM node:18-alpine AS build
 WORKDIR /app
 
+COPY package*.json ./
+
+RUN npm install
+
 COPY . .
-COPY target/klimaralley.server-0.0.1-SNAPSHOT.jar server.jar
 
-EXPOSE 8080
+RUN npm run build
 
-ENTRYPOINT ["java", "-jar", "server.jar"]
+# Stage 2: Serve the React app with Nginx
+FROM nginx:alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+CMD ["nginx", "-g", "daemon off;"]

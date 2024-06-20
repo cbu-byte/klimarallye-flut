@@ -30,10 +30,10 @@ function App() {
         <div className="content">
         
           <Routes>
-            <Route exact path="/" element = {<Home/>}/>
-            <Route path="/Spiel" element = {<Spiel/>}/>
-            <Route path="/fragen" element = {<Bonusfragen/>}/>
-            <Route path="/map" element = {<Map/>}/>
+            <Route exact path="/play/flut/" element = {<Home/>}/>
+            <Route path="/play/flut/Spiel" element = {<Spiel/>}/>
+            <Route path="/play/flut/fragen" element = {<Bonusfragen/>}/>
+            <Route path="/play/flut/map" element = {<Map/>}/>
           </Routes>
           
         </div>
