@@ -10,7 +10,8 @@ function Map() {
   const [currentLevel, setCurrentLevel] = useState(1);
   const [currentWaterLevel, setCurrentWaterLevel] = useState(1); // Anfangs Wasserstand Platzhalter
   const [maxWaterLevel, setMaxWaterLevel] = useState(1.4); //maximaler Wasserstand ohne Maßnahmen  Platzhalter
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(0); // Timer für Welle
+  const [money, setMoney] = useState(0); //Geld
 
   //
   useEffect(() => {
@@ -147,13 +148,14 @@ function Map() {
 
       {/* Die beiden anzeigen für den aktuellen. und den maximalen Wasserstand */}
       <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-        <div className="text-xl">Aktueller Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
-        <div className="text-xl">Maximaler Wasserstand: {maxWaterLevel}m</div>
+        <div className="text-xl">Geld: {money}m</div>
+        <div className="text-xl">akt. Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
+        <div className="text-xl">max. Wasserstand: {maxWaterLevel}m</div>
       </div>
 
       {/* aktuelle Welle anzeige */}
       <div style={{ position: 'absolute', top: '10px', left: '10px' }}> 
-        <div className="text-xl">Aktuelle Welle: {currentWave}/3</div>
+        <div className="text-xl">Welle: {currentWave}/3</div>
       </div>
 
       {!waveActive && currentLevel < 4 && currentLevel < 5 && ( //Welle starten Button
