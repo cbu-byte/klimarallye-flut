@@ -4,7 +4,6 @@ import Home from './Home';
 import Spiel from './Spiel';
 import Mock from'./Mock';
 import Bonusfragen from './Bonusfragen';
-import Map from './Map.jsx'; 
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 // function startGame() {
