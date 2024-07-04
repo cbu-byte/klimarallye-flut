@@ -5,7 +5,7 @@ const Home = () => {
         console.log("Spiel gestartet!");
       
         // Weiterleitung zur "/Spiel"-Seite
-        window.location.href = "/Spiel";
+        window.location.href = "/play/flut/Spiel";
       }
     return ( 
         

@@ -5,7 +5,7 @@ const Navbar = () => {
             <div className="links">
                 
 
-                <a href="/">Home</a>
+                <a href="/play/flut/">Home</a>
                 <a href="/login">Login</a> 
                 
             </div>
