@@ -94,93 +94,87 @@ function Spiel({ level }) {
   const mapImage = level.id === 1 ? mapImage1 : level.map;
 
   return (
-    <div
-      className="hero min-h-screen flex items-center justify-center"
-      style={{
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
+    <div className="relative min-h-screen flex items-center justify-center text-white overflow-hidden">
       <img
         src={mapImage}
-        alt="Background"
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%) rotate(90deg)',
-          width: 'auto',
-          height: '100%',
-          objectFit: 'cover',
-        }}
+        alt="Map"
+        className="absolute top-0 left-1/2 transform -translate-x-1/2 max-h-full"
+        style={{ maxHeight: '300vh' }}
       />
 
-      <div className="hero-content text-center text-neutral-content">
-        <div className="max-w-md">
-          <button className="btn btn-square" onClick={toggleMenu}>
-            {menuOpen && !sandsackShown ? 'Schließen' : 'Menü öffnen'}
-          </button>
-          {menuOpen && (
-            <div className="menu">
-              <ul>
-                <li>
-                  <button className="menu-btn biberdamm" onClick={() => handleMenuItemClick('Biberdamm')}>
-                    Biberdamm
-                  </button>
-                </li>
-                <li>
-                  <button className="menu-btn staudamm" onClick={() => handleMenuItemClick('Staudamm')}>
-                    Staudamm
-                  </button>
-                </li>
-                <li>
-                  <button className="menu-btn sandsack" onClick={() => handleMenuItemClick('Sandsack')}>
-                    Sandsack
-                  </button>
-                </li>
-              </ul>
-            </div>
-          )}
-        </div>
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+        <button className="btn btn-square" onClick={toggleMenu}>
+          {menuOpen && !sandsackShown ? 'Schließen' : 'Menü öffnen'}
+        </button>
+        {menuOpen && (
+          <div className="menu bg-gray-800 bg-opacity-70 p-4 rounded-md">
+            <ul>
+              <li>
+                <button
+                  className="menu-btn biberdamm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+                  onClick={() => handleMenuItemClick('Biberdamm')}
+                >
+                  Biberdamm
+                </button>
+              </li>
+              <li>
+                <button
+                  className="menu-btn staudamm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+                  onClick={() => handleMenuItemClick('Staudamm')}
+                >
+                  Staudamm
+                </button>
+              </li>
+              <li>
+                <button
+                  className="menu-btn sandsack bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+                  onClick={() => handleMenuItemClick('Sandsack')}
+                >
+                  Sandsack
+                </button>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
 
       {sandsackShown && (
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-          <img src={sandsackImage} alt="Sandsack" style={{ width: '100px', height: '100px' }} />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <img src={sandsackImage} alt="Sandsack" className="w-24 h-24" />
         </div>
       )}
 
       {/* Die beiden Anzeigen für den aktuellen und den maximalen Wasserstand */}
-      <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+      <div className="absolute top-4 right-4">
         <div className="text-xl">Geld: {money}m</div>
         <div className="text-xl">akt. Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
         <div className="text-xl">max. Wasserstand: {maxWaterLevel}m</div>
       </div>
 
       {/* Aktuelle Welle-Anzeige */}
-      <div style={{ position: 'absolute', top: '10px', left: '10px' }}> 
+      <div className="absolute top-4 left-4">
         <div className="text-xl">Welle: {currentWave}/3</div>
       </div>
 
-      {!waveActive && currentLevel < 4 && currentLevel < 5 && ( // Welle starten Button
-        <div style={{ position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)' }}>
+      {!waveActive && currentLevel < 4 && currentLevel < 5 && (
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
           <button className="btn btn-primary" onClick={startWave}>Welle starten</button>
         </div>
       )}
 
-      {waveActive && ( // Timer
-        <div style={{ position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)' }}>
+      {waveActive && (
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
           <div className="text-xl">Zeit: {timer}s</div>
         </div>
       )}
 
-      {currentLevel === 4 && ( // Spiel gewonnen
+      {currentLevel === 4 && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl text-green-500">
           Spiel gewonnen
         </div>
       )}
 
-      {currentLevel === 5 && ( // Spielende 
+      {currentLevel === 5 && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl text-red-500">
           Game Over
         </div>
