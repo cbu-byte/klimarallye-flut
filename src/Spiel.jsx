@@ -1,18 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import mapImage1 from "./level 2 stufe 1.jpg";
+import map11 from "./Map11.jpg";
+import map12 from "./Map12.jpg";
+import map13 from "./Map13.jpg";
+import map14 from "./Map14.jpg";
 import sandsackImage from './Sandsack.jpg'; // Importiere das Bild für den Sandsack
-import newImage from './level 2 stufe 2.jpg'; // Importiere das neue Bild
+//import mapImage12 from './level 2 stufe 2.jpg'; // Importiere das neue Bild
+
+
+
+
+
+
 
 function Spiel({ level }) {
   const [menuOpen , setMenuOpen] = useState(false);
   const [sandsackShown, setSandsackShown] = useState(false); // Zustand für die Anzeige des Sandsack-Bildes
   const [waveActive, setWaveActive] = useState(false);
   const [currentWave, setCurrentWave] = useState(1);
-  const [currentLevel, setCurrentLevel] = useState(1);
+  const [currentLevel, setCurrentLevel] = useState(level.id);
   const [currentWaterLevel, setCurrentWaterLevel] = useState(level.initialWaterLevel); // Anfangs Wasserstand Platzhalter
   const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand ohne Maßnahmen Platzhalter
   const [timer, setTimer] = useState(0); // Timer für Welle
   const [money, setMoney] = useState(1000); // Geld
+  //const images = require.context('../../public/images', false);
+  //const mapImage = images(`./MapL1N1.jpg`);
+
+  //const [mapImage, setMapImage] = useState(level.map); // Map ${level.id}
+  // Get the correct map image based on the selected level
+  //const mapImage = level.id === 1 ? mapImage1 : level.map;
+  const getMapImage = (levelId, waterLevel, maxWaterLevel) => {
+    switch (levelId) {
+      case 1:
+        if (waterLevel > maxWaterLevel) return map14;
+        if (waterLevel >= level.initialWaterLevel + 0.7) return map13;
+        if (waterLevel >= level.initialWaterLevel + 0.3) return map12;
+        return map11;
+      // case 2:
+      //   if (waterLevel >= level.initialWaterLevel + 1.5) return mapImage23;
+      //   if (waterLevel >= level.initialWaterLevel + 1) return mapImage22;
+      //   return mapImage2;
+      // case 3:
+      //   if (waterLevel >= level.initialWaterLevel + 1.5) return mapImage33;
+      //   if (waterLevel >= level.initialWaterLevel + 1) return mapImage32;
+      //   return mapImage3;
+      default:
+        return map11;
+    }
+  };
+  const mapImage = getMapImage(level.id, currentWaterLevel, maxWaterLevel);
 
   useEffect(() => {
     let timerInterval;
@@ -44,7 +79,7 @@ function Spiel({ level }) {
     if (waveActive) {
       waterLevelInterval = setInterval(() => {
         setCurrentWaterLevel(prev => {
-          if (prev + 0.1 <= maxWaterLevel) {
+          if (prev <= maxWaterLevel) {
             return prev + 0.1;
           } else {
             setWaveActive(false);
@@ -90,8 +125,7 @@ function Spiel({ level }) {
     setTimer(30); // 30 Sekunden Platzhalter
   };
 
-  // Get the correct map image based on the selected level
-  const mapImage = level.id === 1 ? mapImage1 : level.map;
+  
 
   return (
     <div className="relative min-h-screen flex items-center justify-center text-white overflow-hidden">
@@ -104,7 +138,7 @@ function Spiel({ level }) {
 
       {currentWaterLevel >= 2 && (
         <div className="absolute top-0 left-0 w-full h-full">
-          <img src={newImage} alt="High Water Level" className="w-full h-full object-cover" />
+          <img src={mapImage12} alt="High Water Level" className="w-full h-full object-cover" />
         </div>
       )}
 {/*     
