@@ -31,7 +31,7 @@ function Spiel({ level }) {
   const getMapImage = (levelId, waterLevel, maxWaterLevel) => {
     switch (levelId) {
       case 1:
-        if (waterLevel > maxWaterLevel) return map14;
+        if (!(waterLevel <= maxWaterLevel)) return map14;
         if (waterLevel >= level.initialWaterLevel + 0.5) return map13;
         if (waterLevel >= level.initialWaterLevel + 0.2) return map12;
         return map11;
@@ -79,7 +79,7 @@ function Spiel({ level }) {
     if (waveActive) {
       waterLevelInterval = setInterval(() => {
         setCurrentWaterLevel(prev => {
-          if (prev <= maxWaterLevel) {
+          if (prev < maxWaterLevel) {
             return prev + 0.1;
           } else {
             setWaveActive(false);
