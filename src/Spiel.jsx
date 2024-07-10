@@ -12,7 +12,7 @@ function Spiel({ level }) {
   const [currentWaterLevel, setCurrentWaterLevel] = useState(level.initialWaterLevel); // Anfangs Wasserstand Platzhalter
   const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand ohne Maßnahmen Platzhalter
   const [timer, setTimer] = useState(0); // Timer für Welle
-  const [money, setMoney] = useState(0); // Geld
+  const [money, setMoney] = useState(1000); // Geld
 
   useEffect(() => {
     let timerInterval;
@@ -152,7 +152,7 @@ function Spiel({ level }) {
 
       {/* Die beiden Anzeigen für den aktuellen und den maximalen Wasserstand */}
       <div className="absolute top-4 right-4">
-        <div className="text-xl text-white">Geld: {money}m</div>
+        <div className="text-xl text-white">Geld: {money}$</div>
         <div className="text-xl text-white">akt. Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
         <div className="text-xl text-white">max. Wasserstand: {maxWaterLevel}m</div>
       </div>
