@@ -17,7 +17,7 @@ function Spiel({ level }) {
   const [sandsackShown, setSandsackShown] = useState(false); // Zustand für die Anzeige des Sandsack-Bildes
   const [waveActive, setWaveActive] = useState(false);
   const [currentWave, setCurrentWave] = useState(1);
-  const [currentLevel, setCurrentLevel] = useState(level.id);
+  const [currentLevel, setCurrentLevel] = useState(1);
   const [currentWaterLevel, setCurrentWaterLevel] = useState(level.initialWaterLevel); // Anfangs Wasserstand Platzhalter
   const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand ohne Maßnahmen Platzhalter
   const [timer, setTimer] = useState(0); // Timer für Welle
@@ -32,8 +32,8 @@ function Spiel({ level }) {
     switch (levelId) {
       case 1:
         if (waterLevel > maxWaterLevel) return map14;
-        if (waterLevel >= level.initialWaterLevel + 0.7) return map13;
-        if (waterLevel >= level.initialWaterLevel + 0.3) return map12;
+        if (waterLevel >= level.initialWaterLevel + 0.5) return map13;
+        if (waterLevel >= level.initialWaterLevel + 0.2) return map12;
         return map11;
       // case 2:
       //   if (waterLevel >= level.initialWaterLevel + 1.5) return mapImage23;
@@ -85,10 +85,10 @@ function Spiel({ level }) {
             setWaveActive(false);
             setCurrentLevel(5); // Game Over
             clearInterval(waterLevelInterval);
-            return prev;
+            return prev + 0.1;
           }
         });
-      }, 10000); // 10 Sekunden 
+      }, 9990); // 10 Sekunden 
     }
 
     return () => clearInterval(waterLevelInterval); // Setzt Effect auf inaktiv
