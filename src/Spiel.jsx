@@ -1,7 +1,7 @@
-// Spiel.jsx
 import React, { useState, useEffect } from 'react';
-import mapImage1 from './Map.jpg'; // Importiere Map.jpg für Level 1
+import mapImage1 from "./level 2 stufe 1.jpg";
 import sandsackImage from './Sandsack.jpg'; // Importiere das Bild für den Sandsack
+import newImage from './level 2 stufe 2.jpg'; // Importiere das neue Bild
 
 function Spiel({ level }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -101,6 +101,12 @@ function Spiel({ level }) {
         className="absolute top-0 left-1/2 transform -translate-x-1/2 max-h-full"
         style={{ maxHeight: '300vh' }}
       />
+
+      {currentWaterLevel >= 2 && (
+        <div className="absolute top-0 left-0 w-full h-full">
+          <img src={newImage} alt="High Water Level" className="w-full h-full object-cover" />
+        </div>
+      )}
 
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
         <button className="btn btn-square" onClick={toggleMenu}>
