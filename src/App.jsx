@@ -2,7 +2,7 @@ import Navbar from './Navbar';
 import React from 'react';
 import Home from './Home';
 import Spiel from './Spiel';
-import Mock from'./Mock';
+import GameController from'./GameController';
 import Bonusfragen from './Bonusfragen';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
@@ -31,10 +31,10 @@ function App() {
         
           <Routes>
             <Route exact path="/play/flut/" element = {<Home/>}/>
-            <Route path="/play/flut/Spiel" element = {<Mock/>}/>
+            <Route path="/play/flut/Spiel" element = {<GameController/>}/>
             <Route path="/play/flut/fragen" element = {<Bonusfragen/>}/>
             <Route path="/play/flut/map" element = {<Map/>}/>
-            <Route path="/play/flut/test" element = {<Mock/>}/>
+            <Route path="/play/flut/test" element = {<GameController/>}/>
           </Routes>
           
         </div>

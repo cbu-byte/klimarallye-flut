@@ -4,7 +4,7 @@ import sandsackImage from './Sandsack.jpg'; // Importiere das Bild für den Sand
 import newImage from './level 2 stufe 2.jpg'; // Importiere das neue Bild
 
 function Spiel({ level }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen , setMenuOpen] = useState(false);
   const [sandsackShown, setSandsackShown] = useState(false); // Zustand für die Anzeige des Sandsack-Bildes
   const [waveActive, setWaveActive] = useState(false);
   const [currentWave, setCurrentWave] = useState(1);
@@ -25,7 +25,7 @@ function Spiel({ level }) {
               setCurrentLevel(4); // Spiel gewonnen
             } else {
               setCurrentWave(prevWave => prevWave + 1); // Erhöht aktuelle Welle
-              setCurrentWaterLevel(level.initialWaterLevel); // Setzt den Wasserstand auf den Initialwert zurück
+              //setCurrentWaterLevel(level.initialWaterLevel); // Setzt den Wasserstand auf den Initialwert zurück
               setTimer(0);
             }
             return 0;
@@ -107,7 +107,7 @@ function Spiel({ level }) {
           <img src={newImage} alt="High Water Level" className="w-full h-full object-cover" />
         </div>
       )}
-
+{/*     
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
         <button className="btn btn-square" onClick={toggleMenu}>
           {menuOpen && !sandsackShown ? 'Schließen' : 'Menü öffnen'}
@@ -142,7 +142,7 @@ function Spiel({ level }) {
             </ul>
           </div>
         )}
-      </div>
+      </div> */}
 
       {sandsackShown && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -152,14 +152,14 @@ function Spiel({ level }) {
 
       {/* Die beiden Anzeigen für den aktuellen und den maximalen Wasserstand */}
       <div className="absolute top-4 right-4">
-        <div className="text-xl">Geld: {money}m</div>
-        <div className="text-xl">akt. Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
-        <div className="text-xl">max. Wasserstand: {maxWaterLevel}m</div>
+        <div className="text-xl text-white">Geld: {money}m</div>
+        <div className="text-xl text-white">akt. Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
+        <div className="text-xl text-white">max. Wasserstand: {maxWaterLevel}m</div>
       </div>
 
       {/* Aktuelle Welle-Anzeige */}
       <div className="absolute top-4 left-4">
-        <div className="text-xl">Welle: {currentWave}/3</div>
+        <div className="text-xl text-white">Welle: {currentWave}/3</div>
       </div>
 
       {!waveActive && currentLevel < 4 && currentLevel < 5 && (
@@ -170,12 +170,12 @@ function Spiel({ level }) {
 
       {waveActive && (
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-          <div className="text-xl">Zeit: {timer}s</div>
+          <div className="text-xl text-white">Zeit: {timer}s</div>
         </div>
       )}
 
       {currentLevel === 4 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl text-green-500">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-yellow-500">
           Spiel gewonnen
         </div>
       )}
