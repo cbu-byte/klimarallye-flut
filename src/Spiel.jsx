@@ -245,28 +245,29 @@ function Spiel({ level }) {
       )}
    {/* GEÄNDERT: Dialog in der Mitte der Karte anzeigen */}
    {dialogVisible && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white-800 bg-opacity-90 p-4 rounded-lg shadow-lg flex items-center">
-          <img src={scientistImage} alt="Scientist" className="w-24 h-24 mr-4" />
-          <div className="text-white">
-            <p>{dialogs[currentDialogIndex]}</p>
-            <div className="mt-4 flex justify-between text-white">
-              <button
-                className="btn btn-secondary "
-                onClick={handleDialogPrev}
-                disabled={currentDialogIndex === 0}
-              >
-                Zurück
-              </button>
-              <button
-                className="btn btn-secondary"
-                onClick={handleDialogNext}
-              >
-                {currentDialogIndex === dialogs.length - 1 ? 'Schließen' : 'Weiter'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 bg-opacity-90 p-4 rounded-lg shadow-lg flex items-center">
+    <img src={scientistImage} alt="Scientist" className="w-24 h-24 mr-4" />
+    <div className="text-white">
+      <p className="text-white">{dialogs[currentDialogIndex]}</p>
+      <div className="mt-4 flex justify-between">
+        <button
+          className="btn btn-secondary text-white"
+          onClick={handleDialogPrev}
+          disabled={currentDialogIndex === 0}
+        >
+          Zurück
+        </button>
+        <button
+          className="btn btn-secondary text-white"
+          onClick={handleDialogNext}
+        >
+          {currentDialogIndex === dialogs.length - 1 ? 'Schließen' : 'Weiter'}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
