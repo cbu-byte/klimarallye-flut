@@ -4,6 +4,7 @@ import map12 from "./Map12.jpg";
 import map13 from "./Map13.jpg";
 import map14 from "./Map14.jpg";
 import sandsackImage from './Sandsack.jpg'; // Importiere das Bild für den Sandsack
+import scientistImage from './scientist.png'; // Bild des Wissenschaftlers importieren
 //import mapImage12 from './level 2 stufe 2.jpg'; // Importiere das neue Bild
 
 
@@ -15,11 +16,11 @@ import sandsackImage from './Sandsack.jpg'; // Importiere das Bild für den Sand
 function Spiel({ level }) {
   const [menuOpen , setMenuOpen] = useState(false);
   const [sandsackShown, setSandsackShown] = useState(false); // Zustand für die Anzeige des Sandsack-Bildes
-  const [waveActive, setWaveActive] = useState(false);
-  const [currentWave, setCurrentWave] = useState(1);
-  const [currentLevel, setCurrentLevel] = useState(1);
-  const [currentWaterLevel, setCurrentWaterLevel] = useState(level.initialWaterLevel); // Anfangs Wasserstand Platzhalter
-  const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand ohne Maßnahmen Platzhalter
+  const [waveActive, setWaveActive] = useState(false); 
+  const [currentWave, setCurrentWave] = useState(1); // aktuelle Welle
+  const [currentLevel, setCurrentLevel] = useState(1); // Für Sieg(4) und Niederlage(5) 
+  const [currentWaterLevel, setCurrentWaterLevel] = useState(level.initialWaterLevel); // Anfangs Wasserstand Initialwert
+  const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand Initialwert
   const [timer, setTimer] = useState(0); // Timer für Welle
   const [money, setMoney] = useState(1000); // Geld
   //const images = require.context('../../public/images', false);
@@ -28,6 +29,17 @@ function Spiel({ level }) {
   //const [mapImage, setMapImage] = useState(level.map); // Map ${level.id}
   // Get the correct map image based on the selected level
   //const mapImage = level.id === 1 ? mapImage1 : level.map;
+
+  const [dialogVisible, setDialogVisible] = useState(true); // Zustand für die Anzeige des Dialogfensters
+  const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index des aktuellen Textfensters
+
+  const dialogs = [
+    "Willkommen zum Spiel! Ich bin Ihr wissenschaftlicher Berater.",
+    "Ihre Aufgabe ist es, die Fluten zu kontrollieren und die Stadt zu schützen.",
+    "Nutzen Sie verschiedene Maßnahmen, um den Wasserstand zu regulieren.",
+    "Viel Erfolg!"
+  ];
+
   const getMapImage = (levelId, waterLevel, maxWaterLevel) => {
     switch (levelId) {
       case 1:
@@ -125,7 +137,19 @@ function Spiel({ level }) {
     setTimer(30); // 30 Sekunden Platzhalter
   };
 
-  
+  const handleDialogNext = () => {
+    if (currentDialogIndex < dialogs.length - 1) {
+      setCurrentDialogIndex(currentDialogIndex + 1);
+    } else {
+      setDialogVisible(false);
+    }
+  };
+
+  const handleDialogPrev = () => {
+    if (currentDialogIndex > 0) {
+      setCurrentDialogIndex(currentDialogIndex - 1);
+    }
+  };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center text-white overflow-hidden">
@@ -196,7 +220,7 @@ function Spiel({ level }) {
         <div className="text-xl text-white">Welle: {currentWave}/3</div>
       </div>
 
-      {!waveActive && currentLevel < 4 && currentLevel < 5 && (
+      {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && ( 
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
           <button className="btn btn-primary" onClick={startWave}>Welle starten</button>
         </div>
@@ -217,6 +241,30 @@ function Spiel({ level }) {
       {currentLevel === 5 && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl text-red-500">
           Game Over
+        </div>
+      )}
+   {/* GEÄNDERT: Dialog in der Mitte der Karte anzeigen */}
+   {dialogVisible && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white-800 bg-opacity-90 p-4 rounded-lg shadow-lg flex items-center">
+          <img src={scientistImage} alt="Scientist" className="w-24 h-24 mr-4" />
+          <div className="text-white">
+            <p>{dialogs[currentDialogIndex]}</p>
+            <div className="mt-4 flex justify-between text-white">
+              <button
+                className="btn btn-secondary "
+                onClick={handleDialogPrev}
+                disabled={currentDialogIndex === 0}
+              >
+                Zurück
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={handleDialogNext}
+              >
+                {currentDialogIndex === dialogs.length - 1 ? 'Schließen' : 'Weiter'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -142,7 +142,7 @@ const Bonusfragen = () => {
             } else {
                 setShowScore(true);
             }
-        }, 2000); // Adjust the delay time as needed
+        }, 2000); // 2s wird die Lösung angezeigt
     };
 
     return (

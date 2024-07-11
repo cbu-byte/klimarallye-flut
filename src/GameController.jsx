@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Dashboard from './Dashboard';
 import Spiel from './Spiel';
 
-function Mock() {
+function GameController() {
   const [selectedLevel, setSelectedLevel] = useState(null);
 
   const handleSelectLevel = (level) => {
@@ -21,4 +21,4 @@ function Mock() {
   );
 }
 
-export default Mock;
+export default GameController;
