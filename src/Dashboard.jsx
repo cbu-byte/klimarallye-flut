@@ -2,12 +2,19 @@
 import React from 'react';
 
 
+
 const levels = [
-  { id: 1, name: 'Level 1', map: 'MapImage1.jpg', initialWaterLevel: 1, maxWaterLevel: 1.7 },
+  { id: 1, name: 'Level 1', map: 'MapImage1.jpg', initialWaterLevel: 1, maxWaterLevel: 1.2 },
   { id: 2, name: 'Level 2', map: 'Map2.jpg', initialWaterLevel: 1.5, maxWaterLevel: 2.5 },
   { id: 3, name: 'Level 3', map: 'Map3.jpg', initialWaterLevel: 2, maxWaterLevel: 4 },
 ];
+/*
+const jwtToken = getCookie("jwt");
 
+if(jwtToken){
+  setToken(jwtToken);
+}
+*/
 function Dashboard({ onSelectLevel }) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-top">

@@ -13,7 +13,7 @@ import scientistImage from './scientist.png'; // Bild des Wissenschaftlers impor
 
 
 
-function Spiel({ level }) {
+function Spiel({ level, onBackToDashboard  }) {
   const [menuOpen , setMenuOpen] = useState(false);
   const [sandsackShown, setSandsackShown] = useState(false); // Zustand für die Anzeige des Sandsack-Bildes
   const [waveActive, setWaveActive] = useState(false); 
@@ -43,7 +43,7 @@ function Spiel({ level }) {
   const getMapImage = (levelId, waterLevel, maxWaterLevel) => {
     switch (levelId) {
       case 1:
-        if (!(waterLevel <= maxWaterLevel)) return map14;
+        if (waterLevel > maxWaterLevel) return map14;
         if (waterLevel >= level.initialWaterLevel + 0.5) return map13;
         if (waterLevel >= level.initialWaterLevel + 0.2) return map12;
         return map11;
@@ -233,16 +233,19 @@ function Spiel({ level }) {
       )}
 
       {currentLevel === 4 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-yellow-500">
-          Spiel gewonnen
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+          <div className="text-4xl text-yellow-500 mb-4">Spiel gewonnen</div>
+          <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
         </div>
       )}
 
       {currentLevel === 5 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl text-red-500">
-          Game Over
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+          <div className="text-3xl text-red-500 mb-4">Game Over</div>
+          <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
         </div>
       )}
+
    {/* GEÄNDERT: Dialog in der Mitte der Karte anzeigen */}
    {dialogVisible && (
   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 bg-opacity-90 p-4 rounded-lg shadow-lg flex items-center">
