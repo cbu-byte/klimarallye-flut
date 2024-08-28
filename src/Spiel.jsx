@@ -13,7 +13,7 @@ import scientistImage from './scientist.png'; // Bild des Wissenschaftlers impor
 
 
 
-function Spiel({ level, onBackToDashboard  }) {
+function Spiel({ level, onBackToDashboard, onLevelComplete   }) {
   const [menuOpen , setMenuOpen] = useState(false);
   const [sandsackShown, setSandsackShown] = useState(false); // Zustand für die Anzeige des Sandsack-Bildes
   const [waveActive, setWaveActive] = useState(false); 
@@ -60,32 +60,32 @@ function Spiel({ level, onBackToDashboard  }) {
     }
   };
   const mapImage = getMapImage(level.id, currentWaterLevel, maxWaterLevel);
-
   useEffect(() => {
     let timerInterval;
     if (waveActive) {
-      timerInterval = setInterval(() => { // setInterval: Reduziert den Timer jede Sekunde
+      timerInterval = setInterval(() => {
         setTimer(prev => {
           if (prev <= 1) {
-            setWaveActive(false); // Relevant dafür, ob Timer angezeigt wird
+            setWaveActive(false);
             if (currentWave === 3) {
               setCurrentLevel(4); // Spiel gewonnen
+              onLevelComplete(level.id +1); // Fortschritt lokal oder im Backend speichern
             } else {
-              setCurrentWave(prevWave => prevWave + 1); // Erhöht aktuelle Welle
-              //setCurrentWaterLevel(level.initialWaterLevel); // Setzt den Wasserstand auf den Initialwert zurück
+              setCurrentWave(prevWave => prevWave + 1);
               setTimer(0);
             }
             return 0;
           } else {
-            return prev - 1; // Sekundenanzeige innerhalb des Timers
+            return prev - 1;
           }
         });
-      }, 1000); // 1000 Millisekunden == 1 Sekunde
+      }, 1000);
     }
 
-    return () => clearInterval(timerInterval); // Setzt Effect auf inaktiv
+    return () => clearInterval(timerInterval);
   }, [waveActive, currentWave]);
 
+ 
   useEffect(() => { // Erhöht aktuellen Wasserstand alle 10s um 0.1
     let waterLevelInterval;
     if (waveActive) {
