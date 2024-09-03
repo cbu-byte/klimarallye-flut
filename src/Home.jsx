@@ -1,4 +1,4 @@
-import mapImage from './Titlescreen.png';
+import mapImage from './images/Titlescreen.png';
 const Home = () => {
     function startGame() {
         // Hier kannst du die Logik für das Spiel ausführen

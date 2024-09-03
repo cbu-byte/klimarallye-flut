@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import map11 from "./Map11.jpg";
-import map12 from "./Map12.jpg";
-import map13 from "./Map13.jpg";
-import map14 from "./Map14.jpg";
+//Karten für Level 1
+import map11 from "./Map/Level1/Map11";
+import map12 from "./Map/Level1/Map12.jpg";
+import map13 from "./Map/Level1/Map13.jpg";
+import map14 from "./Map/Level1/Map14.jpg";
+//Karten für Level 2
+import map11 from "./Map/Level2/Map21";
+import map12 from "./Map/Level2/Map22.jpg";
+import map13 from "./Map/Level2/Map23.jpg";
+import map14 from "./Map/Level2/Map24.jpg";
+//Karten für Level 3
+import map11 from "./Map/Level3/Map31";
+import map12 from "./Map/Level3/Map32.jpg";
+import map13 from "./Map/Level3/Map33.jpg";
+import map14 from "./Map/Level3/Map34.jpg";
 import sandsackImage from './Sandsack.jpg'; // Importiere das Bild für den Sandsack
 import scientistImage from './scientist.png'; // Bild des Wissenschaftlers importieren
 //import mapImage12 from './level 2 stufe 2.jpg'; // Importiere das neue Bild
