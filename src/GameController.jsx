@@ -1,43 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dashboard from './Dashboard';
 import Spiel from './Spiel';
-import FlutMaxLevel from './API/FlutMaxLevel';
-import UpdateFlutMaxLevel from './API/UpdateFlutMaxLevel';
+import FlutMaxLevel from './API/FlutMaxLevel'; // Komponente, die den maximalen Fortschritt lädt
+import UpdateFlutMaxLevel from './API/UpdateFlutMaxLevel'; // Komponente, die den Fortschritt speichert
 
 function GameController() {
-  const [selectedLevel, setSelectedLevel] = useState(null);
-  const [flutMaxLevel, setFlutMaxLevel] = useState(1); // Initialer Wert
+  const [selectedLevel, setSelectedLevel] = useState(null); // Speichert das aktuell ausgewählte Level
+  const [flutMaxLevel, setFlutMaxLevel] = useState(1); // Speichert den maximalen Level-Fortschritt, initial 1
 
+  // Funktion zum Auswählen eines Levels
   const handleSelectLevel = (level) => {
     setSelectedLevel(level);
   };
 
+  // Funktion zum Zurücksetzen des ausgewählten Levels, um zum Dashboard zurückzukehren
   const handleBackToDashboard = () => {
-    setSelectedLevel(null); // Zurück zum Dashboard
+    setSelectedLevel(null);
   };
 
+  // Funktion, wenn ein Level abgeschlossen ist. Aktualisiert den Fortschritt auf dem höchsten Level
   const handleLevelComplete = (levelId) => {
-    setFlutMaxLevel(Math.max(flutMaxLevel, levelId)); // Update lokal
+    setFlutMaxLevel(Math.max(flutMaxLevel, levelId)); // Lokaler Fortschritt aktualisieren
   };
 
+  // Wenn die Komponente gerendert wird, wird das API-Level über `FlutMaxLevel` geladen
+  useEffect(() => {
+    const loadFlutMaxLevel = (maxLevel) => {
+      setFlutMaxLevel(maxLevel); // Setzt den maximalen Level-Fortschritt
+    };
+
+    // Hier wird die `FlutMaxLevel`-Komponente verwendet, um den Fortschritt vom Backend zu laden
+    <FlutMaxLevel onFetchFlutMaxLevel={loadFlutMaxLevel} />;
+  }, []);
 
   return (
     <div className="min-h-screen">
       {selectedLevel ? (
+        // Wenn ein Level ausgewählt ist, wird die `Spiel`-Komponente geladen
         <Spiel
           level={selectedLevel}
           onBackToDashboard={handleBackToDashboard}
           onLevelComplete={handleLevelComplete}
         />
       ) : (
+        // Andernfalls wird das Dashboard angezeigt
         <Dashboard
           onSelectLevel={handleSelectLevel}
-          flutMaxLevel={flutMaxLevel} // FlutMaxLevel an Dashboard weitergeben
+          flutMaxLevel={flutMaxLevel} // Der aktuelle Fortschritt wird an das Dashboard übergeben
         />
       )}
+
+      {/* Diese Komponente wird verwendet, um den Fortschritt nach dem Abschluss eines Levels zu speichern */}
+      <UpdateFlutMaxLevel levelId={flutMaxLevel} />
     </div>
   );
 }
+
+
+
 
 /*
  useEffect(() => {

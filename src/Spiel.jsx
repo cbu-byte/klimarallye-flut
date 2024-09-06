@@ -1,49 +1,37 @@
 import React, { useState, useEffect } from 'react';
 //Karten für Level 1
-import map11 from "./Map/Level1/Map11";
+import map11 from "./Map/Level1/Map11.jpg";
 import map12 from "./Map/Level1/Map12.jpg";
 import map13 from "./Map/Level1/Map13.jpg";
 import map14 from "./Map/Level1/Map14.jpg";
 //Karten für Level 2
-import map11 from "./Map/Level2/Map21";
-import map12 from "./Map/Level2/Map22.jpg";
-import map13 from "./Map/Level2/Map23.jpg";
-import map14 from "./Map/Level2/Map24.jpg";
+import map21 from "./Map/Level2/Map21.jpg";
+import map22 from "./Map/Level2/Map22.jpg";
+import map23 from "./Map/Level2/Map23.jpg";
+import map24 from "./Map/Level2/Map24.jpg";
 //Karten für Level 3
-import map11 from "./Map/Level3/Map31";
-import map12 from "./Map/Level3/Map32.jpg";
-import map13 from "./Map/Level3/Map33.jpg";
-import map14 from "./Map/Level3/Map34.jpg";
+import map31 from "./Map/Level3/Map31.jpg";
+import map32 from "./Map/Level3/Map32.jpg";
+import map33 from "./Map/Level3/Map33.jpg";
+import map34 from "./Map/Level3/Map34.jpg";
 //import sandsackImage from './Sandsack.jpg'; // Importiere das Bild für den Sandsack
 import scientistImage from './images/scientist.png'; // Bild des Wissenschaftlers importieren
 //import mapImage12 from './level 2 stufe 2.jpg'; // Importiere das neue Bild
 
+function Spiel({ level, onBackToDashboard, onLevelComplete }) {
+  const [menuOpen, setMenuOpen] = useState(false); // Menü-Status
+  const [sandsackShown, setSandsackShown] = useState(false); // Sandsack-Anzeige
+  const [waveActive, setWaveActive] = useState(false); // Ob die Welle aktiv ist
+  const [currentWave, setCurrentWave] = useState(1); // Aktuelle Welle (1-3)
+  const [currentLevel, setCurrentLevel] = useState(1); // Status des Spiels (Gewonnen/Verloren)
+  const [currentWaterLevel, setCurrentWaterLevel] = useState(level.initialWaterLevel); // Anfangs Wasserstand
+  const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand
+  const [timer, setTimer] = useState(0); // Timer für die Welle
+  const [money, setMoney] = useState(1000); // Geld für das Level
+  const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
+  const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
 
-
-
-
-
-
-function Spiel({ level, onBackToDashboard, onLevelComplete   }) {
-  const [menuOpen , setMenuOpen] = useState(false);
-  const [sandsackShown, setSandsackShown] = useState(false); // Zustand für die Anzeige des Sandsack-Bildes
-  const [waveActive, setWaveActive] = useState(false); 
-  const [currentWave, setCurrentWave] = useState(1); // aktuelle Welle
-  const [currentLevel, setCurrentLevel] = useState(1); // Für Sieg(4) und Niederlage(5) 
-  const [currentWaterLevel, setCurrentWaterLevel] = useState(level.initialWaterLevel); // Anfangs Wasserstand Initialwert
-  const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand Initialwert
-  const [timer, setTimer] = useState(0); // Timer für Welle
-  const [money, setMoney] = useState(1000); // Geld
-  //const images = require.context('../../public/images', false);
-  //const mapImage = images(`./MapL1N1.jpg`);
-
-  //const [mapImage, setMapImage] = useState(level.map); // Map ${level.id}
-  // Get the correct map image based on the selected level
-  //const mapImage = level.id === 1 ? mapImage1 : level.map;
-
-  const [dialogVisible, setDialogVisible] = useState(true); // Zustand für die Anzeige des Dialogfensters
-  const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index des aktuellen Textfensters
-
+  // Dialogtexte
   const dialogs = [
     "Willkommen zum Spiel! Ich bin Ihr wissenschaftlicher Berater.",
     "Ihre Aufgabe ist es, die Fluten zu kontrollieren und die Stadt zu schützen.",
@@ -51,6 +39,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete   }) {
     "Viel Erfolg!"
   ];
 
+  // Funktion, um die Karte basierend auf dem Wasserstand auszuwählen
   const getMapImage = (levelId, waterLevel, maxWaterLevel) => {
     switch (levelId) {
       case 1:
@@ -70,62 +59,58 @@ function Spiel({ level, onBackToDashboard, onLevelComplete   }) {
         return map11;
     }
   };
+  
+  // Karte wird basierend auf dem aktuellen Level und Wasserstand ausgewählt
   const mapImage = getMapImage(level.id, currentWaterLevel, maxWaterLevel);
+
+  // Effekt zur Steuerung des Wellentimers
   useEffect(() => {
     let timerInterval;
     if (waveActive) {
       timerInterval = setInterval(() => {
         setTimer(prev => {
           if (prev <= 1) {
-            setWaveActive(false);
+            setWaveActive(false); // Welle beendet
             if (currentWave === 3) {
-              setCurrentLevel(4); // Spiel gewonnen
-              onLevelComplete(level.id +1); // Fortschritt lokal oder im Backend speichern
+              setCurrentLevel(4); // Spiel gewonnen nach der 3. Welle
+              onLevelComplete(level.id + 1); // Fortschritt speichern
             } else {
-              setCurrentWave(prevWave => prevWave + 1);
-              setTimer(0);
+              setCurrentWave(prevWave => prevWave + 1); // Nächste Welle
+              setTimer(0); // Timer zurücksetzen
             }
             return 0;
           } else {
-            return prev - 1;
+            return prev - 1; // Timer läuft weiter
           }
         });
-      }, 1000);
+      }, 1000); // Timer-Intervall: jede Sekunde
     }
 
-    return () => clearInterval(timerInterval);
+    return () => clearInterval(timerInterval); // Timer aufräumen
   }, [waveActive, currentWave]);
 
- 
-  useEffect(() => { // Erhöht aktuellen Wasserstand alle 10s um 0.1
+  // Effekt zur Erhöhung des Wasserstandes während der Welle
+  useEffect(() => {
     let waterLevelInterval;
     if (waveActive) {
       waterLevelInterval = setInterval(() => {
         setCurrentWaterLevel(prev => {
           if (prev < maxWaterLevel) {
-            return prev + 0.1;
+            return prev + 0.1; // Wasserstand steigt jede 10s um 0.1
           } else {
-            setWaveActive(false);
-            setCurrentLevel(5); // Game Over
+            setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
+            setCurrentLevel(5); // Spiel verloren
             clearInterval(waterLevelInterval);
             return prev + 0.1;
           }
         });
-      }, 9990); // 10 Sekunden 
+      }, 9990); // Intervall: alle 10 Sekunden
     }
 
-    return () => clearInterval(waterLevelInterval); // Setzt Effect auf inaktiv
+    return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
   }, [waveActive, maxWaterLevel]);
 
-  const toggleMenu = () => {
-    if (sandsackShown) {
-      setSandsackShown(false);
-    } else {
-      setMenuOpen(true);
-    }
-  };
-
-  // const handleMenuItemClick = (menuItem) => {
+   // const handleMenuItemClick = (menuItem) => {
   //   switch (menuItem) {
   //     case 'Biberdamm':
   //       console.log('Biberdamm ausgewählt');
@@ -143,24 +128,64 @@ function Spiel({ level, onBackToDashboard, onLevelComplete   }) {
   //   setMenuOpen(false);
   // };
 
+
+  // Funktion, um die Welle zu starten
   const startWave = () => {
     setWaveActive(true);
-    setTimer(30); // 30 Sekunden Platzhalter
+    setTimer(30); // Platzhalter für 30 Sekunden Wellen-Timer
   };
 
+  // Funktion zur Steuerung des Dialogsystems (nächster Dialog)
   const handleDialogNext = () => {
     if (currentDialogIndex < dialogs.length - 1) {
-      setCurrentDialogIndex(currentDialogIndex + 1);
+      setCurrentDialogIndex(currentDialogIndex + 1); // Nächster Dialog
     } else {
-      setDialogVisible(false);
+      setDialogVisible(false); // Dialog schließen
     }
   };
 
+  // Funktion zur Steuerung des Dialogsystems (vorheriger Dialog)
   const handleDialogPrev = () => {
     if (currentDialogIndex > 0) {
-      setCurrentDialogIndex(currentDialogIndex - 1);
+      setCurrentDialogIndex(currentDialogIndex - 1); // Vorheriger Dialog
     }
   };
+  {/*     
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+        <button className="btn btn-square" onClick={toggleMenu}>
+          {menuOpen && !sandsackShown ? 'Schließen' : 'Menü öffnen'}
+        </button>
+        {menuOpen && (
+          <div className="menu bg-gray-800 bg-opacity-70 p-4 rounded-md">
+            <ul>
+              <li>
+                <button
+                  className="menu-btn biberdamm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+                  onClick={() => handleMenuItemClick('Biberdamm')}
+                >
+                  Biberdamm
+                </button>
+              </li>
+              <li>
+                <button
+                  className="menu-btn staudamm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+                  onClick={() => handleMenuItemClick('Staudamm')}
+                >
+                  Staudamm
+                </button>
+              </li>
+              <li>
+                <button
+                  className="menu-btn sandsack bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+                  onClick={() => handleMenuItemClick('Sandsack')}
+                >
+                  Sandsack
+                </button>
+              </li>
+            </ul>
+          </div>
+        )}
+      </div> */}
 
   return (
     <div className="relative min-h-screen flex items-center justify-center text-white overflow-hidden">
@@ -286,4 +311,17 @@ function Spiel({ level, onBackToDashboard, onLevelComplete   }) {
   );
 }
 
+
+
 export default Spiel;
+
+
+
+
+
+
+
+
+
+
+
