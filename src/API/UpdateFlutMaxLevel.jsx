@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
+import {jwtDecode} from 'jwt-decode';
+import { getCookie } from '../lib/cookieUtils';
 
-function UpdateFlutMaxLevel({ userId }) {
-  const [newFlutMaxLevel, setNewFlutMaxLevel] = useState('');
+const UpdateFlutMaxLevel = ({ levelId }) => {
+  React.useEffect(() => {
+    const updateFlutMaxLevel = async () => {
+      try {
+        const jwtToken = getCookie('jwt');
+        if (jwtToken) {
+          const decodedToken = jwtDecode(jwtToken);
+          const userId = decodedToken.sub;
+          await fetch('/api/flut', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId,
+              value: levelId,
+            }),
+          });
+        }
+      } catch (error) {
+        console.error('Fehler beim Speichern des FlutMaxLevels:', error);
+      }
+    };
 
-  const handleSave = () => {
-    fetch('/api/flut', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: userId, 
-        value: parseInt(newFlutMaxLevel)
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('FlutMaxLevel gespeichert:', data);
-      })
-      .catch(error => console.error('Error saving FlutMaxLevel:', error));
-  };
+    if (levelId) {
+      updateFlutMaxLevel();
+    }
+  }, [levelId]);
 
-  return (
-    <div>
-      <input
-        type="number"
-        value={newFlutMaxLevel}
-        onChange={e => setNewFlutMaxLevel(e.target.value)}
-        placeholder="Neuer FlutMaxLevel"
-      />
-      <button onClick={handleSave}>Speichern</button>
-    </div>
-  );
-}
+  return null; // Diese Komponente rendert nichts
+};
 
 export default UpdateFlutMaxLevel;

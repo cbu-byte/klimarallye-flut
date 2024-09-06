@@ -1,33 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Dashboard from './Dashboard';
 import Spiel from './Spiel';
-import { jwtDecode } from 'jwt-decode';
-import { getCookie } from './lib/cookieUtils';
+import FlutMaxLevel from './API/FlutMaxLevel';
+import UpdateFlutMaxLevel from './API/UpdateFlutMaxLevel';
 
 function GameController() {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [flutMaxLevel, setFlutMaxLevel] = useState(1); // Initialer Wert
-
-  useEffect(() => {
-    const fetchFlutMaxLevel = async () => {
-      try {
-        const jwtToken = getCookie('jwt');
-        let url = '/api/flut';
-        if (jwtToken) {
-          const decodedToken = jwtDecode(jwtToken);
-          const userId = decodedToken.sub;
-          url = `/api/flut/${userId}`;
-        }
-        const response = await fetch(url);
-        const data = await response.json();
-        setFlutMaxLevel(data || 1); // Setzt FlutMaxLevel, falls vorhanden
-      } catch (error) {
-        console.error('Fehler beim Laden des FlutMaxLevels:', error);
-      }
-    };
-
-    fetchFlutMaxLevel();
-  }, []);
 
   const handleSelectLevel = (level) => {
     setSelectedLevel(level);
@@ -38,24 +17,9 @@ function GameController() {
   };
 
   const handleLevelComplete = (levelId) => {
-    if (getCookie('jwt')) { // Überprüfen, ob der Benutzer angemeldet ist
-      // Update FlutMaxLevel im Backend
-      fetch('/api/flut', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: jwtDecode(getCookie('jwt')).sub,
-          value: levelId
-        }),
-      })
-        .then(response => response.json())
-        .then(data => console.log('FlutMaxLevel aktualisiert:', data))
-        .catch(error => console.error('Fehler beim Speichern des FlutMaxLevels:', error));
-    }
     setFlutMaxLevel(Math.max(flutMaxLevel, levelId)); // Update lokal
   };
+
 
   return (
     <div className="min-h-screen">
