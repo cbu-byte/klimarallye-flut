@@ -31,13 +31,8 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
 
-  // Dialogtexte
-  const dialogs = [
-    "Willkommen zum Spiel! Ich bin Ihr wissenschaftlicher Berater.",
-    "Ihre Aufgabe ist es, die Fluten zu kontrollieren und die Stadt zu schützen.",
-    "Nutzen Sie verschiedene Maßnahmen, um den Wasserstand zu regulieren.",
-    "Viel Erfolg!"
-  ];
+    // Dialogtexte aus dem Level
+    const dialogs = level.dialogs || [];
 
   // Funktion, um die Karte basierend auf dem Wasserstand auszuwählen
   const getMapImage = (levelId, waterLevel, maxWaterLevel) => {
@@ -282,7 +277,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         </div>
       )}
 
-   {/* GEÄNDERT: Dialog in der Mitte der Karte anzeigen */}
+   {/* Dialog (Geschichte) */}
    {dialogVisible && (
   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 bg-opacity-90 p-4 rounded-lg shadow-lg flex items-center">
     <img src={scientistImage} alt="Scientist" className="w-24 h-24 mr-4" />
