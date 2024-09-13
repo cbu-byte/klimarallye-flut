@@ -70,6 +70,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
               setCurrentLevel(4); // Spiel gewonnen nach der 3. Welle
               onLevelComplete(level.id + 1); // Fortschritt speichern
             } else {
+              setMoney(prevMoney => prevMoney + 500); // 500 Geld hinzufügen
               setCurrentWave(prevWave => prevWave + 1); // Nächste Welle
               setTimer(0); // Timer zurücksetzen
             }
@@ -145,6 +146,12 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
       setCurrentDialogIndex(currentDialogIndex - 1); // Vorheriger Dialog
     }
   };
+
+  // Berechnung des Scores
+  const calculateScore = () => {
+    return Math.max(0, Math.floor((maxWaterLevel - currentWaterLevel) * money)); // Abrunden auf die nächste ganze Zahl und sicherstellen, dass der Score nicht negativ ist
+  };
+
   {/*     
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
         <button className="btn btn-square" onClick={toggleMenu}>
@@ -183,6 +190,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
       </div> */}
 
   return (
+    // Map
     <div className="relative min-h-screen flex items-center justify-center text-white overflow-hidden">
       <img
         src={mapImage}
@@ -191,11 +199,11 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         style={{ maxHeight: '300vh' }}
       />
 
-      {currentWaterLevel >= 2 && (
+      {/* {currentWaterLevel >= 2 && (
         <div className="absolute top-0 left-0 w-full h-full">
           <img src={mapImage12} alt="High Water Level" className="w-full h-full object-cover" />
         </div>
-      )}
+      )} */}
 {/*     
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
         <button className="btn btn-square" onClick={toggleMenu}>
@@ -251,25 +259,30 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         <div className="text-xl text-white">Welle: {currentWave}/3</div>
       </div>
 
+      {/* Anzeige Welle starten */}
       {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && ( 
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
           <button className="btn btn-primary" onClick={startWave}>Welle starten</button>
         </div>
       )}
 
+      {/* Anzeige Zeit */}
       {waveActive && (
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
           <div className="text-xl text-white">Zeit: {timer}s</div>
         </div>
       )}
 
+      {/* Anzeige Spiel gewonnen */}
       {currentLevel === 4 && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <div className="text-4xl text-yellow-500 mb-4">Spiel gewonnen</div>
+          <div className="text-2xl text-white mb-4">Score: {calculateScore()}</div>
           <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
         </div>
       )}
 
+      {/* Anzeige Spiel verloren */}
       {currentLevel === 5 && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <div className="text-3xl text-red-500 mb-4">Game Over</div>
