@@ -18,6 +18,8 @@ import map34 from "./Map/Level3/Map34.jpg";
 import scientistImage from './images/scientist.png'; // Bild des Wissenschaftlers importieren
 //import mapImage12 from './level 2 stufe 2.jpg'; // Importiere das neue Bild
 
+import BuildingList from './BuildingList'; // Importiere die BuildingList
+
 function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [menuOpen, setMenuOpen] = useState(false); // Menü-Status
   const [sandsackShown, setSandsackShown] = useState(false); // Sandsack-Anzeige
@@ -30,9 +32,77 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [money, setMoney] = useState(1000); // Geld für das Level
   const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
+  // Für die Objekte
+  const [selectedBuilding, setSelectedBuilding] = useState(null); // Für Drag & Drop
+  const [zones, setZones] = useState([
+    { id: 1, occupied: false, building: null, position: { left: '30%', top: '40%' } },
+    { id: 2, occupied: false, building: null, position: { left: '50%', top: '60%' } },
+    { id: 3, occupied: false, building: null, position: { left: '70%', top: '50%' } },
+  ]);
+  const [infoText, setInfoText] = useState(null); // Für das Info-Fenster
+  const [errorMessage, setErrorMessage] = useState(''); // Fehlernachricht bei unzureichendem Geld
+
 
     // Dialogtexte aus dem Level
     const dialogs = level.dialogs || [];
+
+
+    //Funktionen fürs bauen
+    const handleDragStart = (building) => {
+      setSelectedBuilding(building);
+    };
+    
+    const handleDrop = (zoneId) => {
+      if (!selectedBuilding) return;
+  
+      const zone = zones.find(z => z.id === zoneId);
+      if (zone.building) return; // Zone ist bereits belegt
+  
+      if (money >= selectedBuilding.cost) {
+        setMoney(money - selectedBuilding.cost); // Geld abziehen
+        setZones(zones.map(z => z.id === zoneId ? { ...z, occupied: true, building: selectedBuilding } : z));
+        setMaxWaterLevel(maxWaterLevel + selectedBuilding.maxWaterLevel); // Max Water Level erhöhen
+      } else {
+        setErrorMessage('Nicht genug Geld!');
+        setTimeout(() => setErrorMessage(''), 2000); // Meldung nach 2 Sekunden entfernen
+      }
+    };
+  
+    const handleUpgrade = (zoneId) => {
+      const zone = zones.find(z => z.id === zoneId);
+      if (zone && zone.building && zone.building.level < 2) {
+        const upgradeCost = zone.building.cost * 1.5;
+        if (money >= upgradeCost) {
+          setMoney(money - upgradeCost);
+          const upgradedBuilding = {
+            ...zone.building,
+            level: zone.building.level + 1,
+            maxWaterLevel: zone.building.maxWaterLevel + 5,
+            image: zone.building.level === 1 ? upgradedSandsackImg : zone.building.image,
+          };
+          setZones(zones.map(z => z.id === zoneId ? { ...z, building: upgradedBuilding } : z));
+        } else {
+          setErrorMessage('Nicht genug Geld für das Upgrade!');
+          setTimeout(() => setErrorMessage(''), 2000);
+        }
+      }
+    }
+  
+    const handleSell = (zoneId) => {
+      const zone = zones.find(z => z.id === zoneId);
+      if (zone && zone.building) {
+        setMoney(money + zone.building.cost / 2); // Halbes Geld zurück
+        setMaxWaterLevel(maxWaterLevel - zone.building.maxWaterLevel); // Max Water Level reduzieren
+        setZones(zones.map(z => z.id === zoneId ? { ...z, occupied: false, building: null } : z));
+      }
+    };
+  
+    const handleShowInfo = (building) => {
+      setInfoText(building.info); // Setzt den Info-Text für das Gebäude
+    };
+
+
+
 
   // Funktion, um die Karte basierend auf dem Wasserstand auszuwählen
   const getMapImage = (levelId, waterLevel, maxWaterLevel) => {
@@ -198,7 +268,57 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         className="absolute top-0 left-1/2 transform -translate-x-1/2 max-h-full"
         style={{ maxHeight: '300vh' }}
       />
+      
+      {/* Gebäude und Drag and Drop */}
+      {/* Fehlernachricht */}
+      {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
 
+      {/* Bauzonen */}
+      {zones.map(zone => (
+  <div
+    key={zone.id}
+    className="absolute flex items-center justify-center"
+    style={{
+      left: zone.position.left,
+      top: zone.position.top,
+      width: '100px',
+      height: '100px',
+      backgroundColor: zone.occupied ? 'transparent' : 'rgba(128, 128, 128, 0.5)', // Grauer Platzhalter nur, wenn nicht belegt
+      border: zone.occupied ? 'none' : '2px solid gray', // Graue Umrandung nur, wenn nicht belegt
+      display: zone.occupied ? 'block' : 'block' // Immer anzeigen
+    }}
+    onDragOver={(e) => e.preventDefault()}
+    onDrop={() => handleDrop(zone.id)}
+  >
+    {zone.building && (
+      <div className="text-center">
+        <img src={zone.building.image} alt={zone.building.name} className="w-full h-full" />
+        <button className="mt-2 bg-blue-500 text-white py-1 px-2 rounded" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
+        <button className="mt-2 bg-red-500 text-white py-1 px-2 rounded" onClick={() => handleSell(zone.id)}>Verkaufen</button>
+      </div>
+    )}
+  </div>
+))}
+
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex flex-wrap justify-between w-4/5 space-y-4">
+        <BuildingList onSelectBuilding={handleDragStart} />
+      </div>
+    
+
+      
+
+      {/* Leiste mit 8 Objekten durch die BuildingList-Komponente */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-between w-4/5">
+        <BuildingList onSelectBuilding={handleDragStart} onShowInfo={handleShowInfo} />
+      </div>
+
+      {/* Info-Fenster */}
+      {infoText && (
+        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white p-6 border rounded shadow-lg z-50">
+          <p>{infoText}</p>
+          <button className="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded" onClick={() => setInfoText(null)}>Schließen</button>
+        </div>
+      )}
       {/* {currentWaterLevel >= 2 && (
         <div className="absolute top-0 left-0 w-full h-full">
           <img src={mapImage12} alt="High Water Level" className="w-full h-full object-cover" />
