@@ -8,15 +8,17 @@ const FlutMaxLevel = ({ onFetchFlutMaxLevel }) => {
     const fetchFlutMaxLevel = async () => {
       try {
         const jwtToken = getCookie('jwt'); // Holt das JWT-Token aus den Cookies
-        let url = '/api/flut'; // Basis-URL für den API-Endpunkt
+        
+        let url = 'http://localhost:8080/play/flut/api'; // Basis-URL für den API-Endpunkt
 
         if (jwtToken) {
           // Wenn das JWT-Token existiert, wird der UserId dekodiert und an die URL angehängt
           const decodedToken = jwtDecode(jwtToken);
           const userId = decodedToken.sub; // Benutzer-ID aus dem Token
-          url = `/api/flut/${userId}`; // URL, um den spezifischen Fortschritt des Users zu laden
+          url = `http://localhost:8080/play/flut/api/${userId}`; // URL, um den spezifischen Fortschritt des Users zu laden
+          //console.log('Get method with userId:', userId); // userId ist hier definiert
         }
-
+        
         // Fetch-Anfrage an den Server
         const response = await fetch(url);
         const data = await response.json();
@@ -26,7 +28,7 @@ const FlutMaxLevel = ({ onFetchFlutMaxLevel }) => {
       } catch (error) {
         console.error('Fehler beim Laden des FlutMaxLevels:', error);
         // Bei einem Fehler wird der lokale Fortschritt auf 1 gesetzt
-        onFetchFlutMaxLevel(1);
+        //onFetchFlutMaxLevel(1);
       }
     };
 

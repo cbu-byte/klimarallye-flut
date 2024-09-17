@@ -8,14 +8,14 @@ const UpdateFlutMaxLevel = ({ levelId }) => {
     const updateFlutMaxLevel = async () => {
       try {
         const jwtToken = getCookie('jwt'); // Holt das JWT-Token aus den Cookies
-
+        
         if (jwtToken) {
           // Wenn das JWT-Token existiert, wird die UserId dekodiert
           const decodedToken = jwtDecode(jwtToken);
           const userId = decodedToken.sub; // Benutzer-ID aus dem Token
-
+          //console.log('POst methoda'+userId);
           // Post-Anfrage, um den neuen FlutMaxLevel an den Server zu senden
-          await fetch('/api/flut', {
+          await fetch('http://localhost:8080/play/flut/api', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -136,6 +136,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         setTimer(prev => {
           if (prev <= 1) {
             setWaveActive(false); // Welle beendet
+            onLevelComplete(level.id + 1); // Fortschritt speichern
             if (currentWave === 3) {
               setCurrentLevel(4); // Spiel gewonnen nach der 3. Welle
               onLevelComplete(level.id + 1); // Fortschritt speichern

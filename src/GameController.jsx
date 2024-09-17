@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Dashboard from './Dashboard';
 import Spiel from './Spiel';
-import FlutMaxLevel from './API/FlutMaxLevel'; // Komponente, die den maximalen Fortschritt lädt
+import LoadFlutMaxLevel from './API/FlutMaxLevel'; // Komponente, die den maximalen Fortschritt lädt
 import UpdateFlutMaxLevel from './API/UpdateFlutMaxLevel'; // Komponente, die den Fortschritt speichert
 
 function GameController() {
@@ -24,14 +24,16 @@ function GameController() {
   };
 
   // Wenn die Komponente gerendert wird, wird das API-Level über `FlutMaxLevel` geladen
-  useEffect(() => {
+  
+  
     const loadFlutMaxLevel = (maxLevel) => {
-      setFlutMaxLevel(maxLevel); // Setzt den maximalen Level-Fortschritt
-    };
+      if (maxLevel > flutMaxLevel) {
+        setFlutMaxLevel(maxLevel); // Setzt den maximalen Level-Fortschritt nur, wenn der neue Wert größer ist
+      }
+  
 
-    // Hier wird die `FlutMaxLevel`-Komponente verwendet, um den Fortschritt vom Backend zu laden
-    <FlutMaxLevel onFetchFlutMaxLevel={loadFlutMaxLevel} />;
-  }, []);
+    
+  }
 
   return (
     <div className="min-h-screen">
@@ -49,7 +51,8 @@ function GameController() {
           flutMaxLevel={flutMaxLevel} // Der aktuelle Fortschritt wird an das Dashboard übergeben
         />
       )}
-
+        {/* Hier wird die `FlutMaxLevel`-Komponente verwendet, um den Fortschritt vom Backend zu laden */}
+      <LoadFlutMaxLevel onFetchFlutMaxLevel={loadFlutMaxLevel} />;
       {/* Diese Komponente wird verwendet, um den Fortschritt nach dem Abschluss eines Levels zu speichern */}
       <UpdateFlutMaxLevel levelId={flutMaxLevel} />
     </div>
