@@ -1,93 +1,106 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities; 
-/*@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');*/
+@tailwind utilities;
+
+/* @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap'); */
 
 /* base styles */
 * {
   margin: 0;
-  font-family: "Quicksand";
+  font-family: "Quicksand", sans-serif; /* Fallback-Schriftart hinzugefügt */
   color: #333;
 }
+
+/* Navbar */
 .navbar {
   padding: 20px;
   display: flex;
   align-items: center;
-  max-width: 600px;
+  max-width: 430px; /* Maximalbreite angepasst */
   margin: 0 auto;
   border-bottom: 1px solid #f2f2f2;
 }
+
 .navbar h1 {
   color: #f1356d;
 }
+
 .navbar .links {
   margin-left: auto;
 }
+
 .navbar a {
   margin-left: 16px;
   text-decoration: none;
   padding: 6px;
 }
+
 .navbar a:hover {
   color: #f1356d;
 }
+
+/* Content */
 .content {
-  max-width: 600px;
+  max-width: 430px;
   margin: 40px auto;
   padding: 20px;
 }
-.App{
-  /* background-image: url(./Titlescreen.png);
+
+/* App */
+.App {
+  /* Hintergrundbild für .App */
+  background-image: url('./Titlescreen.png');
   background-repeat: no-repeat;
-  /* background-size: cover;  */
-  /*background-position: center; */
+  background-size: cover;
+  background-position: center;
   color: #f1356d;
 }
+
 .App h1 {
   color: #f1356d;
   font-weight: bold;
 }
-.spielstarten {
-  font-weight: bold;
-  
-  display: flex;
-  align-items: center; /* Vertikal zentrieren */
-  justify-content: center; /* Horizontal zentrieren */
-}
-.red {
-  color:rgb(255, 0, 0)
-}
+
+/* Buttons */
 .btn-square {
-  width: 50px; /* Ändere die Breite nach Bedarf */
-  height: 50px; /* Ändere die Höhe nach Bedarf */
-  border-radius: 8px; /* Optional: Füge abgerundete Ecken hinzu */
-  background-color: #ccc; /* Ändere die Hintergrundfarbe nach Bedarf */
-  color: #333; /* Ändere die Textfarbe nach Bedarf */
-  font-size: 16px; /* Ändere die Schriftgröße nach Bedarf */
-  border: none; /* Optional: Entferne die Rahmen */
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background-color: #ccc;
+  color: #333;
+  font-size: 16px;
+  border: none;
   cursor: pointer;
 }
 
 .btn-square:hover {
-  background-color: #ddd; /* Ändere die Hintergrundfarbe im Hover-Zustand nach Bedarf */
+  background-color: #ddd;
 }
-/* styles.css */
 
-/* Stile für gefüllte Buttons */
-/* styles.css */
-
-/* Stile für gefüllte Buttons */
+/* Menü-Buttons */
 .menu-btn.biberdamm {
-  background-color: brown; /* Rote Hintergrundfarbe für Biberdamm-Button */
-  color: #ffffff; /* Weiße Textfarbe */
+  background-color: brown;
+  color: #ffffff;
 }
 
 .menu-btn.staudamm {
-  background-color: grey; /* Grüne Hintergrundfarbe für Staudamm-Button */
-  color: #ffffff; /* Weiße Textfarbe */
+  background-color: grey;
+  color: #ffffff;
 }
 
 .menu-btn.sandsack {
-  background-color: beige; /* Blaue Hintergrundfarbe für Sandsack-Button */
-  color: black; /* Weiße Textfarbe */
+  background-color: beige;
+  color: black;
+}
+
+/* Hintergrundbild in Flex-Container begrenzen */
+.background-container {
+  max-width: 430px; /* Maximale Breite für das Hintergrundbild */
+  max-height: 0px; /* Maximale Höhe für das Hintergrundbild */
+  width: 100%; /* Breite auf 100% setzen, um die maximale Breite zu nutzen */
+  height: auto; /* Höhe automatisch anpassen, um das Verhältnis beizubehalten */
+  margin: 0 auto; /* Zentriert das Bild horizontal */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

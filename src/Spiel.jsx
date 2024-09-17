@@ -48,7 +48,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
   const goToBonusQuestions = () => {
     console.log("Weiterleitung zu Bonusfragen!");
-    window.location.href = "/bonusfragen"; // Leitet zur Bonusfragen-Seite weiter
+    window.location.href = "/play/flut/fragen"; // Leitet zur Bonusfragen-Seite weiter
   };
 
 
