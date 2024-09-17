@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 //Karten für Level 1
+import questionMarkImage from './images/question_mark.png'; // Pfad zum Fragezeichen-Bild
+
+
 import map11 from "./Map/Level1/Map11.jpg";
 import map12 from "./Map/Level1/Map12.jpg";
 import map13 from "./Map/Level1/Map13.jpg";
@@ -41,6 +44,16 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   ]);
   const [infoText, setInfoText] = useState(null); // Für das Info-Fenster
   const [errorMessage, setErrorMessage] = useState(''); // Fehlernachricht bei unzureichendem Geld
+
+
+  const goToBonusQuestions = () => {
+    console.log("Weiterleitung zu Bonusfragen!");
+    window.location.href = "/bonusfragen"; // Leitet zur Bonusfragen-Seite weiter
+  };
+
+
+
+
 
 
     // Dialogtexte aus dem Level
@@ -431,10 +444,37 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         >
           {currentDialogIndex === dialogs.length - 1 ? 'Schließen' : 'Weiter'}
         </button>
+         
+       
+
       </div>
     </div>
   </div>
+
+
+
+
 )}
+ {/* Anzeige Welle starten */}
+{!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
+  <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+    <button className="btn btn-primary" onClick={startWave}>Welle starten</button>
+  </div>
+)}
+
+{/* Anzeige Welle 1/3 */}
+<div className="absolute top-4 left-4">
+  <div className="text-xl text-white">Welle: {currentWave}/3</div>
+</div>
+
+<div className="absolute" style={{ top: 'calc(4rem + 20px)', left: '4rem' }}>
+        <img
+          src={questionMarkImage}
+          alt="Fragezeichen"
+          className="w-8 h-8 cursor-pointer"
+          onClick={goToBonusQuestions} // Klick-Event zum Weiterleiten
+        />
+      </div>
 
     </div>
   );
