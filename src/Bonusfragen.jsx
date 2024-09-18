@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Bega from './images/Bega.png';
-import BackgroundImage from './images/background.png'; 
+import BackgroundImage from './images/Background.png'; 
 const Bonusfragen = () => {
     const questions = [
         {
