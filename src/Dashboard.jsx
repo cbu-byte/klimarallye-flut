@@ -41,14 +41,29 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
     },
   ];
 
+  const getButtonStyle = (levelId) => {
+    switch(levelId) {
+      case 1:
+        return { backgroundColor: '#4CAF50' }; // Grüner Button
+      case 2:
+        return { backgroundColor: '#FFC107' }; // Gelber Button
+      case 3:
+        return { backgroundColor: '#F44336' }; // Roter Button
+      default:
+        return {};
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-top">
-      <h1 className="text-3xl mb-4">Wähle ein Level</h1>
+      <div className="p-6"></div>
+      <div className="level-heading text-3xl mb-4">Wähle ein Level</div>
       <ul className="space-y-4">
         {levels.map(level => (
           <li key={level.id}>
             <button
-              className="btn btn-primary"
+              style={getButtonStyle(level.id)}
+              className="level-button"
               onClick={() => onSelectLevel(level)}
               disabled={level.id > flutMaxLevel} // Sperrt Levels über dem FlutMaxLevel 
             >

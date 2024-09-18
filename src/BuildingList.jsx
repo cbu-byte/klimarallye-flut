@@ -1,6 +1,8 @@
 import React from 'react';
 import infoIcon from './images/info-icon.jpg'; // Info-Icon Bild
 import sandsackImg from './images/Sandsack.jpg';
+import Biberdamm from './images/Biberdamm.png';
+import './index.css';
 // Definition des Building-Objekts
 const buildings = [
   {
@@ -62,7 +64,7 @@ const buildings = [
   {
     id: 7,
     name: 'Beaver Dam',
-    image: sandsackImg,
+    image: Biberdamm,
     hp: 400,
     maxWaterLevel: 35,
     cost: 800,
@@ -91,25 +93,27 @@ const handleUpgradeBuilding = (zoneId) => {
 // Komponente zur Darstellung der Buildings
 const BuildingList = ({ onSelectBuilding, onShowInfo }) => {
   return (
-    <div className="flex justify-between w-full">
-      {buildings.map(building => (
-        <div key={building.id} className="relative w-24 h-24 m-2">
-          <img
-            src={building.image}
-            alt={building.name}
-            className="w-full h-full object-cover cursor-pointer"
-            draggable
-            onDragStart={() => onSelectBuilding(building)} // Drag Start
-          />
-          <button
-            className="absolute top-1 right-1 bg-gray-800 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center"
-            onClick={() => onShowInfo(building)}
-          >
-            <img src={infoIcon} alt="Info" />
-          </button>
-        </div>
-      ))}
-    </div>
+    <div className="flex flex-wrap justify-center gap-4 p-4 overflow-auto">
+    {buildings.map(building => (
+      <div key={building.id} className="relative w-32 h-32 sm:w-24 sm:h-24">
+        <img
+          src={building.image}
+          alt={building.name}
+          className="w-full h-full object-cover cursor-pointer"
+          draggable
+          onDragStart={() => onSelectBuilding(building)} // Drag Start
+        />
+        <button
+          className="absolute top-2 right-2 bg-gray-800 text-white text-xs rounded-full w-8 h-8 flex items-center justify-center"
+          onClick={() => onShowInfo(building)}
+        >
+          <img src={infoIcon} alt="Info" className="w-4 h-4" />
+        </button>
+      </div>
+    ))}
+  </div>
+  
+
   );
 };
 
