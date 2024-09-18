@@ -1,20 +1,14 @@
-import mapImage from './images/Titlescreen.png';
+import React from 'react';
+import './Home.css'; // Importiere die CSS-Datei
 
 const Home = () => {
   function startGame() {
     console.log("Spiel gestartet!");
     window.location.href = "/play/flut/Spiel";
-    
-    
   }
 
   return (
-    <div className="hero min-h-screen relative" style={{
-      backgroundImage: `url(${mapImage})`,
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-    }}>
+    <div className="home-container">
       {/* Container für den Titel */}
       <div className="absolute top-12 left-1/2 transform -translate-x-1/2 p-2.5 bg-[#003a2c]/80 rounded-[13px] flex items-center justify-center w-[317px] h-[113px] text-center text-[#b7baff] text-[40px] font-semibold font-['Inter'] leading-[17px]">
         Die Flut kommt
@@ -22,7 +16,7 @@ const Home = () => {
 
       {/* Container für die Schwierigkeitsauswahl */}
       <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 flex flex-col items-center">
-        <div className="bg-[#003a2c]/80 rounded-[13px] p-4 flex flex-col items-center justify-center w-[430px] h-[115px]">
+        <div className="bg-[#003a2c]/80 rounded-[13px] p-4 flex flex-col items-center justify-center w-[380px] h-[115px]">
           <div className="flex items-center gap-4 mb-4">
             <div className="text-[#e1e2ff] text-sm font-semibold font-['Inter'] leading-[17px]">
               Wähle die Schwierigkeitsstufe:

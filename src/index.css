@@ -10,6 +10,15 @@
   font-family: "Quicksand", sans-serif; /* Fallback-Schriftart hinzugefügt */
   color: #333;
 }
+.App {
+  background-image: url('.images/Titlescreen.png');
+  background-repeat: no-repeat;
+  background-size: cover; /* Skaliert das Bild, um den gesamten Container abzudecken */
+  background-position: center; /* Positioniert das Bild in der Mitte des Containers */
+  background-attachment: fixed; /* Das Bild bleibt beim Scrollen fixiert */
+  min-height: 100vh; /* Stellt sicher, dass der Container die volle Höhe des Viewports hat */
+  color: #f1356d;
+}
 
 /* Navbar */
 .navbar {
@@ -22,7 +31,7 @@
 }
 
 .navbar h1 {
-  color: #f1356d;
+  color: #9ae1f7;
 }
 
 .navbar .links {
@@ -32,7 +41,7 @@
 .navbar a {
   margin-left: 16px;
   text-decoration: none;
-  padding: 6px;
+  padding: 0px;
 }
 
 .navbar a:hover {
@@ -42,8 +51,8 @@
 /* Content */
 .content {
   max-width: 430px;
-  margin: 40px auto;
-  padding: 20px;
+  margin: 0px auto;
+  padding: 0px;
 }
 
 /* App */
@@ -96,7 +105,7 @@
 /* Hintergrundbild in Flex-Container begrenzen */
 .background-container {
   max-width: 430px; /* Maximale Breite für das Hintergrundbild */
-  max-height: 0px; /* Maximale Höhe für das Hintergrundbild */
+  max-height: 500px; /* Maximale Höhe für das Hintergrundbild */
   width: 100%; /* Breite auf 100% setzen, um die maximale Breite zu nutzen */
   height: auto; /* Höhe automatisch anpassen, um das Verhältnis beizubehalten */
   margin: 0 auto; /* Zentriert das Bild horizontal */

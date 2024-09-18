@@ -1,0 +1,27 @@
+.home-container {
+    background-image: url('./images/Titlescreen.png');
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: center;
+    background-attachment: fixed;
+    height: auto; /* Passt sich automatisch an den Inhalt an */
+    padding-bottom: 2rem; /* Füge ggf. ein wenig Abstand unten hinzu, damit es nicht zu eng wird */
+
+    min-height: 100vh;
+    position: relative; /* Sicherstellen, dass die Positionierung der Kinder relativ zur .home-container ist */
+  
+   margin-top: 0;
+  padding-top: 0;
+  
+  }
+  
+  .title-container {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; /* Sicherstellen, dass der Text über anderen Elementen liegt */
+  }
+  body {
+    overflow: hidden;
+} 

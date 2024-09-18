@@ -1,7 +1,21 @@
+/* Sicherstellen, dass html und body die volle Höhe einnehmen */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Klasse für die Hintergrundfarbe */
+.bg-dark-green {
+  min-height: 100vh;
+  background-color: #003A2C;
+}
+
+/* Andere allgemeine Stile */
 #root {
-  max-width: 1280px;
+  max-width: 560px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0rem;
   text-align: center;
 }
 
@@ -11,9 +25,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -40,14 +56,3 @@
 .read-the-docs {
   color: #888;
 }
-/* .App{
-  background-image: url(./Titlescreen.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-.spielstarten {
-  display: flex;
-  align-items: center; /* Vertikal zentrieren 
-  justify-content: center; /* Horizontal zentrieren 
-} */
