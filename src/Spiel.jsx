@@ -286,12 +286,11 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
       {/* Gebäude und Drag and Drop */}
       {/* Fehlernachricht */}
       {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
-
-      {/* Bauzonen */}
-      {zones.map(zone => (
+{/* Bauzonen */}
+{zones.map(zone => (
   <div
     key={zone.id}
-    className="absolute flex items-center justify-center"
+    className="fixed flex items-center justify-center"
     style={{
       left: zone.position.left,
       top: zone.position.top,
@@ -299,7 +298,6 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
       height: '100px',
       backgroundColor: zone.occupied ? 'transparent' : 'rgba(128, 128, 128, 0.5)', // Grauer Platzhalter nur, wenn nicht belegt
       border: zone.occupied ? 'none' : '2px solid gray', // Graue Umrandung nur, wenn nicht belegt
-      display: zone.occupied ? 'block' : 'block' // Immer anzeigen
     }}
     onDragOver={(e) => e.preventDefault()}
     onDrop={() => handleDrop(zone.id)}
@@ -314,9 +312,12 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   </div>
 ))}
 
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex flex-wrap justify-between w-4/5 space-y-4">
-        <BuildingList onSelectBuilding={handleDragStart} />
-      </div>
+
+<div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-wrap justify-between w-4/5 space-y-4">
+  <BuildingList onSelectBuilding={handleDragStart} />
+</div>
+
+
     
 
       
@@ -329,9 +330,9 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
       {/* Info-Fenster */}
       {infoText && (
         <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white p-6 border rounded shadow-lg z-50">
-          <p>{infoText}</p>
-          <button className="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded" onClick={() => setInfoText(null)}>Schließen</button>
-        </div>
+            <p>{infoText}</p>
+            <button className="mt-4 bg-gray-300 hover:bg-gray-400 text-white-700 py-2 px-4 rounded" onClick={() => setInfoText(null)}>Schließen</button>
+          </div>
       )}
       {/* {currentWaterLevel >= 2 && (
         <div className="absolute top-0 left-0 w-full h-full">
@@ -426,35 +427,42 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
    {/* Dialog (Geschichte) */}
    {dialogVisible && (
-  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 bg-opacity-90 p-4 rounded-lg shadow-lg flex items-center">
-    <img src={scientistImage} alt="Scientist" className="w-24 h-24 mr-4" />
-    <div className="text-white">
-      <p className="text-white">{dialogs[currentDialogIndex]}</p>
-      <div className="mt-4 flex justify-between">
-        <button
-          className="btn btn-secondary text-white"
-          onClick={handleDialogPrev}
-          disabled={currentDialogIndex === 0}
-        >
-          Zurück
-        </button>
-        <button
-          className="btn btn-secondary text-white"
-          onClick={handleDialogNext}
-        >
-          {currentDialogIndex === dialogs.length - 1 ? 'Schließen' : 'Weiter'}
-        </button>
-         
-       
-
+  <div
+    className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-90 z-50"
+  >
+    <div
+      className="flex items-center rounded-lg p-4 shadow-lg"
+      style={{
+        backgroundColor: '#003A2C',
+        width: '400px',  // Feste Breite
+        height: '150px', // Feste Höhe
+        borderRadius: '23px',
+      }}
+    >
+      <img src={scientistImage} alt="Scientist" className="w-24 h-24 mr-4" />
+      <div className="text-white flex-grow">
+        <p>{dialogs[currentDialogIndex]}</p>
+        <div className="mt-4 flex justify-between">
+          <button
+            className="btn text-white"
+            onClick={handleDialogPrev}
+            disabled={currentDialogIndex === 0}
+          >
+            Zurück
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={handleDialogNext}
+          >
+            {currentDialogIndex === dialogs.length - 1 ? 'Schließen' : 'Weiter'}
+          </button>
+        </div>
       </div>
     </div>
   </div>
-
-
-
-
 )}
+
+
  {/* Anzeige Welle starten */}
 {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
   <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
