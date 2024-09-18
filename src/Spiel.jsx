@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 //Karten für Level 1
 import questionMarkImage from './images/question_mark.png'; // Pfad zum Fragezeichen-Bild
-
+import Bonusfragen from "./Bonusfragen";
 
 import map11 from "./Map/Level1/Map11.jpg";
 import map12 from "./Map/Level1/Map12.jpg";
@@ -17,9 +17,9 @@ import map31 from "./Map/Level3/Map31.jpg";
 import map32 from "./Map/Level3/Map32.jpg";
 import map33 from "./Map/Level3/Map33.jpg";
 import map34 from "./Map/Level3/Map34.jpg";
-//import sandsackImage from './Sandsack.jpg'; // Importiere das Bild für den Sandsack
+
 import scientistImage from './images/scientist.png'; // Bild des Wissenschaftlers importieren
-//import mapImage12 from './level 2 stufe 2.jpg'; // Importiere das neue Bild
+
 
 import BuildingList from './BuildingList'; // Importiere die BuildingList
 
@@ -45,16 +45,15 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [infoText, setInfoText] = useState(null); // Für das Info-Fenster
   const [errorMessage, setErrorMessage] = useState(''); // Fehlernachricht bei unzureichendem Geld
 
+  //bonusfragen
+  const [showBonusfragen, setShowBonusfragen] = useState(false);
+  const [bonusFragenBeendet, setBonusFragenBeendet] = useState(false); // Zustand, ob Bonusfragen beendet sind
 
-  const goToBonusQuestions = () => {
-    console.log("Weiterleitung zu Bonusfragen!");
-    window.location.href = "/play/flut/fragen"; // Leitet zur Bonusfragen-Seite weiter
-  };
-
-
-
-
-
+  const handleBonusFragenBeendet = (richtigeAntworten) => {
+    setMoney(money + richtigeAntworten * 500); // Füge 500 für jede richtige Antwort hinzu
+    setBonusFragenBeendet(true); // Setze den Zustand auf beendet
+    setShowBonusfragen(false); // Schließe das Bonusfragen-Fenster
+};
 
     // Dialogtexte aus dem Level
     const dialogs = level.dialogs || [];
@@ -125,14 +124,14 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         if (waterLevel >= level.initialWaterLevel + 0.5) return map13;
         if (waterLevel >= level.initialWaterLevel + 0.2) return map12;
         return map11;
-      // case 2:
-      //   if (waterLevel >= level.initialWaterLevel + 1.5) return mapImage23;
-      //   if (waterLevel >= level.initialWaterLevel + 1) return mapImage22;
-      //   return mapImage2;
-      // case 3:
-      //   if (waterLevel >= level.initialWaterLevel + 1.5) return mapImage33;
-      //   if (waterLevel >= level.initialWaterLevel + 1) return mapImage32;
-      //   return mapImage3;
+      case 2:
+        if (waterLevel >= level.initialWaterLevel + 1.5) return mapImage23;
+        if (waterLevel >= level.initialWaterLevel + 1) return mapImage22;
+        return mapImage2;
+      case 3:
+        if (waterLevel >= level.initialWaterLevel + 1.5) return mapImage33;
+        if (waterLevel >= level.initialWaterLevel + 1) return mapImage32;
+        return mapImage3;
       default:
         return map11;
     }
@@ -190,24 +189,6 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
   }, [waveActive, maxWaterLevel]);
 
-   // const handleMenuItemClick = (menuItem) => {
-  //   switch (menuItem) {
-  //     case 'Biberdamm':
-  //       console.log('Biberdamm ausgewählt');
-  //       break;
-  //     case 'Staudamm':
-  //       console.log('Staudamm ausgewählt');
-  //       break;
-  //     case 'Sandsack':
-  //       console.log('Sandsack ausgewählt');
-  //       setSandsackShown(true);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   setMenuOpen(false);
-  // };
-
 
   // Funktion, um die Welle zu starten
   const startWave = () => {
@@ -236,45 +217,16 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     return Math.max(0, Math.floor((maxWaterLevel - currentWaterLevel) * money)); // Abrunden auf die nächste ganze Zahl und sicherstellen, dass der Score nicht negativ ist
   };
 
-  {/*     
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-        <button className="btn btn-square" onClick={toggleMenu}>
-          {menuOpen && !sandsackShown ? 'Schließen' : 'Menü öffnen'}
-        </button>
-        {menuOpen && (
-          <div className="menu bg-gray-800 bg-opacity-70 p-4 rounded-md">
-            <ul>
-              <li>
-                <button
-                  className="menu-btn biberdamm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
-                  onClick={() => handleMenuItemClick('Biberdamm')}
-                >
-                  Biberdamm
-                </button>
-              </li>
-              <li>
-                <button
-                  className="menu-btn staudamm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
-                  onClick={() => handleMenuItemClick('Staudamm')}
-                >
-                  Staudamm
-                </button>
-              </li>
-              <li>
-                <button
-                  className="menu-btn sandsack bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
-                  onClick={() => handleMenuItemClick('Sandsack')}
-                >
-                  Sandsack
-                </button>
-              </li>
-            </ul>
-          </div>
-        )}
-      </div> */}
+
 
   return (
-    // Map
+    <div>
+     {/* Rendere Bonusfragen nur, wenn showBonusfragen true ist */}
+     
+     {showBonusfragen && (
+                <Bonusfragen onBeendet={handleBonusFragenBeendet} onClose={() => setShowBonusfragen(false)} />
+            )}
+     {/* <Bonusfragen onBeendet={handleBonusFragenBeendet} onClose={() => setShowBonusfragen(false)} />  */}
     <div className="relative min-h-screen flex items-center justify-center text-white overflow-hidden">
       <img
         src={mapImage}
@@ -333,47 +285,6 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
           <button className="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded" onClick={() => setInfoText(null)}>Schließen</button>
         </div>
       )}
-      {/* {currentWaterLevel >= 2 && (
-        <div className="absolute top-0 left-0 w-full h-full">
-          <img src={mapImage12} alt="High Water Level" className="w-full h-full object-cover" />
-        </div>
-      )} */}
-{/*     
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-        <button className="btn btn-square" onClick={toggleMenu}>
-          {menuOpen && !sandsackShown ? 'Schließen' : 'Menü öffnen'}
-        </button>
-        {menuOpen && (
-          <div className="menu bg-gray-800 bg-opacity-70 p-4 rounded-md">
-            <ul>
-              <li>
-                <button
-                  className="menu-btn biberdamm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
-                  onClick={() => handleMenuItemClick('Biberdamm')}
-                >
-                  Biberdamm
-                </button>
-              </li>
-              <li>
-                <button
-                  className="menu-btn staudamm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
-                  onClick={() => handleMenuItemClick('Staudamm')}
-                >
-                  Staudamm
-                </button>
-              </li>
-              <li>
-                <button
-                  className="menu-btn sandsack bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
-                  onClick={() => handleMenuItemClick('Sandsack')}
-                >
-                  Sandsack
-                </button>
-              </li>
-            </ul>
-          </div>
-        )}
-      </div> */}
 
       {sandsackShown && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -467,15 +378,21 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   <div className="text-xl text-white">Welle: {currentWave}/3</div>
 </div>
 
-<div className="absolute" style={{ top: 'calc(4rem + 20px)', left: '4rem' }}>
-        <img
-          src={questionMarkImage}
-          alt="Fragezeichen"
-          className="w-8 h-8 cursor-pointer"
-          onClick={goToBonusQuestions} // Klick-Event zum Weiterleiten
-        />
-      </div>
+{!bonusFragenBeendet && (
+  <div className="absolute" style={{ top: 'calc(4rem + 20px)', left: '4rem' }}>
+    <img
+      src={questionMarkImage}
+      alt="Fragezeichen"
+      className="w-8 h-8 cursor-pointer"
+      onClick={() => setShowBonusfragen(true)} // Öffne Bonusfragen
+    />
+  </div>
+)}
 
+
+
+
+    </div>
     </div>
   );
 }
@@ -483,14 +400,3 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
 
 export default Spiel;
-
-
-
-
-
-
-
-
-
-
-

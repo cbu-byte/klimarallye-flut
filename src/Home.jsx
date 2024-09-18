@@ -1,5 +1,5 @@
 import React from 'react';
-import './Home.css'; // Importiere die CSS-Datei
+import './home.css'; // Importiere die CSS-Datei
 
 const Home = () => {
   function startGame() {
