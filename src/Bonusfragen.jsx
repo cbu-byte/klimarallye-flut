@@ -145,50 +145,46 @@ const Bonusfragen = () => {
     };
 
     return (
-        <div className="relative min-h-screen flex flex-col">
-            {/* Hauptinhalt Bereich */}
+        <div className="relative min-h-screen flex items-center justify-center">
+            {/* Hintergrundbild */}
             <div 
-                className="background-container" 
+                className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url(${BackgroundImage})` }}
-            >
-                <div className="flex justify-center items-center min-h-screen">
-                    <div className="w-[430px] h-[956px] flex-col justify-start items-center gap-[122px] inline-flex bg-[#000000a0] p-4 rounded-lg">
-                        {showScore ? (
-                            <div className="w-full h-[582px] px-[18px] py-[29px] bg-[#515b4c]/60 rounded-[13px] flex-col justify-start items-center gap-[13px] inline-flex">
-                                <div className="text-[#d9d7d7] text-xl font-normal font-['Inter'] leading-[17px]">
-                                    Du hast {score} von {questions.length} Fragen richtig beantwortet
+            ></div>
+
+            {/* Fragen und Antworten Container */}
+            <div className="relative bg-[#102717a0] p-6 rounded-lg w-full max-w-md">
+                {showScore ? (
+                    <div className="bg-[#515b4c]/60 rounded-[13px] p-4 text-center text-[#d9d7d7] text-xl font-normal font-['Inter']">
+                        Du hast {score} von {questions.length} Fragen richtig beantwortet
+                    </div>
+                ) : (
+                    <div className="bg-[#515b4c]/60 rounded-[13px] p-4">
+                        <img className="w-[136px] h-[194px] rounded-[23px] mx-auto" src={Bega} alt="Quiz" />
+                        <div className="text-center text-[#d9d7d7] text-xl font-normal font-['Inter'] mt-4 mb-2">
+                            {questions[currentQuestion].questionText}
+                        </div>
+                        {questions[currentQuestion].answerOptions.map((answerOption, index) => (
+                            <button
+                                key={index}
+                                onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}
+                                className="w-full h-[68px] bg-[#506d52] rounded-2xl flex justify-center items-center mb-2"
+                            >
+                                <div className="text-center text-[#e0ffd6] text-base font-normal font-['Inter'] leading-tight">
+                                    {answerOption.answerText}
                                 </div>
-                            </div>
-                        ) : (
-                            <div className="w-full h-[582px] px-[18px] py-[29px] bg-[#515b4c]/60 rounded-[13px] flex-col justify-start items-center gap-[13px] inline-flex">
-                                <img className="w-[136px] h-[194px] rounded-[23px]" src={Bega} alt="Quiz" />
-                                <div className="w-[386px] h-[50px] text-center text-[#d9d7d7] text-xl font-normal font-['Inter'] leading-[17px]">
-                                    {questions[currentQuestion].questionText}
-                                </div>
-                                {questions[currentQuestion].answerOptions.map((answerOption, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}
-                                        className="w-full h-[68px] bg-[#506d52] rounded-2xl flex justify-center items-center mb-2"
-                                    >
-                                        <div className="text-center text-[#e0ffd6] text-base font-normal font-['Inter'] leading-tight">
-                                            {answerOption.answerText}
-                                        </div>
-                                    </button>
-                                ))}
-                                {showAnswer && (
-                                    <div className="text-xl text-white">
-                                        Richtige Antwort: {questions[currentQuestion].correctAnswer}
-                                    </div>
-                                )}
+                            </button>
+                        ))}
+                        {showAnswer && (
+                            <div className="text-xl text-white mt-4">
+                                Richtige Antwort: {questions[currentQuestion].correctAnswer}
                             </div>
                         )}
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );
 };
-
 
 export default Bonusfragen;

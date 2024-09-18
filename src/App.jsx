@@ -5,6 +5,7 @@ import Spiel from './Spiel';
 import GameController from'./GameController';
 import Bonusfragen from './Bonusfragen';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import './App.css';
 
 // function startGame() {
 //   // Hier kannst du den Code für das Spiel ausführen
@@ -24,6 +25,8 @@ function startGame() {
 function App() {
 
   return (
+    <>
+      <div className="bg-[#003A2C] min-h-screen">
     <Router>
       <div className="App">
         <Navbar/>
@@ -41,7 +44,8 @@ function App() {
       </div>
  
       </Router>
-      
+        </div>
+        </>
   );
 }
 
