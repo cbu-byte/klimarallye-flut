@@ -95,7 +95,7 @@ const BuildingList = ({ onSelectBuilding, onShowInfo }) => {
   return (
     <div className="flex overflow-x-auto gap-4 p-4">
       {buildings.map(building => (
-        <div key={building.id} className="relative w-32 h-32 sm:w-24 sm:h-24">
+        <div key={building.id} className="relative w-16 h-16 sm:w-16 sm:h-16">
           <img
             src={building.image}
             alt={building.name}

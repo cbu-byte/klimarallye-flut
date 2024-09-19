@@ -6,14 +6,19 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
       id: 1, 
       name: 'Level 1', 
       map: 'MapImage1.jpg', 
-      initialWaterLevel: 1, 
+      initialWaterLevel: 2.4, 
       maxWaterLevel: 2.5, 
       dialogs: [
         "Willkommen zum Spiel! Ich bin Ihr wissenschaftlicher Berater.",
         "Ihre Aufgabe ist es, die Fluten zu kontrollieren und die Stadt zu schützen.",
         "Nutzen Sie verschiedene Maßnahmen, um den Wasserstand zu regulieren.",
         "Viel Erfolg!"
-      ] 
+      ],
+      zones:[ 
+        { id: 1, occupied: false, building: null, position: { left: '51%', top: '30%' } },
+        { id: 2, occupied: false, building: null, position: { left: '50%', top: '40%' } },
+        { id: 3, occupied: false, building: null, position: { left: '48%', top: '50%' } },
+      ]
     },
     { 
       id: 2, 
@@ -25,6 +30,11 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
         "Willkommen zu Level 2! Die Herausforderungen nehmen zu.",
         "Staudämme sind jetzt verfügbar. Setzen Sie sie strategisch ein, um die Flut aufzuhalten.",
         "Denken Sie daran, dass Ressourcen begrenzt sind. Planen Sie sorgfältig!"
+      ],
+      zones:[ 
+        { id: 1, occupied: false, building: null, position: { left: '54%', top: '25%' } },
+        { id: 2, occupied: false, building: null, position: { left: '49%', top: '30%' } },
+        { id: 3, occupied: false, building: null, position: { left: '43%', top: '35%' } },
       ] 
     },
     { 
@@ -37,6 +47,11 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
         "Willkommen zu Level 3! Dies ist das schwierigste Level.",
         "Der Wasserstand steigt schneller, und mehr Maßnahmen sind erforderlich.",
         "Nutzen Sie alle verfügbaren Mittel, um die Stadt zu schützen. Viel Erfolg!"
+      ],
+      zones:[ 
+        { id: 1, occupied: false, building: null, position: { left: '54%', top: '47%' } },
+        { id: 2, occupied: false, building: null, position: { left: '49%', top: '40%' } },
+        { id: 3, occupied: false, building: null, position: { left: '43%', top: '35%' } },
       ] 
     },
   ];
