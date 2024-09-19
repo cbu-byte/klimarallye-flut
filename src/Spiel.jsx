@@ -32,8 +32,6 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [currentWaterLevel, setCurrentWaterLevel] = useState(level.initialWaterLevel); // Anfangs Wasserstand
   const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand
   const [timer, setTimer] = useState(0); // Timer für die Welle
-  const [seconds, setSeconds] = useState(5); //Countdown startet mit 5 Sekunden
-  const [leben, setLeben] = useState(100) // Das Leben des Spielers
   const [money, setMoney] = useState(1000); // Geld für das Level
   const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
@@ -176,13 +174,13 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     if (waveActive) {
       waterLevelInterval = setInterval(() => {
         setCurrentWaterLevel(prev => {
-          if (prev < maxWaterLevel ) {
+          if (prev < maxWaterLevel) {
             return prev + 0.1; // Wasserstand steigt jede 10s um 0.1
           } else {
-            /*setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
+            setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
             setCurrentLevel(5); // Spiel verloren
             clearInterval(waterLevelInterval);
-            */return prev + 0.1;
+            return prev + 0.1;
           }
         });
       }, 9990); // Intervall: alle 10 Sekunden
@@ -190,37 +188,6 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
     return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
   }, [waveActive, maxWaterLevel]);
-
-  useEffect(() => {
-    let timer;
-    if(currentWaterLevel > maxWaterLevel && leben > 0){
-        timer = setInterval(() => {
-          setSeconds((prevSeconds) => prevSeconds -1);
-        }, 1000);
-    }
-    if(leben <= 0){
-      clearInterval(timer);
-    }
-    return () => clearInterval(timer);
-  }, [currentWaterLevel, maxWaterLevel, leben]);
-
-  useEffect(() => {
-    if(seconds <= 0 && leben > 0) {
-      setLeben((prevLeben) => prevLeben - 10);
-      setSeconds(5); 
-    }
-    if(leben<= 0){
-      setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
-      setCurrentLevel(5); // Spiel verloren
-    }
-  }, [seconds, leben, waveActive, ]);
-
-  useEffect(() => {
-    if(seconds <= 0 && leben === 0){
-      setStartTimer(false);
-    }
-
-  }, [seconds]);
 
 
   // Funktion, um die Welle zu starten
@@ -260,57 +227,15 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
                 <Bonusfragen onBeendet={handleBonusFragenBeendet} onClose={() => setShowBonusfragen(false)} />
             )}
      {/* <Bonusfragen onBeendet={handleBonusFragenBeendet} onClose={() => setShowBonusfragen(false)} />  */}
-    <div className="relative min-h-screen flex items-center justify-center text-white overflow-hidden">
+    <div className="relative p-4 m-1 h-[580px] flex items-center justify-center text-white overflow-hidden">
       <img
         src={mapImage}
         alt="Map"
         className="absolute top-0 left-1/2 transform -translate-x-1/2 max-h-full"
-        style={{ maxHeight: '300vh' }}
+        style={{ maxHeight: '100vh' }}
       />
       
-      {/* Gebäude und Drag and Drop */}
-      {/* Fehlernachricht */}
-      {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
-{/* Bauzonen */}
-{zones.map(zone => (
-  <div
-    key={zone.id}
-    className="fixed flex items-center justify-center"
-    style={{
-      left: zone.position.left,
-      top: zone.position.top,
-      width: '100px',
-      height: '100px',
-      backgroundColor: zone.occupied ? 'transparent' : 'rgba(128, 128, 128, 0.5)', // Grauer Platzhalter nur, wenn nicht belegt
-      border: zone.occupied ? 'none' : '2px solid gray', // Graue Umrandung nur, wenn nicht belegt
-    }}
-    onDragOver={(e) => e.preventDefault()}
-    onDrop={() => handleDrop(zone.id)}
-  >
-    {zone.building && (
-      <div className="text-center">
-        <img src={zone.building.image} alt={zone.building.name} className="w-full h-full" />
-        <button className="mt-2 bg-blue-500 text-white py-1 px-2 rounded" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
-        <button className="mt-2 bg-red-500 text-white py-1 px-2 rounded" onClick={() => handleSell(zone.id)}>Verkaufen</button>
-      </div>
-    )}
-  </div>
-))}
-
-
-<div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-wrap justify-between w-4/5 space-y-4">
-  <BuildingList onSelectBuilding={handleDragStart} />
-</div>
-
-
-    
-
       
-
-      {/* Leiste mit 8 Objekten durch die BuildingList-Komponente */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-between w-4/5">
-        <BuildingList onSelectBuilding={handleDragStart} onShowInfo={handleShowInfo} />
-      </div>
 
       {/* Info-Fenster */}
       {infoText && (
@@ -434,8 +359,54 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
 
     </div>
+    {/* Gebäude und Drag and Drop */}
+      {/* Fehlernachricht */}
+      {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
+{/* Bauzonen */}
+{zones.map(zone => (
+  <div
+    key={zone.id}
+    className="fixed flex items-center justify-center"
+    style={{
+      left: zone.position.left,
+      top: zone.position.top,
+      width: '100px',
+      height: '100px',
+      backgroundColor: zone.occupied ? 'transparent' : 'rgba(128, 128, 128, 0.5)', // Grauer Platzhalter nur, wenn nicht belegt
+      border: zone.occupied ? 'none' : '2px solid gray', // Graue Umrandung nur, wenn nicht belegt
+    }}
+    onDragOver={(e) => e.preventDefault()}
+    onDrop={() => handleDrop(zone.id)}
+  >
+    {zone.building && (
+      <div className="text-center">
+        <img src={zone.building.image} alt={zone.building.name} className="w-full h-full" />
+        <button className="mt-2 bg-blue-500 text-white py-1 px-2 rounded" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
+        <button className="mt-2 bg-red-500 text-white py-1 px-2 rounded" onClick={() => handleSell(zone.id)}>Verkaufen</button>
+      </div>
+    )}
+  </div>
+))}
+
+
+{/* <div className="fixed flex items-center justify-center transform ">
+  <BuildingList onSelectBuilding={handleDragStart} />
+</div> */}
+
+
+    
+
+      
+
+<div className="relative bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center items-center w-4/5">
+  <div className="flex space-x-4"> {/* Container für die Elemente in einer horizontalen Reihe */}
+    <BuildingList onSelectBuilding={handleDragStart} onShowInfo={handleShowInfo} />
+  </div>
+</div>
+
+      
     </div>
-  );
+  )
 }
 
 
