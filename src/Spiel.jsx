@@ -73,12 +73,22 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     setMoney(money + richtigeAntworten * 500); // Füge 500 für jede richtige Antwort hinzu
     setBonusFragenBeendet(true); // Setze den Zustand auf beendet
     setShowBonusfragen(false); // Schließe das Bonusfragen-Fenster
+  };
+  // useEffect für die Freigabe der Zonen
+  useEffect(() => {
+  if (bonusFragenBeendet) {
+    setZones(zones.map(zone => ({
+      ...zone,
+      occupied: false // Setze occupied auf false, um alle Zonen freizugeben
+    })));
+  }
+  }, [bonusFragenBeendet, zones]); // Abhängigkeiten: bonusFragenBeendet und zones
 
   const lebenStyle = {
     width: `${leben}%`, // The width is based on the current life value
     backgroundColor: leben > 50 ? 'green' : leben > 20 ? 'orange' : 'red', // Green above 50%, orange above 20%, red below
     };
-};
+
 
     // Dialogtexte aus dem Level
     const dialogs = level.dialogs || [];
@@ -283,7 +293,14 @@ useEffect(() => {
   return Math.max(0, Math.floor((maxWaterLevel - currentWaterLevel) * money * (1 + leben / 100))); // Abrunden auf die nächste ganze Zahl und sicherstellen, dass der Score nicht negativ ist
 };
 
-
+useEffect(() => {
+  if (showBonusfragen) {
+    setZones(zones.map(zone => ({
+      ...zone,
+      occupied: true // Alle Zonen während der Bonusfragen blockieren
+    })));
+  }
+}, [showBonusfragen, zones]);
 
 return (
     
