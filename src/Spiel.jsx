@@ -32,6 +32,8 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [currentWaterLevel, setCurrentWaterLevel] = useState(level.initialWaterLevel); // Anfangs Wasserstand
   const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand
   const [timer, setTimer] = useState(0); // Timer für die Welle
+  const [seconds, setSeconds] = useState(5); //Countdown startet mit 5 Sekunden
+  const [leben, setLeben] = useState(100) // Das Leben des Spielers
   const [money, setMoney] = useState(1000); // Geld für das Level
   const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
@@ -174,13 +176,13 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     if (waveActive) {
       waterLevelInterval = setInterval(() => {
         setCurrentWaterLevel(prev => {
-          if (prev < maxWaterLevel) {
+          if (prev < maxWaterLevel ) {
             return prev + 0.1; // Wasserstand steigt jede 10s um 0.1
           } else {
-            setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
+            /*setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
             setCurrentLevel(5); // Spiel verloren
             clearInterval(waterLevelInterval);
-            return prev + 0.1;
+            */return prev + 0.1;
           }
         });
       }, 9990); // Intervall: alle 10 Sekunden
@@ -188,6 +190,37 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
     return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
   }, [waveActive, maxWaterLevel]);
+
+  useEffect(() => {
+    let timer;
+    if(currentWaterLevel > maxWaterLevel && leben > 0){
+        timer = setInterval(() => {
+          setSeconds((prevSeconds) => prevSeconds -1);
+        }, 1000);
+    }
+    if(leben <= 0){
+      clearInterval(timer);
+    }
+    return () => clearInterval(timer);
+  }, [currentWaterLevel, maxWaterLevel, leben]);
+
+  useEffect(() => {
+    if(seconds <= 0 && leben > 0) {
+      setLeben((prevLeben) => prevLeben - 10);
+      setSeconds(5); 
+    }
+    if(leben<= 0){
+      setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
+      setCurrentLevel(5); // Spiel verloren
+    }
+  }, [seconds, leben, waveActive, ]);
+
+  useEffect(() => {
+    if(seconds <= 0 && leben === 0){
+      setStartTimer(false);
+    }
+
+  }, [seconds]);
 
 
   // Funktion, um die Welle zu starten
