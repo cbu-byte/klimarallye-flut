@@ -41,13 +41,21 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
   // Für die Objekte
   const [selectedBuilding, setSelectedBuilding] = useState(null); // Für Drag & Drop
-  const [zones, setZones] = useState([
-    { id: 1, occupied: false, building: null, position: { left: '30%', top: '40%' } },
-    { id: 2, occupied: false, building: null, position: { left: '50%', top: '60%' } },
-    { id: 3, occupied: false, building: null, position: { left: '70%', top: '50%' } },
-  ]);
+  const [zones, setZones] = useState([]);
   const [infoText, setInfoText] = useState(null); // Für das Info-Fenster
   const [errorMessage, setErrorMessage] = useState(''); // Fehlernachricht bei unzureichendem Geld
+
+  useEffect(() => {
+    // Initialisiere die Zonen basierend auf den Level-Daten
+    if (level.zones) {
+      setZones(level.zones.map(zone => ({
+        id: zone.id,
+        occupied: zone.occupied,
+        building: zone.building,
+        position: zone.position,
+      })));
+    }
+  }, [level]);
 
   //Bauten Interagierbar machen
     const [isBuildingClicked, setIsBuildingClicked] = useState(null); // Initialize with null
@@ -297,12 +305,6 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
           </div>
       )}
 
-      {sandsackShown && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <img src={sandsackImage} alt="Sandsack" className="w-24 h-24" />
-        </div>
-      )}
-
       {/* Die beiden Anzeigen für den aktuellen und den maximalen Wasserstand */}
       <div className="absolute top-4 right-4">
         <div className="text-xl text-white">Geld: {money}$</div>
@@ -317,10 +319,10 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
       {/* Anzeige Welle starten */}
       {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
-  </div>
-)}
+      </div>
+    )}
 
       {/* Anzeige Zeit */}
       {waveActive && (
@@ -331,7 +333,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
       {/* Anzeige Spiel gewonnen */}
       {currentLevel === 4 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
           <div className="text-4xl text-yellow-500 mb-4">Spiel gewonnen</div>
           <div className="text-2xl text-white mb-4">Score: {calculateScore()}</div>
           <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
@@ -340,7 +342,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
       {/* Anzeige Spiel verloren */}
       {currentLevel === 5 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
           <div className="text-3xl text-red-500 mb-4">Game Over</div>
           <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
         </div>
@@ -384,12 +386,12 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 )}
 
 
- {/* Anzeige Welle starten */}
+ {/* Anzeige Welle starten
  {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+  <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
   </div>
-)}
+)} */}
 
 {/* Anzeige Welle 1/3 */}
 <div className="absolute top-4 left-4">
@@ -406,17 +408,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     />
   </div>
 )}
-
-
-
-
-    </div>
-
-    
-    {/* Gebäude und Drag and Drop */}
-      {/* Fehlernachricht */}
-      {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
-{/* Bauzonen */}
+    {/* Bauzonen */}
 {zones.map(zone => (
   <div
     key={zone.id}
@@ -424,8 +416,8 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     style={{
       left: zone.position.left,
       top: zone.position.top,
-      width: '100px',
-      height: '100px',
+      width: '80px',
+      height: '80px',
       backgroundColor: zone.occupied ? 'transparent' : 'rgba(128, 128, 128, 0.5)', // Grauer Platzhalter nur, wenn nicht belegt
       border: zone.occupied ? 'none' : '2px solid gray', // Graue Umrandung nur, wenn nicht belegt
     }}
@@ -446,6 +438,16 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
               )}
             </div>
           ))}
+
+
+
+    </div>
+
+    
+    {/* Gebäude und Drag and Drop */}
+      {/* Fehlernachricht */}
+      {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
+
 
 
 {/* <div className="fixed flex items-center justify-center transform ">
