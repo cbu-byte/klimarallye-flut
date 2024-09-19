@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import questionMarkImage from './images/question_mark.png'; // Pfad zum Fragezeichen-Bild
 import Bonusfragen from "./Bonusfragen";
 
-import coin from "./images/Dollar Coin.png"
+
 
 import map11 from "./Map/Level1/Map11.jpg";
 import map12 from "./Map/Level1/Map12.jpg";
