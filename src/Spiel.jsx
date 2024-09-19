@@ -49,6 +49,12 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [infoText, setInfoText] = useState(null); // Für das Info-Fenster
   const [errorMessage, setErrorMessage] = useState(''); // Fehlernachricht bei unzureichendem Geld
 
+  //Bauten Interagierbar machen
+    const [isBuildingClicked, setIsBuildingClicked] = useState(null); // Initialize with null
+    const handleBuildingClick = (zoneId) => {
+      setIsBuildingClicked(prev => (prev === zoneId ? null : zoneId)); 
+    };
+
   //bonusfragen
   const [showBonusfragen, setShowBonusfragen] = useState(false);
   const [bonusFragenBeendet, setBonusFragenBeendet] = useState(false); // Zustand, ob Bonusfragen beendet sind
@@ -99,8 +105,10 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
             ...zone.building,
             level: zone.building.level + 1,
             maxWaterLevel: zone.building.maxWaterLevel + 5,
-            image: zone.building.level === 1 ? upgradedSandsackImg : zone.building.image,
+    
+            //image: zone.building.level === 1 ? upgradedSandsackImg : zone.building.image,
           };
+          setMaxWaterLevel(maxWaterLevel => maxWaterLevel + 5);
           setZones(zones.map(z => z.id === zoneId ? { ...z, building: upgradedBuilding } : z));
         } else {
           setErrorMessage('Nicht genug Geld für das Upgrade!');
@@ -108,6 +116,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         }
       }
     }
+
   
     const handleSell = (zoneId) => {
       const zone = zones.find(z => z.id === zoneId);
@@ -423,15 +432,20 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     onDragOver={(e) => e.preventDefault()}
     onDrop={() => handleDrop(zone.id)}
   >
-    {zone.building && (
-      <div className="text-center">
-        <img src={zone.building.image} alt={zone.building.name} className="w-full h-full" />
-        <button className="mt-2 bg-blue-500 text-white py-1 px-2 rounded" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
-        <button className="mt-2 bg-red-500 text-white py-1 px-2 rounded" onClick={() => handleSell(zone.id)}>Verkaufen</button>
-      </div>
-    )}
-  </div>
-))}
+   {zone.building && (
+                <div className="text-center" onClick={() => handleBuildingClick(zone.id)}>
+                  <img src={zone.building.image} alt={zone.building.name} className="w-full h-full cursor-pointer" />
+                  <div className="text-sm font-bold text-black">Level: {zone.building.level}</div> {/* Level Anzeige */}
+                  {isBuildingClicked === zone.id && ( // Optionen werden nur in diesem Zustand angezeigt
+                    <div className="mt-2">
+                      <button className="bg-blue-500 text-white py-1 px-2 rounded" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
+                      <button className="bg-red-500 text-white py-1 px-2 rounded" onClick={() => handleSell(zone.id)}>Verkaufen</button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
 
 
 {/* <div className="fixed flex items-center justify-center transform ">
