@@ -100,32 +100,41 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         setZones(zones.map(z => z.id === zoneId ? { ...z, occupied: true, building: selectedBuilding } : z));
         setMaxWaterLevel(maxWaterLevel + selectedBuilding.maxWaterLevel); // Max Water Level erhöhen
       } else {
-        setErrorMessage('Nicht genug Geld!');
+        setErrorMessage('Fehler!');
         setTimeout(() => setErrorMessage(''), 2000); // Meldung nach 2 Sekunden entfernen
       }
     };
   
     const handleUpgrade = (zoneId) => {
       const zone = zones.find(z => z.id === zoneId);
-      if (zone && zone.building && zone.building.level < 2) {
-        const upgradeCost = zone.building.cost * 1.5;
-        if (money >= upgradeCost) {
-          setMoney(money - upgradeCost);
+      
+      if (zone && zone.building && zone.building.level < 3) {
+        const nextLevel = zone.building.level + 1;
+        const nextUpgrade = zone.building.upgrades.find(u => u.level === nextLevel);
+        
+        if (money >= nextUpgrade.cost) {
+          setMoney(money - nextUpgrade.cost); // Upgrade-Kosten abziehen
+    
+          // Erstelle das neue Upgrade-Gebäude-Objekt mit den aktualisierten Daten
           const upgradedBuilding = {
             ...zone.building,
-            level: zone.building.level + 1,
-            maxWaterLevel: zone.building.maxWaterLevel + 5,
-    
-            //image: zone.building.level === 1 ? upgradedSandsackImg : zone.building.image,
+            level: nextLevel,
+            hp: nextUpgrade.hp,
+            maxWaterLevel: nextUpgrade.maxWaterLevel,
+            cost: nextUpgrade.cost,
+            image: nextUpgrade.image // Bild des neuen Level-Upgrades setzen
           };
-          setMaxWaterLevel(maxWaterLevel => maxWaterLevel + 5);
+    
+          // MaxWaterLevel erhöhen und Zone mit neuem Gebäude-Objekt aktualisieren
+          setMaxWaterLevel(maxWaterLevel + nextUpgrade.maxWaterLevel);
           setZones(zones.map(z => z.id === zoneId ? { ...z, building: upgradedBuilding } : z));
         } else {
           setErrorMessage('Nicht genug Geld für das Upgrade!');
           setTimeout(() => setErrorMessage(''), 2000);
         }
       }
-    }
+    };
+    
 
   
     const handleSell = (zoneId) => {
@@ -435,16 +444,7 @@ useEffect(() => {
   </div>
 )}
 
-
- {/* Anzeige Welle starten
- {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-  <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-    <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
-  </div>
-)} */}
-
-
-
+{/* Bonusfragen button */}
 {!bonusFragenBeendet && (
   <div className="absolute" style={{ top: 'calc(0rem + 40px)', right: '1rem' }}>
     <img
@@ -472,17 +472,17 @@ useEffect(() => {
     onDrop={() => handleDrop(zone.id)}
   >
    {zone.building && (
-                <div className="text-center" onClick={() => handleBuildingClick(zone.id)}>
-                  <img src={zone.building.image} alt={zone.building.name} className="w-full h-full cursor-pointer" />
-                  <div className="text-sm font-bold text-black">Level: {zone.building.level}</div> {/* Level Anzeige */}
-                  {isBuildingClicked === zone.id && ( // Optionen werden nur in diesem Zustand angezeigt
-                    <div className="mt-2">
-                      <button className="bg-blue-500 text-white py-1 px-2 rounded" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
-                      <button className="bg-red-500 text-white py-1 px-2 rounded" onClick={() => handleSell(zone.id)}>Verkaufen</button>
-                    </div>
-                  )}
-                </div>
-              )}
+  <div className="text-center z-50" onClick={() => handleBuildingClick(zone.id)}>
+    <img src={zone.building.image} alt={zone.building.name} className="w-full h-full cursor-pointer" />
+    <div className="text-sm font-bold text-black">Level: {zone.building.level}</div> {/* Level Anzeige */}
+    {isBuildingClicked === zone.id && (
+      <div className="mt-2">
+        <button className="bg-blue-500 text-white py-1 px-2 rounded z-50" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
+        <button className="bg-red-500 text-white py-1 px-2 rounded z-50" onClick={() => handleSell(zone.id)}>Verkaufen</button>
+      </div>
+    )}
+  </div>
+)}
             </div>
           ))}
 
@@ -505,7 +505,7 @@ useEffect(() => {
     
 
       
-
+{/* Gebäude Drag and Drop */}
 <div className="relative bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center items-center w-4/5">
   <div className="flex space-x-4"> {/* Container für die Elemente in einer horizontalen Reihe */}
     <BuildingList onSelectBuilding={handleDragStart} onShowInfo={handleShowInfo} />

@@ -9,10 +9,12 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
       initialWaterLevel: 2.4, 
       maxWaterLevel: 2.5, 
       dialogs: [
-        "Willkommen zum Spiel! Ich bin Ihr wissenschaftlicher Berater.",
-        "Ihre Aufgabe ist es, die Fluten zu kontrollieren und die Stadt zu schützen.",
-        "Nutzen Sie verschiedene Maßnahmen, um den Wasserstand zu regulieren.",
-        "Viel Erfolg!"
+        "Hallo, Ich bin Ihr wissenschaftlicher Berater heute beschäftigen wir uns mit dem Thema Hochwasser.",
+        "Ich habe dir eine Simulation erstellt in welcher du dich an der 45 km langen Bega ausprobieren kannst.",
+        "Deine erste Herausvorderung ist diese Stelle hier wurde die Bega begradigt.",
+        "Durch eine begradigung wird die Fließgeschwindigkeit erhöht und der Fluss für die Schiffahrt nurzbar gemacht.",
+        "Deine Aufgabe ist es den Wasserstand von der Quelle bei Blomberg bis zur Mündung in der Werre zu Kontrollieren.",
+        "Wir wollen ja nicht das jemand Nasse Füße bekommt!"
       ],
       zones:[ 
         { id: 1, occupied: false, building: null, position: { left: '51%', top: '30%' } },
@@ -27,8 +29,8 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
       initialWaterLevel: 1.5, 
       maxWaterLevel: 2.5, 
       dialogs: [
-        "Willkommen zu Level 2! Die Herausforderungen nehmen zu.",
-        "Staudämme sind jetzt verfügbar. Setzen Sie sie strategisch ein, um die Flut aufzuhalten.",
+        "Sehr gut! Sie haben es geschafft doch ab jetzt ist nicht mehr nur der Starkregen dein Problem.",
+        "Der Wasserstand steigt immer schneller, und jetzt musst du die Städte schützen erstmal Bad Salzuflen.",
         "Denken Sie daran, dass Ressourcen begrenzt sind. Planen Sie sorgfältig!"
       ],
       zones:[ 
@@ -44,9 +46,9 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
       initialWaterLevel: 2, 
       maxWaterLevel: 4, 
       dialogs: [
-        "Willkommen zu Level 3! Dies ist das schwierigste Level.",
-        "Der Wasserstand steigt schneller, und mehr Maßnahmen sind erforderlich.",
-        "Nutzen Sie alle verfügbaren Mittel, um die Stadt zu schützen. Viel Erfolg!"
+        "Willkommen zur Letzten Herausvorderung! Die innenstadt Lemgo.",
+        "Durch ein gewaltiges unwetter wurden leider Große teile von deinen bisherigen vorkerungen beschädigt.",
+        "Jetzt musst du dich doppelt anstrengen!"
       ],
       zones:[ 
         { id: 1, occupied: false, building: null, position: { left: '54%', top: '47%' } },
