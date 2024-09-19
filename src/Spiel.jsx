@@ -107,7 +107,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   
     const handleUpgrade = (zoneId) => {
       const zone = zones.find(z => z.id === zoneId);
-      if (zone && zone.building && zone.building.level < 2) {
+      if (zone && zone.building && zone.building.level < 3) {
         const upgradeCost = zone.building.cost * 1.5;
         if (money >= upgradeCost) {
           setMoney(money - upgradeCost);
@@ -246,7 +246,7 @@ useEffect(() => {
 // Funktion, um die Welle zu starten
   const startWave = () => {
     setWaveActive(true);
-    setTimer(90); // Platzhalter für 30 Sekunden Wellen-Timer
+    setTimer(90); // Platzhalter für 90 Sekunden Wellen-Timer
   };
 
   useEffect(() => {
