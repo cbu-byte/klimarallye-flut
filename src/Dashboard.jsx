@@ -6,8 +6,8 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
       id: 1, 
       name: 'Level 1', 
       map: 'MapImage1.jpg', 
-      initialWaterLevel: 2.4, 
-      maxWaterLevel: 2.5, 
+      initialWaterLevel: 2, 
+      maxWaterLevel: 17, 
       dialogs: [
         "Hallo, Ich bin Ihr wissenschaftlicher Berater heute beschäftigen wir uns mit dem Thema Hochwasser.",
         "Ich habe dir eine Simulation erstellt in welcher du dich an der 45 km langen Bega ausprobieren kannst.",
