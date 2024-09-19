@@ -151,6 +151,18 @@ const Bonusfragen = ({ onBeendet, onClose }) => {
         
     ];
     
+    // Funktion zum Mischen des Arrays
+    const shuffleArray = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    };
+
+    // Wähle zufällig 5 Fragen aus
+    const [selectedQuestions] = useState(() => shuffleArray(questions).slice(0, 5));
+
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [showScore, setShowScore] = useState(false);
     const [score, setScore] = useState(0);
@@ -175,7 +187,7 @@ const Bonusfragen = ({ onBeendet, onClose }) => {
         setTimeout(() => {
             setShowAnswer(false);
             const nextQuestion = currentQuestion + 1;
-            if (nextQuestion < questions.length) {
+            if (nextQuestion < selectedQuestions.length) {
                 setCurrentQuestion(nextQuestion);
             } else {
                 setShowScore(true);
@@ -191,15 +203,15 @@ const Bonusfragen = ({ onBeendet, onClose }) => {
             <div className="relative bg-[#102717a0] p-6 rounded-lg w-full max-w-md">
                 {showScore ? (
                     <div className="bg-[#515b4c]/60 rounded-[13px] p-4 text-center text-[#d9d7d7] text-xl font-normal font-['Inter']">
-                        Du hast {score} von {questions.length} Fragen richtig beantwortet
+                        Du hast {score} von {selectedQuestions.length} Fragen richtig beantwortet
                     </div>
                 ) : (
                     <div className="bg-[#515b4c]/60 rounded-[13px] p-4">
                         <img className="w-[136px] h-[194px] rounded-[23px] mx-auto" src={Bega} alt="Quiz" />
                         <div className="text-center text-[#d9d7d7] text-xl font-normal font-['Inter'] mt-4 mb-2">
-                            {questions[currentQuestion].questionText}
+                            {selectedQuestions[currentQuestion].questionText}
                         </div>
-                        {questions[currentQuestion].answerOptions.map((answerOption, index) => (
+                        {selectedQuestions[currentQuestion].answerOptions.map((answerOption, index) => (
                             <button
                                 key={index}
                                 onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}
@@ -212,7 +224,7 @@ const Bonusfragen = ({ onBeendet, onClose }) => {
                         ))}
                         {showAnswer && (
                             <div className="text-xl text-white mt-4">
-                                Richtige Antwort: {questions[currentQuestion].correctAnswer}
+                                Richtige Antwort: {selectedQuestions[currentQuestion].correctAnswer}
                             </div>
                         )}
                     </div>

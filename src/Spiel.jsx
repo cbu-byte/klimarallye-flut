@@ -73,12 +73,22 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     setMoney(money + richtigeAntworten * 500); // Füge 500 für jede richtige Antwort hinzu
     setBonusFragenBeendet(true); // Setze den Zustand auf beendet
     setShowBonusfragen(false); // Schließe das Bonusfragen-Fenster
+  };
+  // useEffect für die Freigabe der Zonen
+  useEffect(() => {
+  if (bonusFragenBeendet) {
+    setZones(zones.map(zone => ({
+      ...zone,
+      occupied: false // Setze occupied auf false, um alle Zonen freizugeben
+    })));
+  }
+  }, [bonusFragenBeendet, zones]); // Abhängigkeiten: bonusFragenBeendet und zones
 
   const lebenStyle = {
     width: `${leben}%`, // The width is based on the current life value
     backgroundColor: leben > 50 ? 'green' : leben > 20 ? 'orange' : 'red', // Green above 50%, orange above 20%, red below
     };
-};
+
 
     // Dialogtexte aus dem Level
     const dialogs = level.dialogs || [];
@@ -149,18 +159,18 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     switch (levelId) {
       case 1:
         if (waterLevel > maxWaterLevel) return map14;
-        if (waterLevel >= level.initialWaterLevel + 0.5) return map13;
-        if (waterLevel >= level.initialWaterLevel + 0.2) return map12;
+        if (currentWave == 3) return map13;
+        if (currentWave == 2) return map12;
         return map11;
       case 2:
         if (waterLevel > maxWaterLevel) return map24;
-        if (waterLevel >= level.initialWaterLevel + 1.5) return map23;
-        if (waterLevel >= level.initialWaterLevel + 1) return map22;
+        if (currentWave == 3) return map23;
+        if (currentWave == 2) return map22;
         return map21;
       case 3:
         if (waterLevel > maxWaterLevel) return map34;
-        if (waterLevel >= level.initialWaterLevel + 1.5) return map33;
-        if (waterLevel >= level.initialWaterLevel + 1) return map32;
+        if (currentWave == 3) return map33;
+        if (currentWave == 2) return map32;
         return map31;
       default:
         return map11;
@@ -205,12 +215,12 @@ useEffect(() => {
     waterLevelInterval = setInterval(() => {
       setCurrentWaterLevel(prev => {
         if (prev < maxWaterLevel) {
-          return prev + 0.3; // Wasserstand steigt jede s um 0.3
+          return prev + 1.5; // Wasserstand steigt jede s um 0.3
         } else {
-          return prev + 0.3;
+          return prev + 1.5;
         }
       });
-    }, 1000); // Intervall: jede Sekunde
+    }, 5000); // Intervall: jede Sekunde
   }
 
   return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
@@ -283,7 +293,14 @@ useEffect(() => {
   return Math.max(0, Math.floor((maxWaterLevel - currentWaterLevel) * money * (1 + leben / 100))); // Abrunden auf die nächste ganze Zahl und sicherstellen, dass der Score nicht negativ ist
 };
 
-
+useEffect(() => {
+  if (showBonusfragen) {
+    setZones(zones.map(zone => ({
+      ...zone,
+      occupied: true // Alle Zonen während der Bonusfragen blockieren
+    })));
+  }
+}, [showBonusfragen, zones]);
 
 return (
     
