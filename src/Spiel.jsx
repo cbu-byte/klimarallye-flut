@@ -159,18 +159,18 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     switch (levelId) {
       case 1:
         if (waterLevel > maxWaterLevel) return map14;
-        if (waterLevel >= level.initialWaterLevel + 0.5) return map13;
-        if (waterLevel >= level.initialWaterLevel + 0.2) return map12;
+        if (currentWave == 3) return map13;
+        if (currentWave == 2) return map12;
         return map11;
       case 2:
         if (waterLevel > maxWaterLevel) return map24;
-        if (waterLevel >= level.initialWaterLevel + 1.5) return map23;
-        if (waterLevel >= level.initialWaterLevel + 1) return map22;
+        if (currentWave == 3) return map23;
+        if (currentWave == 2) return map22;
         return map21;
       case 3:
         if (waterLevel > maxWaterLevel) return map34;
-        if (waterLevel >= level.initialWaterLevel + 1.5) return map33;
-        if (waterLevel >= level.initialWaterLevel + 1) return map32;
+        if (currentWave == 3) return map33;
+        if (currentWave == 2) return map32;
         return map31;
       default:
         return map11;
@@ -215,12 +215,12 @@ useEffect(() => {
     waterLevelInterval = setInterval(() => {
       setCurrentWaterLevel(prev => {
         if (prev < maxWaterLevel) {
-          return prev + 0.3; // Wasserstand steigt jede s um 0.3
+          return prev + 1.5; // Wasserstand steigt jede s um 0.3
         } else {
-          return prev + 0.3;
+          return prev + 1.5;
         }
       });
-    }, 1000); // Intervall: jede Sekunde
+    }, 5000); // Intervall: jede Sekunde
   }
 
   return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
