@@ -52,7 +52,7 @@ function GameController() {
         />
       )}
         {/* Hier wird die `FlutMaxLevel`-Komponente verwendet, um den Fortschritt vom Backend zu laden */}
-      <LoadFlutMaxLevel onFetchFlutMaxLevel={loadFlutMaxLevel} />;
+      <LoadFlutMaxLevel onFetchFlutMaxLevel={loadFlutMaxLevel} />
       {/* Diese Komponente wird verwendet, um den Fortschritt nach dem Abschluss eines Levels zu speichern */}
       <UpdateFlutMaxLevel levelId={flutMaxLevel} />
     </div>

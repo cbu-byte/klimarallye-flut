@@ -1,5 +1,5 @@
 import React from 'react';
-
+import background from './images/Background.png';
 function Dashboard({ onSelectLevel, flutMaxLevel }) {
   const levels = [
     { 
@@ -72,23 +72,33 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-top">
-      <div className="p-6"></div>
-      <div className="level-heading text-3xl mb-4">Wähle ein Level</div>
-      <ul className="space-y-4">
-        {levels.map(level => (
-          <li key={level.id}>
-            <button
-              style={getButtonStyle(level.id)}
-              className="level-button"
-              onClick={() => onSelectLevel(level)}
-              disabled={level.id > flutMaxLevel} // Sperrt Levels über dem FlutMaxLevel 
-            >
-              {level.name}
-            </button>
-          </li>
-        ))}
-      </ul>
+    <div
+      style={{
+        backgroundImage: `url(${background})`, // Setzt das Hintergrundbild
+        backgroundSize: 'cover', // Bild wird skaliert, um das gesamte Element abzudecken
+        backgroundPosition: 'center', // Bild wird zentriert
+        width: '100%', // Breite des Divs
+        height: '500px', // Höhe des Divs
+      }}
+    >
+      <div className="min-h-screen flex flex-col items-center justify-top">
+        <div className="p-6"></div>
+        <div className="level-heading text-3xl mb-4">Wähle ein Level</div>
+        <ul className="space-y-4">
+          {levels.map(level => (
+            <li key={level.id}>
+              <button
+                style={getButtonStyle(level.id)}
+                className="level-button"
+                onClick={() => onSelectLevel(level)}
+                disabled={level.id > flutMaxLevel} // Sperrt Levels über dem flutMaxLevel
+              >
+                {level.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
