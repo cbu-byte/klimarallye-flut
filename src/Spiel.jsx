@@ -205,12 +205,12 @@ useEffect(() => {
     waterLevelInterval = setInterval(() => {
       setCurrentWaterLevel(prev => {
         if (prev < maxWaterLevel) {
-          return prev + 0.1; // Wasserstand steigt jede 10s um 0.1
+          return prev + 0.3; // Wasserstand steigt jede s um 0.3
         } else {
-          return prev + 0.1;
+          return prev + 0.3;
         }
       });
-    }, 9990); // Intervall: alle 10 Sekunden
+    }, 1000); // Intervall: jede Sekunde
   }
 
   return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
@@ -246,8 +246,21 @@ useEffect(() => {
 // Funktion, um die Welle zu starten
   const startWave = () => {
     setWaveActive(true);
-    setTimer(30); // Platzhalter für 30 Sekunden Wellen-Timer
+    setTimer(90); // Platzhalter für 30 Sekunden Wellen-Timer
   };
+
+  useEffect(() => {
+    let moneyInterval;
+    
+    if (waveActive) {
+      moneyInterval = setInterval(() => {
+        setMoney(prevMoney => prevMoney + 80); // Verwende prevMoney, um den vorherigen Stand zu nutzen
+      }, 5000); // Intervall von 5 Sekunden
+    }
+  
+    // Aufräumen des Intervalls, wenn die Welle aufhört
+    return () => clearInterval(moneyInterval);
+  }, [waveActive]); // Abhängigkeit von waveActive, um das Intervall zu starten/beenden
 
   // Funktion zur Steuerung des Dialogsystems (nächster Dialog)
   const handleDialogNext = () => {
