@@ -8,10 +8,12 @@ const Navbar = () => {
     <nav className="w-[430px] h-[50px] bg-[#9effb9]/30 border-b-2 border-[#e8edfb] flex items-center justify-between px-4 mx-auto">
       
       {/* Home Button am linken Rand */}
-      <a href="/play/flut" className="text-[#b7baff] text-sm font-semibold">
+      <a href="http://vmklimarallye.aes.th-owl.de/" className="text-[#b7baff] text-sm font-semibold">
         Home
       </a>
-      
+      <a href="/play/flut" className="text-[#b7baff] text-sm font-semibold">
+        Die Flut kommt
+      </a>
       
       
       {/* Profile Image (kein Link) */}
@@ -19,7 +21,7 @@ const Navbar = () => {
       
       {/* Login Link */}
       <div>
-        <a href="/login" className="text-[#b7baff] text-sm font-semibold">Login</a>
+        <a href="http://vmklimarallye.aes.th-owl.de/auth/login/" className="text-[#b7baff] text-sm font-semibold">Login</a>
       </div>
     </nav>
   );
