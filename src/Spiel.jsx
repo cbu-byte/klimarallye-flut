@@ -596,7 +596,10 @@ return (
   
   {/* Gebäude und Drag and Drop */}
     {/* Fehlernachricht */}
-    {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
+    {errorMessage && <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg"
+    
+    
+    >{errorMessage}</div>}
 
 
 
