@@ -322,7 +322,7 @@ return (
     
     <div className="flex items-center space-x-4 text-xl "
     style ={{
-    marginRight: "-60px",
+    marginRight: "-50px",
     fontFamily: '"Papyrus"',
     fontWeight: 'bold',
     fontSize: "22px",
@@ -401,10 +401,9 @@ return (
     {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
   <div className="absolute bottom-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   style={{
-    transform: 'translateY(90px)',
-
+    transform: 'translate(50px, 100px)',
   }}>
-  <button className="px-6 py-2 bg-[#1a4080] text-white font-semibold rounded-lg border border-[#ffffff] hover:bg-[#0f1e38] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
+  <button className="px-6 py-3 bg-[#1a4080] text-white font-semibold rounded-lg border border-[#ffffff] hover:bg-[#0f1e38] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
     </div>
   )}
 
@@ -426,7 +425,13 @@ return (
 
     {/* Anzeige Spiel gewonnen */}
     {currentLevel === 4 && (
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
+      <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10"
+      style={{
+        backgroundColor: "rgba(0, 58, 44, 0.8)",
+        padding:"40px"
+        }}  
+
+      >
         <div className="text-4xl text-yellow-500 mb-4">Spiel gewonnen</div>
         <div className="text-2xl text-white mb-4">Score: {calculateScore()}</div>
         <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
@@ -435,9 +440,28 @@ return (
 
     {/* Anzeige Spiel verloren */}
     {currentLevel === 5 && (
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
-        <div className="text-3xl text-red-500 mb-4">Game Over</div>
-        <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
+      <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10"
+      style={{
+        backgroundColor: "rgba(0, 58, 44, 0.8)",
+        padding:"100px",
+          border:"2px solid red"
+      }}
+      >
+        <div className="text-3xl text-red-500 mb-4"
+        style={{
+          //padding:"0px",
+          color:"red",
+          fontSize:"40px",
+          fontWeight:"bold",
+          marginTop: "-20px",
+
+        }}>Game Over</div>
+        <button className="btn btn-secondary"
+        style={{
+          fontSize:"16px",
+          marginTop:"20px"
+        }}
+        onClick={onBackToDashboard}>Level Auswahl</button>
       </div>
     )}
 
