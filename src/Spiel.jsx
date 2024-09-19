@@ -307,47 +307,62 @@ useEffect(() => {
         
       
       
-      <div className="flex items-center space-x-2 text-xl text-white"
+      <div className="flex items-center space-x-4 text-xl "
       style ={{
-      
+      marginRight: "-60px",
+      fontFamily: '"Papyrus"',
+      fontWeight: 'bold',
+      fontSize: "22px",
+      color: '#BFC205',
       position: 'absolute',
-      width:'145px',
-      height:'20px',
+      width:'200px',
+      height:'30px',
       top: '0',
       right: '0',
-      padding: '0px',
-      backgroundColor: 'rgba(245, 198, 90, 0.7)',
-      borderRadius: '8px', 
-      border: '1px solid #F5C65A'
+      padding: '9px',
+      backgroundColor: 'rgba(121, 121, 121, 0.9)',
+      borderRadius: '12px', 
+      border: '1px solid #000000',
+      
         
       }} >
         {/* Text */}
-        <span>Geld: {money}</span>
+        Geld: {money}
         {/* Bild */}
-        <img src={coin} alt="Geld" className="w-22 h-6" />
+        <img src={coin} alt="Geld" className="w-22 h-7" />
       </div>
     
-        <div className="text-xl text-blue"
+        <div className="text-xl"
         style={{
-          marginTop:'40px',
+          //fontFamily: '"Times New Roman"',
+          fontWeight: 'normal',
+          fontSize: "20px",
+          marginTop:'50px',
           marginRight: '240px',
-          backgroundColor: 'rgba(1, 178, 254, 0.8)',
+          marginLeft:"15px",
+          //background: 'linear-gradient(0deg, rgba(1, 178, 254, 0.8), rgba(245, 182, 66, 0.8))',
+          backgroundColor: 'rgba(173, 175, 247, 0.8)',
           borderRadius: '8px', 
-          border: '1px solid #F5C65A',
-          color:'#ffffff',
-
+          border: '0px solid #F5C65A',
+          color:'#132c52',
+          padding: "4px",
         }}
         >
           Pegel: {currentWaterLevel.toFixed(1)}m</div>
-        <div className="text-xl text-white"
+        <div className="text-xl"
         
         style={{
-          marginTop:'10px',
+          fontSize: "19px",
+          fontWeight: "normal",
+          marginTop:'2px',
           marginRight: '240px',
-          backgroundColor: 'rgba(97, 97, 97, 0.8)',
+          marginLeft:"15px",
+          //background: 'linear-gradient(0deg, rgba(19, 44, 82, 0.8), rgba(1, 178, 254, 0.8))',
+          backgroundColor: 'rgba(19, 44, 82, 0.8)',
           borderRadius: '8px', 
-          border: '1px solid #B8BBFF',
-          color: '#FC3333',
+          border: '0px solid #B8BBFF',
+          color: '#D6D7FF',
+          padding: "4px",
 
         }}
         >max. Pegel: {maxWaterLevel}m</div>
@@ -358,26 +373,41 @@ useEffect(() => {
         <div className="text-xl"
         style={{
           marginTop:'0px',
-          marginRight: '180px',
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          marginLeft: '0px',
+          backgroundColor: 'rgba(121, 121, 121, 0.9)',
           borderRadius: '8px', 
-          border: '1px solid #B8BBFF',
-          color: '#753333',
+          border: '0px solid #B8BBFF',
+          color: '#cfd1fa',
+          padding: "6px",
+          
 
         }}>Welle: {currentWave}/3</div>
       </div>
 
       {/* Anzeige Welle starten */}
       {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-    <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-    <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
+    <div className="absolute bottom-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    style={{
+      transform: 'translateY(90px)',
+
+    }}>
+    <button className="px-6 py-2 bg-[#1a4080] text-white font-semibold rounded-lg border border-[#ffffff] hover:bg-[#0f1e38] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
       </div>
     )}
 
       {/* Anzeige Zeit */}
       {waveActive && (
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-          <div className="text-xl text-white">Zeit: {timer}s</div>
+          <div className=
+          "text-xl"
+          style={{
+            backgroundColor:'rgba(121, 121, 121, 0.8)',
+            borderRadius:"5px",
+            color: "#dedfff",
+            fontWeight:"normal",
+            padding: "6px",
+            marginTop:"-1px",
+          }}>Zeit: {timer}s</div>
         </div>
       )}
 
@@ -397,6 +427,25 @@ useEffect(() => {
           <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
         </div>
       )}
+
+      {/* Aktuelle Leben-Anzeige */}
+      <div className="absolute top-8 left-4">
+        <div className="text-xl"
+        style={{
+
+
+          backgroundColor:'rgba(252, 101, 101, 0.7)',
+          borderRadius:"7px",
+          color: "#700000",
+          fontWeight:"normal",
+          padding: "3px",
+          marginLeft: "296px",
+          marginTop: "20px",
+          border: '1px solid #000000',
+
+        }}
+        >Leben: {leben}</div>
+      </div>
 
    {/* Dialog (Geschichte) */}
    {dialogVisible && (
@@ -446,7 +495,7 @@ useEffect(() => {
 
 
 {!bonusFragenBeendet && (
-  <div className="absolute" style={{ top: 'calc(0rem + 40px)', right: '1rem' }}>
+  <div className="absolute" style={{ top: 'calc(0rem + 100px)', right: '1rem' }}>
     <img
       src={questionMarkImage}
       alt="Fragezeichen"
