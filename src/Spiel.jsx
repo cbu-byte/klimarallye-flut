@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import questionMarkImage from './images/question_mark.png'; // Pfad zum Fragezeichen-Bild
 import Bonusfragen from "./Bonusfragen";
 
+import coin from "./images/Dollar Coin.png"
+
 import map11 from "./Map/Level1/Map11.jpg";
 import map12 from "./Map/Level1/Map12.jpg";
 import map13 from "./Map/Level1/Map13.jpg";
@@ -41,13 +43,21 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
   // Für die Objekte
   const [selectedBuilding, setSelectedBuilding] = useState(null); // Für Drag & Drop
-  const [zones, setZones] = useState([
-    { id: 1, occupied: false, building: null, position: { left: '30%', top: '40%' } },
-    { id: 2, occupied: false, building: null, position: { left: '50%', top: '60%' } },
-    { id: 3, occupied: false, building: null, position: { left: '70%', top: '50%' } },
-  ]);
+  const [zones, setZones] = useState([]);
   const [infoText, setInfoText] = useState(null); // Für das Info-Fenster
   const [errorMessage, setErrorMessage] = useState(''); // Fehlernachricht bei unzureichendem Geld
+
+  useEffect(() => {
+    // Initialisiere die Zonen basierend auf den Level-Daten
+    if (level.zones) {
+      setZones(level.zones.map(zone => ({
+        id: zone.id,
+        occupied: zone.occupied,
+        building: zone.building,
+        position: zone.position,
+      })));
+    }
+  }, [level]);
 
   //Bauten Interagierbar machen
     const [isBuildingClicked, setIsBuildingClicked] = useState(null); // Initialize with null
@@ -298,41 +308,86 @@ useEffect(() => {
 
       {/* Info-Fenster */}
       {infoText && (
-        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white p-6 border rounded shadow-lg z-50">
+          <div
+          className="absolute top-20 left-1/2 transform -translate-x-1/2 p-6 border rounded shadow-lg z-50"
+          style={{ backgroundColor: '#003A2C' }}
+        >
             <p>{infoText}</p>
             <button className="mt-4 bg-gray-300 hover:bg-gray-400 text-white-700 py-2 px-4 rounded" onClick={() => setInfoText(null)}>Schließen</button>
           </div>
       )}
 
-      {sandsackShown && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <img src={sandsackImage} alt="Sandsack" className="w-24 h-24" />
-        </div>
-      )}
-
       {/* Die beiden Anzeigen für den aktuellen und den maximalen Wasserstand */}
       <div className="absolute top-4 right-4">
-        <div className="text-xl text-white">Geld: {money}$</div>
-        <div className="text-xl text-white">akt. Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
-        <div className="text-xl text-white">max. Wasserstand: {maxWaterLevel}m</div>
-        </div>
         
-      {/* Aktuelle Leben-Anzeige */}
-      <div className="absolute top-8 left-4">
-        <div className="text-xl text-white">Leben: {leben}</div>
+      
+      
+      <div className="flex items-center space-x-2 text-xl text-white"
+      style ={{
+      
+      position: 'absolute',
+      width:'145px',
+      height:'20px',
+      top: '0',
+      right: '0',
+      padding: '0px',
+      backgroundColor: 'rgba(245, 198, 90, 0.7)',
+      borderRadius: '8px', 
+      border: '1px solid #F5C65A'
+        
+      }} >
+        {/* Text */}
+        <span>Geld: {money}</span>
+        {/* Bild */}
+        <img src={coin} alt="Geld" className="w-22 h-6" />
       </div>
+    
+        <div className="text-xl text-blue"
+        style={{
+          marginTop:'40px',
+          marginRight: '240px',
+          backgroundColor: 'rgba(1, 178, 254, 0.8)',
+          borderRadius: '8px', 
+          border: '1px solid #F5C65A',
+          color:'#ffffff',
 
+        }}
+        >
+          Pegel: {currentWaterLevel.toFixed(1)}m</div>
+        <div className="text-xl text-white"
+        
+        style={{
+          marginTop:'10px',
+          marginRight: '240px',
+          backgroundColor: 'rgba(97, 97, 97, 0.8)',
+          borderRadius: '8px', 
+          border: '1px solid #B8BBFF',
+          color: '#FC3333',
+
+        }}
+        >max. Pegel: {maxWaterLevel}m</div>
+      </div>
+      
       {/* Aktuelle Welle-Anzeige */}
       <div className="absolute top-4 left-4">
-        <div className="text-xl text-white">Welle: {currentWave}/3</div>
+        <div className="text-xl"
+        style={{
+          marginTop:'0px',
+          marginRight: '180px',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          borderRadius: '8px', 
+          border: '1px solid #B8BBFF',
+          color: '#753333',
+
+        }}>Welle: {currentWave}/3</div>
       </div>
 
       {/* Anzeige Welle starten */}
       {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
-  </div>
-)}
+      </div>
+    )}
 
       {/* Anzeige Zeit */}
       {waveActive && (
@@ -343,7 +398,7 @@ useEffect(() => {
 
       {/* Anzeige Spiel gewonnen */}
       {currentLevel === 4 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
           <div className="text-4xl text-yellow-500 mb-4">Spiel gewonnen</div>
           <div className="text-2xl text-white mb-4">Score: {calculateScore()}</div>
           <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
@@ -352,7 +407,7 @@ useEffect(() => {
 
       {/* Anzeige Spiel verloren */}
       {currentLevel === 5 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
           <div className="text-3xl text-red-500 mb-4">Game Over</div>
           <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
         </div>
@@ -396,39 +451,26 @@ useEffect(() => {
 )}
 
 
- {/* Anzeige Welle starten */}
+ {/* Anzeige Welle starten
  {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+  <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
   </div>
-)}
+)} */}
 
-{/* Anzeige Welle 1/3 */}
-<div className="absolute top-4 left-4">
-  <div className="text-xl text-white">Welle: {currentWave}/3</div>
-</div>
+
 
 {!bonusFragenBeendet && (
-  <div className="absolute" style={{ top: 'calc(4rem + 20px)', left: '4rem' }}>
+  <div className="absolute" style={{ top: 'calc(0rem + 40px)', right: '1rem' }}>
     <img
       src={questionMarkImage}
       alt="Fragezeichen"
-      className="w-8 h-8 cursor-pointer"
+      className="w-10 h-10 cursor-pointer"
       onClick={() => setShowBonusfragen(true)} // Öffne Bonusfragen
     />
   </div>
 )}
-
-
-
-
-    </div>
-
-    
-    {/* Gebäude und Drag and Drop */}
-      {/* Fehlernachricht */}
-      {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
-{/* Bauzonen */}
+    {/* Bauzonen */}
 {zones.map(zone => (
   <div
     key={zone.id}
@@ -436,8 +478,8 @@ useEffect(() => {
     style={{
       left: zone.position.left,
       top: zone.position.top,
-      width: '100px',
-      height: '100px',
+      width: '80px',
+      height: '80px',
       backgroundColor: zone.occupied ? 'transparent' : 'rgba(128, 128, 128, 0.5)', // Grauer Platzhalter nur, wenn nicht belegt
       border: zone.occupied ? 'none' : '2px solid gray', // Graue Umrandung nur, wenn nicht belegt
     }}
@@ -458,6 +500,16 @@ useEffect(() => {
               )}
             </div>
           ))}
+
+
+
+    </div>
+
+    
+    {/* Gebäude und Drag and Drop */}
+      {/* Fehlernachricht */}
+      {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
+
 
 
 {/* <div className="fixed flex items-center justify-center transform ">

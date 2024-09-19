@@ -105,6 +105,7 @@ const BuildingList = ({ onSelectBuilding, onShowInfo }) => {
           />
           <button
             className="absolute top-2 right-2 bg-gray-800 text-white text-xs rounded-full w-8 h-8 flex items-center justify-center"
+            style={{ backgroundColor: '#FFffff', color: '#FFFFFF' }}
             onClick={() => onShowInfo(building)}
           >
             <img src={infoIcon} alt="Info" className="w-4 h-4" />
