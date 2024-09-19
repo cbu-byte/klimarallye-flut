@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import questionMarkImage from './images/question_mark.png'; // Pfad zum Fragezeichen-Bild
 import Bonusfragen from "./Bonusfragen";
 
+import coin from "./images/Dollar Coin.png"
+
 import map11 from "./Map/Level1/Map11.jpg";
 import map12 from "./Map/Level1/Map12.jpg";
 import map13 from "./Map/Level1/Map13.jpg";
@@ -287,7 +289,10 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
       {/* Info-Fenster */}
       {infoText && (
-        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white p-6 border rounded shadow-lg z-50">
+          <div
+          className="absolute top-20 left-1/2 transform -translate-x-1/2 p-6 border rounded shadow-lg z-50"
+          style={{ backgroundColor: '#003A2C' }}
+        >
             <p>{infoText}</p>
             <button className="mt-4 bg-gray-300 hover:bg-gray-400 text-white-700 py-2 px-4 rounded" onClick={() => setInfoText(null)}>Schließen</button>
           </div>
@@ -301,14 +306,67 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
       {/* Die beiden Anzeigen für den aktuellen und den maximalen Wasserstand */}
       <div className="absolute top-4 right-4">
-        <div className="text-xl text-white">Geld: {money}$</div>
-        <div className="text-xl text-white">akt. Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
-        <div className="text-xl text-white">max. Wasserstand: {maxWaterLevel}m</div>
+        
+      
+      
+      <div className="flex items-center space-x-2 text-xl text-white"
+      style ={{
+      
+      position: 'absolute',
+      width:'145px',
+      height:'20px',
+      top: '0',
+      right: '0',
+      padding: '0px',
+      backgroundColor: 'rgba(245, 198, 90, 0.7)',
+      borderRadius: '8px', 
+      border: '1px solid #F5C65A'
+        
+      }} >
+        {/* Text */}
+        <span>Geld: {money}</span>
+        {/* Bild */}
+        <img src={coin} alt="Geld" className="w-22 h-6" />
       </div>
+    
+        <div className="text-xl text-blue"
+        style={{
+          marginTop:'40px',
+          marginRight: '240px',
+          backgroundColor: 'rgba(1, 178, 254, 0.8)',
+          borderRadius: '8px', 
+          border: '1px solid #F5C65A',
+          color:'#ffffff',
 
+        }}
+        >
+          Pegel: {currentWaterLevel.toFixed(1)}m</div>
+        <div className="text-xl text-white"
+        
+        style={{
+          marginTop:'10px',
+          marginRight: '240px',
+          backgroundColor: 'rgba(97, 97, 97, 0.8)',
+          borderRadius: '8px', 
+          border: '1px solid #B8BBFF',
+          color: '#FC3333',
+
+        }}
+        >max. Pegel: {maxWaterLevel}m</div>
+      </div>
+      
       {/* Aktuelle Welle-Anzeige */}
       <div className="absolute top-4 left-4">
-        <div className="text-xl text-white">Welle: {currentWave}/3</div>
+        <div className="text-xl"
+        style={{
+          marginTop:'0px',
+          marginRight: '180px',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          borderRadius: '8px', 
+          border: '1px solid #B8BBFF',
+          color: '#753333',
+
+        }}>Welle: {currentWave}/3</div>
       </div>
 
       {/* Anzeige Welle starten */}
@@ -387,17 +445,14 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   </div>
 )}
 
-{/* Anzeige Welle 1/3 */}
-<div className="absolute top-4 left-4">
-  <div className="text-xl text-white">Welle: {currentWave}/3</div>
-</div>
+
 
 {!bonusFragenBeendet && (
-  <div className="absolute" style={{ top: 'calc(4rem + 20px)', left: '4rem' }}>
+  <div className="absolute" style={{ top: 'calc(0rem + 40px)', right: '1rem' }}>
     <img
       src={questionMarkImage}
       alt="Fragezeichen"
-      className="w-8 h-8 cursor-pointer"
+      className="w-10 h-10 cursor-pointer"
       onClick={() => setShowBonusfragen(true)} // Öffne Bonusfragen
     />
   </div>
