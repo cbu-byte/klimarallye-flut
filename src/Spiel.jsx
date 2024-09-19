@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import questionMarkImage from './images/question_mark.png'; // Pfad zum Fragezeichen-Bild
 import Bonusfragen from "./Bonusfragen";
 
+import coin from "./images/Dollar Coin.png"
+
 import map11 from "./Map/Level1/Map11.jpg";
 import map12 from "./Map/Level1/Map12.jpg";
 import map13 from "./Map/Level1/Map13.jpg";
@@ -35,14 +37,13 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [timer, setTimer] = useState(0); // Timer für die Welle
   const [seconds, setSeconds] = useState(5); //Countdown startet mit 5 Sekunden
   const [leben, setLeben] = useState(100) // Das Leben des Spielers
-  const [money, setMoney] = useState(300);  // Start money
-
+  
+  const [money, setMoney] = useState(1000); // Geld für das Level
   const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
   // Für die Objekte
   const [selectedBuilding, setSelectedBuilding] = useState(null); // Für Drag & Drop
-  const [zones, setZones] = useState([])
-   
+  const [zones, setZones] = useState([]);
   const [infoText, setInfoText] = useState(null); // Für das Info-Fenster
   const [errorMessage, setErrorMessage] = useState(''); // Fehlernachricht bei unzureichendem Geld
 
@@ -99,41 +100,32 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         setZones(zones.map(z => z.id === zoneId ? { ...z, occupied: true, building: selectedBuilding } : z));
         setMaxWaterLevel(maxWaterLevel + selectedBuilding.maxWaterLevel); // Max Water Level erhöhen
       } else {
-        setErrorMessage('Fehler!');
+        setErrorMessage('Nicht genug Geld!');
         setTimeout(() => setErrorMessage(''), 2000); // Meldung nach 2 Sekunden entfernen
       }
     };
   
     const handleUpgrade = (zoneId) => {
       const zone = zones.find(z => z.id === zoneId);
-      
-      if (zone && zone.building && zone.building.level < 3) {
-        const nextLevel = zone.building.level + 1;
-        const nextUpgrade = zone.building.upgrades.find(u => u.level === nextLevel);
-        
-        if (money >= nextUpgrade.cost) {
-          setMoney(money - nextUpgrade.cost); // Upgrade-Kosten abziehen
-    
-          // Erstelle das neue Upgrade-Gebäude-Objekt mit den aktualisierten Daten
+      if (zone && zone.building && zone.building.level < 2) {
+        const upgradeCost = zone.building.cost * 1.5;
+        if (money >= upgradeCost) {
+          setMoney(money - upgradeCost);
           const upgradedBuilding = {
             ...zone.building,
-            level: nextLevel,
-            hp: nextUpgrade.hp,
-            maxWaterLevel: nextUpgrade.maxWaterLevel,
-            cost: nextUpgrade.cost,
-            image: nextUpgrade.image // Bild des neuen Level-Upgrades setzen
-          };
+            level: zone.building.level + 1,
+            maxWaterLevel: zone.building.maxWaterLevel + 5,
     
-          // MaxWaterLevel erhöhen und Zone mit neuem Gebäude-Objekt aktualisieren
-          setMaxWaterLevel(maxWaterLevel + nextUpgrade.maxWaterLevel);
+            //image: zone.building.level === 1 ? upgradedSandsackImg : zone.building.image,
+          };
+          setMaxWaterLevel(maxWaterLevel => maxWaterLevel + 5);
           setZones(zones.map(z => z.id === zoneId ? { ...z, building: upgradedBuilding } : z));
         } else {
           setErrorMessage('Nicht genug Geld für das Upgrade!');
           setTimeout(() => setErrorMessage(''), 2000);
         }
       }
-    };
-    
+    }
 
   
     const handleSell = (zoneId) => {
@@ -191,6 +183,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
               setCurrentLevel(4); // Spiel gewonnen nach der 3. Welle
               onLevelComplete(level.id + 1); // Fortschritt speichern
             } else {
+              setMoney(prevMoney => prevMoney + 500); // 500 Geld hinzufügen
               setCurrentWave(prevWave => prevWave + 1); // Nächste Welle
               setTimer(0); // Timer zurücksetzen
             }
@@ -212,31 +205,16 @@ useEffect(() => {
     waterLevelInterval = setInterval(() => {
       setCurrentWaterLevel(prev => {
         if (prev < maxWaterLevel) {
-          return prev + 0.3; // Wasserstand steigt jede 10s um 0.1
+          return prev + 0.1; // Wasserstand steigt jede 10s um 0.1
         } else {
-          return prev + 0.3;
+          return prev + 0.1;
         }
       });
-    }, 1000); // Intervall: Jede Sekunden
+    }, 9990); // Intervall: alle 10 Sekunden
   }
-  
 
   return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
 }, [waveActive, maxWaterLevel]);
-  
-// Effekt zum Erhalten von Währung
-useEffect(() => {
-  let moneyInterval;
-  
-  if (waveActive) {
-    moneyInterval = setInterval(() => {
-      setMoney(prevMoney => prevMoney + 80); // Verwende prevMoney, um den vorherigen Stand zu nutzen
-    }, 5000); // Intervall von 5 Sekunden
-  }
-
-  // Aufräumen des Intervalls, wenn die Welle aufhört
-  return () => clearInterval(moneyInterval);
-}, [waveActive]); // Abhängigkeit von waveActive, um das Intervall zu starten/beenden
 
 useEffect(() => {
   let timer;
@@ -268,7 +246,7 @@ useEffect(() => {
 // Funktion, um die Welle zu starten
   const startWave = () => {
     setWaveActive(true);
-    setTimer(90); // Platzhalter für 30 Sekunden Wellen-Timer
+    setTimer(30); // Platzhalter für 30 Sekunden Wellen-Timer
   };
 
   // Funktion zur Steuerung des Dialogsystems (nächster Dialog)
