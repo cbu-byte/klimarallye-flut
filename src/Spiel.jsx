@@ -24,6 +24,7 @@ import scientistImage from './images/scientist.png'; // Bild des Wissenschaftler
 import BuildingList from './BuildingList'; // Importiere die BuildingList
 
 function Spiel({ level, onBackToDashboard, onLevelComplete }) {
+  
   const [menuOpen, setMenuOpen] = useState(false); // Menü-Status
   const [sandsackShown, setSandsackShown] = useState(false); // Sandsack-Anzeige
   const [waveActive, setWaveActive] = useState(false); // Ob die Welle aktiv ist
@@ -32,6 +33,9 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [currentWaterLevel, setCurrentWaterLevel] = useState(level.initialWaterLevel); // Anfangs Wasserstand
   const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand
   const [timer, setTimer] = useState(0); // Timer für die Welle
+  const [seconds, setSeconds] = useState(5); //Countdown startet mit 5 Sekunden
+  const [leben, setLeben] = useState(100) // Das Leben des Spielers
+  
   const [money, setMoney] = useState(1000); // Geld für das Level
   const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
@@ -53,6 +57,11 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     setMoney(money + richtigeAntworten * 500); // Füge 500 für jede richtige Antwort hinzu
     setBonusFragenBeendet(true); // Setze den Zustand auf beendet
     setShowBonusfragen(false); // Schließe das Bonusfragen-Fenster
+
+  const lebenStyle = {
+    width: `${leben}%`, // The width is based on the current life value
+    backgroundColor: leben > 50 ? 'green' : leben > 20 ? 'orange' : 'red', // Green above 50%, orange above 20%, red below
+    };
 };
 
     // Dialogtexte aus dem Level
@@ -125,13 +134,15 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         if (waterLevel >= level.initialWaterLevel + 0.2) return map12;
         return map11;
       case 2:
-        if (waterLevel >= level.initialWaterLevel + 1.5) return mapImage23;
-        if (waterLevel >= level.initialWaterLevel + 1) return mapImage22;
-        return mapImage2;
+        if (waterLevel > maxWaterLevel) return map24;
+        if (waterLevel >= level.initialWaterLevel + 1.5) return map23;
+        if (waterLevel >= level.initialWaterLevel + 1) return map22;
+        return map21;
       case 3:
-        if (waterLevel >= level.initialWaterLevel + 1.5) return mapImage33;
-        if (waterLevel >= level.initialWaterLevel + 1) return mapImage32;
-        return mapImage3;
+        if (waterLevel > maxWaterLevel) return map34;
+        if (waterLevel >= level.initialWaterLevel + 1.5) return map33;
+        if (waterLevel >= level.initialWaterLevel + 1) return map32;
+        return map31;
       default:
         return map11;
     }
@@ -189,6 +200,37 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
   }, [waveActive, maxWaterLevel]);
 
+  useEffect(() => {
+    let timer;
+    if(currentWaterLevel > maxWaterLevel && leben > 0){
+        timer = setInterval(() => {
+          setSeconds((prevSeconds) => prevSeconds -1);
+        }, 1000);
+    }
+    if(leben <= 0){
+      clearInterval(timer);
+    }
+    return () => clearInterval(timer);
+  }, [currentWaterLevel, maxWaterLevel, leben]);
+
+  useEffect(() => {
+    if(seconds <= 0 && leben > 0) {
+      setLeben((prevLeben) => prevLeben - 10);
+      setSeconds(5); 
+    }
+    if(leben<= 0){
+      setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
+      setCurrentLevel(5); // Spiel verloren
+    }
+  }, [seconds, leben, waveActive, ]);
+
+  useEffect(() => {
+    if(seconds <= 0 && leben === 0){
+      setStartTimer(false);
+    }
+
+  }, [seconds]);
+ 
 
   // Funktion, um die Welle zu starten
   const startWave = () => {
@@ -220,7 +262,13 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
 
   return (
+    
     <div>
+        
+
+
+
+
      {/* Rendere Bonusfragen nur, wenn showBonusfragen true ist */}
      
      {showBonusfragen && (
@@ -264,11 +312,11 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
       </div>
 
       {/* Anzeige Welle starten */}
-      {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && ( 
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-          <button className="btn btn-primary" onClick={startWave}>Welle starten</button>
-        </div>
-      )}
+      {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
+  </div>
+)}
 
       {/* Anzeige Zeit */}
       {waveActive && (
@@ -333,9 +381,9 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
 
  {/* Anzeige Welle starten */}
-{!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-  <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-    <button className="btn btn-primary" onClick={startWave}>Welle starten</button>
+ {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
   </div>
 )}
 
