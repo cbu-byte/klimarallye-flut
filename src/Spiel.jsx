@@ -264,11 +264,6 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   return (
     
     <div>
-        
-
-
-
-
      {/* Rendere Bonusfragen nur, wenn showBonusfragen true ist */}
      
      {showBonusfragen && (
@@ -407,6 +402,8 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
 
     </div>
+
+    
     {/* Gebäude und Drag and Drop */}
       {/* Fehlernachricht */}
       {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}

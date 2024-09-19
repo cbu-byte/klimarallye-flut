@@ -6,7 +6,7 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
       id: 1, 
       name: 'Level 1', 
       map: 'MapImage1.jpg', 
-      initialWaterLevel: 1, 
+      initialWaterLevel: 2.4, 
       maxWaterLevel: 2.5, 
       dialogs: [
         "Willkommen zum Spiel! Ich bin Ihr wissenschaftlicher Berater.",
