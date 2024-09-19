@@ -6,8 +6,8 @@ function Dashboard({ onSelectLevel, flutMaxLevel }) {
       id: 1, 
       name: 'Level 1', 
       map: 'MapImage1.jpg', 
-      initialWaterLevel: 2.4, 
-      maxWaterLevel: 2.5, 
+      initialWaterLevel: 2, 
+      maxWaterLevel: 17, 
       dialogs: [
         "Willkommen zum Spiel! Ich bin Ihr wissenschaftlicher Berater.",
         "Ihre Aufgabe ist es, die Fluten zu kontrollieren und die Stadt zu schützen.",

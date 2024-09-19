@@ -35,8 +35,8 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [timer, setTimer] = useState(0); // Timer für die Welle
   const [seconds, setSeconds] = useState(5); //Countdown startet mit 5 Sekunden
   const [leben, setLeben] = useState(100) // Das Leben des Spielers
-  
-  const [money, setMoney] = useState(1000); // Geld für das Level
+  const [money, setMoney] = useState(300);  // Start money
+
   const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
   // Für die Objekte
@@ -195,16 +195,31 @@ useEffect(() => {
     waterLevelInterval = setInterval(() => {
       setCurrentWaterLevel(prev => {
         if (prev < maxWaterLevel) {
-          return prev + 0.1; // Wasserstand steigt jede 10s um 0.1
+          return prev + 0.3; // Wasserstand steigt jede 10s um 0.1
         } else {
-          return prev + 0.1;
+          return prev + 0.3;
         }
       });
-    }, 9990); // Intervall: alle 10 Sekunden
+    }, 1000); // Intervall: Jede Sekunden
   }
+  
 
   return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
 }, [waveActive, maxWaterLevel]);
+  
+// Effekt zum Erhalten von Währung
+useEffect(() => {
+  let moneyInterval;
+  
+  if (waveActive) {
+    moneyInterval = setInterval(() => {
+      setMoney(prevMoney => prevMoney + 80); // Verwende prevMoney, um den vorherigen Stand zu nutzen
+    }, 5000); // Intervall von 5 Sekunden
+  }
+
+  // Aufräumen des Intervalls, wenn die Welle aufhört
+  return () => clearInterval(moneyInterval);
+}, [waveActive]); // Abhängigkeit von waveActive, um das Intervall zu starten/beenden
 
 useEffect(() => {
   let timer;
@@ -236,7 +251,7 @@ useEffect(() => {
 // Funktion, um die Welle zu starten
   const startWave = () => {
     setWaveActive(true);
-    setTimer(30); // Platzhalter für 30 Sekunden Wellen-Timer
+    setTimer(90); // Platzhalter für 30 Sekunden Wellen-Timer
   };
 
   // Funktion zur Steuerung des Dialogsystems (nächster Dialog)

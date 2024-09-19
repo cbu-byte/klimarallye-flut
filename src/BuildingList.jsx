@@ -10,69 +10,69 @@ const buildings = [
     name: 'Sandbag',
     image: sandsackImg,
     hp: 100,
-    maxWaterLevel: 5,
-    cost: 200,
+    maxWaterLevel: 3,  // Reduce to 3m for realism
+    cost: 100,         // Cheaper due to low power
     level: 1,
-    info: 'Der Sandsack ist eine grundlegende Flutschutzmaßnahme. Er kann bis zu 5 Meter Wasserstand halten und bietet eine solide erste Verteidigung gegen Überschwemmungen.',
+    info: 'The sandbag provides basic flood protection. It can withstand up to 3 meters of water and serves as an initial defense line.',
     upgrades: [
-      { level: 2, hp: 150, maxWaterLevel: 7, cost: 300, image: sandsackImg },
-      { level: 3, hp: 200, maxWaterLevel: 10, cost: 400, image: sandsackImg }
+      { level: 2, hp: 150, maxWaterLevel: 5, cost: 200, image: sandsackImg },
+      { level: 3, hp: 200, maxWaterLevel: 7, cost: 300, image: sandsackImg }
     ]
   },
   {
     id: 2,
     name: 'Begradigung',
     image: sandsackImg,
-    hp: 150,
-    maxWaterLevel: -10,
-    cost: 300,
+    hp: 120, 
+    maxWaterLevel: 8,  // Increased water level resistance
+    cost: 250,         // Higher cost to reflect better protection
     level: 1,
-    info: 'Die Begradigung ist eine Maßnahme zur Verbesserung der Flutschutzwirkung durch die Schaffung eines ebenen Untergrunds. Sie kann bis zu 10 Meter Wasserstand halten und bietet besseren Schutz als einfache Sandsäcke.',
+    info: 'Begradigung helps smooth out the terrain, increasing flood resistance. It can hold up to 8 meters of water, offering better protection than sandbags.',
     upgrades: [
-      { level: 2, hp: 200, maxWaterLevel: 15, cost: 400, image: sandsackImg },
-      { level: 3, hp: 250, maxWaterLevel: 20, cost: 500, image: sandsackImg }
+      { level: 2, hp: 180, maxWaterLevel: 12, cost: 350, image: sandsackImg },
+      { level: 3, hp: 220, maxWaterLevel: 15, cost: 450, image: sandsackImg }
     ]
   },
   {
     id: 3,
     name: 'Renaturation',
     image: sandsackImg,
-    hp: 200,
-    maxWaterLevel: 15,
-    cost: 400,
+    hp: 150,  
+    maxWaterLevel: 10, // Lower initial max water level, but scales well
+    cost: 400,         // More expensive due to long-term benefit
     level: 1,
-    info: 'Die Renaturierung verbessert die Fähigkeit zur Wasseraufnahme durch Wiederherstellung natürlicher Landschaften. Sie bietet Schutz bis zu 15 Meter Wasserstand und trägt zur langfristigen Stabilität bei.',
+    info: 'Renaturation restores natural landscapes, enhancing water absorption. It offers flood protection up to 10 meters, making it a sustainable choice.',
     upgrades: [
-      { level: 2, hp: 250, maxWaterLevel: 20, cost: 500, image: sandsackImg },
-      { level: 3, hp: 300, maxWaterLevel: 25, cost: 600, image: sandsackImg }
+      { level: 2, hp: 200, maxWaterLevel: 15, cost: 500, image: sandsackImg },
+      { level: 3, hp: 250, maxWaterLevel: 20, cost: 600, image: sandsackImg }
     ]
   },
   {
     id: 4,
     name: 'Dam',
     image: sandsackImg,
-    hp: 250,
-    maxWaterLevel: 20,
-    cost: 500,
+    hp: 250, 
+    maxWaterLevel: 20, // Strong initial protection
+    cost: 600,         // Expensive but powerful
     level: 1,
-    info: 'Ein Deich bietet robusten Schutz gegen Überschwemmungen und kann bis zu 20 Meter Wasserstand halten. Er ist besonders nützlich in Gebieten mit regelmäßigem Hochwasser.',
+    info: 'The dam offers robust protection against flooding, able to hold up to 20 meters of water. It is especially useful in flood-prone areas.',
     upgrades: [
-      { level: 2, hp: 300, maxWaterLevel: 25, cost: 600, image: sandsackImg },
-      { level: 3, hp: 350, maxWaterLevel: 30, cost: 700, image: sandsackImg }
+      { level: 2, hp: 300, maxWaterLevel: 25, cost: 750, image: sandsackImg },
+      { level: 3, hp: 350, maxWaterLevel: 30, cost: 900, image: sandsackImg }
     ]
   },
   {
     id: 5,
     name: 'Beaver Dam',
     image: Biberdamm,
-    hp: 400,
-    maxWaterLevel: 35,
-    cost: 800,
+    hp: 300,  
+    maxWaterLevel: 30, // Slightly lower than before for balance
+    cost: 900,         // Expensive due to strong effect
     level: 1,
-    info: 'Der Biberdamm bietet exzellenten Schutz und kann bis zu 35 Meter Wasserstand halten. Er simuliert die natürliche Wasserregulation durch Dämme und bietet umfassenden Schutz.',
+    info: 'The beaver dam provides excellent natural water regulation, withstanding up to 30 meters of water. It mimics natural flood protection.',
     upgrades: [
-      { level: 2, hp: 500, maxWaterLevel: 40, cost: 900, image: sandsackImg },
-      { level: 3, hp: 600, maxWaterLevel: 45, cost: 1000, image: sandsackImg }
+      { level: 2, hp: 400, maxWaterLevel: 35, cost: 1000, image: Biberdamm },
+      { level: 3, hp: 500, maxWaterLevel: 40, cost: 1200, image: Biberdamm }
     ]
   }
 ];
