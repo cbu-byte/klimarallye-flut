@@ -36,7 +36,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [maxWaterLevel, setMaxWaterLevel] = useState(level.maxWaterLevel); // Maximaler Wasserstand
   const [timer, setTimer] = useState(0); // Timer für die Welle
   const [seconds, setSeconds] = useState(5); //Countdown startet mit 5 Sekunden
-  const [leben, setLeben] = useState(100) // Das Leben des Spielers
+  const [leben, setLeben] = useState(50) // Das Leben des Spielers
   
   const [money, setMoney] = useState(1000); // Geld für das Level
   const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
