@@ -24,6 +24,7 @@ import scientistImage from './images/scientist.png'; // Bild des Wissenschaftler
 import BuildingList from './BuildingList'; // Importiere die BuildingList
 
 function Spiel({ level, onBackToDashboard, onLevelComplete }) {
+  
   const [menuOpen, setMenuOpen] = useState(false); // Menü-Status
   const [sandsackShown, setSandsackShown] = useState(false); // Sandsack-Anzeige
   const [waveActive, setWaveActive] = useState(false); // Ob die Welle aktiv ist
@@ -34,6 +35,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [timer, setTimer] = useState(0); // Timer für die Welle
   const [seconds, setSeconds] = useState(5); //Countdown startet mit 5 Sekunden
   const [leben, setLeben] = useState(100) // Das Leben des Spielers
+  
   const [money, setMoney] = useState(1000); // Geld für das Level
   const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
@@ -55,6 +57,11 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     setMoney(money + richtigeAntworten * 500); // Füge 500 für jede richtige Antwort hinzu
     setBonusFragenBeendet(true); // Setze den Zustand auf beendet
     setShowBonusfragen(false); // Schließe das Bonusfragen-Fenster
+
+  const lebenStyle = {
+    width: `${leben}%`, // The width is based on the current life value
+    backgroundColor: leben > 50 ? 'green' : leben > 20 ? 'orange' : 'red', // Green above 50%, orange above 20%, red below
+    };
 };
 
     // Dialogtexte aus dem Level
@@ -221,7 +228,7 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     }
 
   }, [seconds]);
-
+ 
 
   // Funktion, um die Welle zu starten
   const startWave = () => {
@@ -253,7 +260,13 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
 
   return (
+    
     <div>
+        
+
+
+
+
      {/* Rendere Bonusfragen nur, wenn showBonusfragen true ist */}
      
      {showBonusfragen && (
@@ -339,11 +352,11 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
       </div>
 
       {/* Anzeige Welle starten */}
-      {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && ( 
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-          <button className="btn btn-primary" onClick={startWave}>Welle starten</button>
-        </div>
-      )}
+      {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
+  </div>
+)}
 
       {/* Anzeige Zeit */}
       {waveActive && (
@@ -408,9 +421,9 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
 
 
  {/* Anzeige Welle starten */}
-{!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-  <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-    <button className="btn btn-primary" onClick={startWave}>Welle starten</button>
+ {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
   </div>
 )}
 
