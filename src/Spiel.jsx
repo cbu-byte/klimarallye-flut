@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import questionMarkImage from './images/question_mark.png'; // Pfad zum Fragezeichen-Bild
 import Bonusfragen from "./Bonusfragen";
 
-import coin from "./images/Dollar Coin.png"
-
 import map11 from "./Map/Level1/Map11.jpg";
 import map12 from "./Map/Level1/Map12.jpg";
 import map13 from "./Map/Level1/Map13.jpg";
@@ -37,13 +35,14 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
   const [timer, setTimer] = useState(0); // Timer für die Welle
   const [seconds, setSeconds] = useState(5); //Countdown startet mit 5 Sekunden
   const [leben, setLeben] = useState(100) // Das Leben des Spielers
-  
-  const [money, setMoney] = useState(1000); // Geld für das Level
+  const [money, setMoney] = useState(300);  // Start money
+
   const [dialogVisible, setDialogVisible] = useState(true); // Dialogfenster sichtbar
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0); // Index für das Dialogsystem
   // Für die Objekte
   const [selectedBuilding, setSelectedBuilding] = useState(null); // Für Drag & Drop
-  const [zones, setZones] = useState([]);
+  const [zones, setZones] = useState([])
+   
   const [infoText, setInfoText] = useState(null); // Für das Info-Fenster
   const [errorMessage, setErrorMessage] = useState(''); // Fehlernachricht bei unzureichendem Geld
 
@@ -100,32 +99,41 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         setZones(zones.map(z => z.id === zoneId ? { ...z, occupied: true, building: selectedBuilding } : z));
         setMaxWaterLevel(maxWaterLevel + selectedBuilding.maxWaterLevel); // Max Water Level erhöhen
       } else {
-        setErrorMessage('Nicht genug Geld!');
+        setErrorMessage('Fehler!');
         setTimeout(() => setErrorMessage(''), 2000); // Meldung nach 2 Sekunden entfernen
       }
     };
   
     const handleUpgrade = (zoneId) => {
       const zone = zones.find(z => z.id === zoneId);
-      if (zone && zone.building && zone.building.level < 2) {
-        const upgradeCost = zone.building.cost * 1.5;
-        if (money >= upgradeCost) {
-          setMoney(money - upgradeCost);
+      
+      if (zone && zone.building && zone.building.level < 3) {
+        const nextLevel = zone.building.level + 1;
+        const nextUpgrade = zone.building.upgrades.find(u => u.level === nextLevel);
+        
+        if (money >= nextUpgrade.cost) {
+          setMoney(money - nextUpgrade.cost); // Upgrade-Kosten abziehen
+    
+          // Erstelle das neue Upgrade-Gebäude-Objekt mit den aktualisierten Daten
           const upgradedBuilding = {
             ...zone.building,
-            level: zone.building.level + 1,
-            maxWaterLevel: zone.building.maxWaterLevel + 5,
-    
-            //image: zone.building.level === 1 ? upgradedSandsackImg : zone.building.image,
+            level: nextLevel,
+            hp: nextUpgrade.hp,
+            maxWaterLevel: nextUpgrade.maxWaterLevel,
+            cost: nextUpgrade.cost,
+            image: nextUpgrade.image // Bild des neuen Level-Upgrades setzen
           };
-          setMaxWaterLevel(maxWaterLevel => maxWaterLevel + 5);
+    
+          // MaxWaterLevel erhöhen und Zone mit neuem Gebäude-Objekt aktualisieren
+          setMaxWaterLevel(maxWaterLevel + nextUpgrade.maxWaterLevel);
           setZones(zones.map(z => z.id === zoneId ? { ...z, building: upgradedBuilding } : z));
         } else {
           setErrorMessage('Nicht genug Geld für das Upgrade!');
           setTimeout(() => setErrorMessage(''), 2000);
         }
       }
-    }
+    };
+    
 
   
     const handleSell = (zoneId) => {
@@ -183,7 +191,6 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
               setCurrentLevel(4); // Spiel gewonnen nach der 3. Welle
               onLevelComplete(level.id + 1); // Fortschritt speichern
             } else {
-              setMoney(prevMoney => prevMoney + 500); // 500 Geld hinzufügen
               setCurrentWave(prevWave => prevWave + 1); // Nächste Welle
               setTimer(0); // Timer zurücksetzen
             }
@@ -205,16 +212,31 @@ useEffect(() => {
     waterLevelInterval = setInterval(() => {
       setCurrentWaterLevel(prev => {
         if (prev < maxWaterLevel) {
-          return prev + 0.1; // Wasserstand steigt jede 10s um 0.1
+          return prev + 0.3; // Wasserstand steigt jede 10s um 0.1
         } else {
-          return prev + 0.1;
+          return prev + 0.3;
         }
       });
-    }, 9990); // Intervall: alle 10 Sekunden
+    }, 1000); // Intervall: Jede Sekunden
   }
+  
 
   return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
 }, [waveActive, maxWaterLevel]);
+  
+// Effekt zum Erhalten von Währung
+useEffect(() => {
+  let moneyInterval;
+  
+  if (waveActive) {
+    moneyInterval = setInterval(() => {
+      setMoney(prevMoney => prevMoney + 80); // Verwende prevMoney, um den vorherigen Stand zu nutzen
+    }, 5000); // Intervall von 5 Sekunden
+  }
+
+  // Aufräumen des Intervalls, wenn die Welle aufhört
+  return () => clearInterval(moneyInterval);
+}, [waveActive]); // Abhängigkeit von waveActive, um das Intervall zu starten/beenden
 
 useEffect(() => {
   let timer;
@@ -246,7 +268,7 @@ useEffect(() => {
 // Funktion, um die Welle zu starten
   const startWave = () => {
     setWaveActive(true);
-    setTimer(30); // Platzhalter für 30 Sekunden Wellen-Timer
+    setTimer(90); // Platzhalter für 30 Sekunden Wellen-Timer
   };
 
   // Funktion zur Steuerung des Dialogsystems (nächster Dialog)
@@ -293,17 +315,24 @@ useEffect(() => {
 
       {/* Info-Fenster */}
       {infoText && (
-          <div
-          className="absolute top-20 left-1/2 transform -translate-x-1/2 p-6 border rounded shadow-lg z-50"
-          style={{ backgroundColor: '#003A2C' }}
-        >
+        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white p-6 border rounded shadow-lg z-50">
             <p>{infoText}</p>
             <button className="mt-4 bg-gray-300 hover:bg-gray-400 text-white-700 py-2 px-4 rounded" onClick={() => setInfoText(null)}>Schließen</button>
           </div>
       )}
 
+      {sandsackShown && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <img src={sandsackImage} alt="Sandsack" className="w-24 h-24" />
+        </div>
+      )}
+
       {/* Die beiden Anzeigen für den aktuellen und den maximalen Wasserstand */}
       <div className="absolute top-4 right-4">
+        <div className="text-xl text-white">Geld: {money}$</div>
+        <div className="text-xl text-white">akt. Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
+        <div className="text-xl text-white">max. Wasserstand: {maxWaterLevel}m</div>
+        </div>
         
       
       
@@ -413,7 +442,7 @@ useEffect(() => {
 
       {/* Anzeige Spiel gewonnen */}
       {currentLevel === 4 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <div className="text-4xl text-yellow-500 mb-4">Spiel gewonnen</div>
           <div className="text-2xl text-white mb-4">Score: {calculateScore()}</div>
           <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
@@ -422,7 +451,7 @@ useEffect(() => {
 
       {/* Anzeige Spiel verloren */}
       {currentLevel === 5 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <div className="text-3xl text-red-500 mb-4">Game Over</div>
           <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
         </div>
@@ -485,26 +514,43 @@ useEffect(() => {
 )}
 
 
- {/* Anzeige Welle starten
+ {/* Anzeige Welle starten */}
  {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-  <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
   </div>
-)} */}
+)}
 
-
+{/* Anzeige Welle 1/3 */}
+<div className="absolute top-4 left-4">
+  <div className="text-xl text-white">Welle: {currentWave}/3</div>
+</div>
 
 {!bonusFragenBeendet && (
   <div className="absolute" style={{ top: 'calc(0rem + 100px)', right: '1rem' }}>
     <img
       src={questionMarkImage}
       alt="Fragezeichen"
-      className="w-10 h-10 cursor-pointer"
+      className="w-8 h-8 cursor-pointer"
       onClick={() => setShowBonusfragen(true)} // Öffne Bonusfragen
     />
   </div>
 )}
-    {/* Bauzonen */}
+
+
+
+
+    
+
+    
+{/* Gebäude und Drag and Drop */}
+{/* Fehlernachricht */}
+{errorMessage && (
+  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">
+    {errorMessage}
+  </div>
+)}
+{/* Bauzonen */}
 {zones.map(zone => (
   <div
     key={zone.id}
@@ -512,8 +558,8 @@ useEffect(() => {
     style={{
       left: zone.position.left,
       top: zone.position.top,
-      width: '80px',
-      height: '80px',
+      width: '100px',
+      height: '100px',
       backgroundColor: zone.occupied ? 'transparent' : 'rgba(128, 128, 128, 0.5)', // Grauer Platzhalter nur, wenn nicht belegt
       border: zone.occupied ? 'none' : '2px solid gray', // Graue Umrandung nur, wenn nicht belegt
     }}
@@ -521,28 +567,24 @@ useEffect(() => {
     onDrop={() => handleDrop(zone.id)}
   >
    {zone.building && (
-                <div className="text-center" onClick={() => handleBuildingClick(zone.id)}>
-                  <img src={zone.building.image} alt={zone.building.name} className="w-full h-full cursor-pointer" />
-                  <div className="text-sm font-bold text-black">Level: {zone.building.level}</div> {/* Level Anzeige */}
-                  {isBuildingClicked === zone.id && ( // Optionen werden nur in diesem Zustand angezeigt
-                    <div className="mt-2">
-                      <button className="bg-blue-500 text-white py-1 px-2 rounded" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
-                      <button className="bg-red-500 text-white py-1 px-2 rounded" onClick={() => handleSell(zone.id)}>Verkaufen</button>
-                    </div>
-                  )}
-                </div>
-              )}
+  <div className="text-center z-50" onClick={() => handleBuildingClick(zone.id)}>
+    <img src={zone.building.image} alt={zone.building.name} className="w-full h-full cursor-pointer" />
+    <div className="text-sm font-bold text-black">Level: {zone.building.level}</div> {/* Level Anzeige */}
+    {isBuildingClicked === zone.id && (
+      <div className="mt-2">
+        <button className="bg-blue-500 text-white py-1 px-2 rounded z-50" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
+        <button className="bg-red-500 text-white py-1 px-2 rounded z-50" onClick={() => handleSell(zone.id)}>Verkaufen</button>
+      </div>
+    )}
+  </div>
+)}
             </div>
-          ))}
-
-
-
-    </div>
-
+          
+        ))}
+      
     
-    {/* Gebäude und Drag and Drop */}
-      {/* Fehlernachricht */}
-      {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
+  
+
 
 
 
@@ -554,15 +596,19 @@ useEffect(() => {
     
 
       
-
+{/* Gebäude Drag and Drop */}
 <div className="relative bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center items-center w-4/5">
   <div className="flex space-x-4"> {/* Container für die Elemente in einer horizontalen Reihe */}
     <BuildingList onSelectBuilding={handleDragStart} onShowInfo={handleShowInfo} />
   </div>
 </div>
+</div>
+      
+    
+    
 
       
-    </div>
+
   )
 }
 
