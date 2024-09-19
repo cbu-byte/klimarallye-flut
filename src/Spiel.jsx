@@ -188,60 +188,52 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     return () => clearInterval(timerInterval); // Timer aufräumen
   }, [waveActive, currentWave]);
 
-  // Effekt zur Erhöhung des Wasserstandes während der Welle
-  useEffect(() => {
-    let waterLevelInterval;
-    if (waveActive) {
-      waterLevelInterval = setInterval(() => {
-        setCurrentWaterLevel(prev => {
-          if (prev < maxWaterLevel) {
-            return prev + 0.1; // Wasserstand steigt jede 10s um 0.1
-          } else {
-            setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
-            setCurrentLevel(5); // Spiel verloren
-            clearInterval(waterLevelInterval);
-            return prev + 0.1;
-          }
-        });
-      }, 9990); // Intervall: alle 10 Sekunden
-    }
+// Effekt zur Erhöhung des Wasserstandes während der Welle
+useEffect(() => {
+  let waterLevelInterval;
+  if (waveActive) {
+    waterLevelInterval = setInterval(() => {
+      setCurrentWaterLevel(prev => {
+        if (prev < maxWaterLevel) {
+          return prev + 0.1; // Wasserstand steigt jede 10s um 0.1
+        } else {
+          return prev + 0.1;
+        }
+      });
+    }, 9990); // Intervall: alle 10 Sekunden
+  }
 
-    return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
-  }, [waveActive, maxWaterLevel]);
+  return () => clearInterval(waterLevelInterval); // Wasserstand-Intervall aufräumen
+}, [waveActive, maxWaterLevel]);
 
-  useEffect(() => {
-    let timer;
-    if(currentWaterLevel > maxWaterLevel && leben > 0){
-        timer = setInterval(() => {
-          setSeconds((prevSeconds) => prevSeconds -1);
-        }, 1000);
-    }
-    if(leben <= 0){
-      clearInterval(timer);
-    }
-    return () => clearInterval(timer);
-  }, [currentWaterLevel, maxWaterLevel, leben]);
+useEffect(() => {
+  let timer;
+  if(currentWaterLevel > maxWaterLevel && leben > 0 ){
+      timer = setInterval(() => {
+        setSeconds((prevSeconds) => prevSeconds -1);
+      }, 1000);
+  }
+  if(leben <= 0){
+    clearInterval(timer);
+  }
+  return () => clearInterval(timer);
+}, [currentWaterLevel, maxWaterLevel, leben]);
 
-  useEffect(() => {
-    if(seconds <= 0 && leben > 0) {
-      setLeben((prevLeben) => prevLeben - 10);
-      setSeconds(5); 
-    }
-    if(leben<= 0){
-      setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
-      setCurrentLevel(5); // Spiel verloren
-    }
-  }, [seconds, leben, waveActive, ]);
+useEffect(() => {
 
-  useEffect(() => {
-    if(seconds <= 0 && leben === 0){
-      setStartTimer(false);
-    }
+  if(seconds <= 0 && leben > 0 && waveActive) {
+    setLeben((prevLeben) => prevLeben - 10);
+    setSeconds(5); 
+  }
 
-  }, [seconds]);
- 
 
-  // Funktion, um die Welle zu starten
+  if(leben<= 0){
+    setWaveActive(false); // Welle stoppen, wenn das Maximum erreicht ist
+    setCurrentLevel(5); // Spiel verloren
+  }
+}, [seconds, leben, waveActive]);
+  
+// Funktion, um die Welle zu starten
   const startWave = () => {
     setWaveActive(true);
     setTimer(30); // Platzhalter für 30 Sekunden Wellen-Timer
@@ -263,10 +255,10 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
     }
   };
 
-  // Berechnung des Scores
-  const calculateScore = () => {
-    return Math.max(0, Math.floor((maxWaterLevel - currentWaterLevel) * money)); // Abrunden auf die nächste ganze Zahl und sicherstellen, dass der Score nicht negativ ist
-  };
+ // Berechnung des Scores
+ const calculateScore = () => {
+  return Math.max(0, Math.floor((maxWaterLevel - currentWaterLevel) * money * (1 + leben / 100))); // Abrunden auf die nächste ganze Zahl und sicherstellen, dass der Score nicht negativ ist
+};
 
 
 
@@ -308,6 +300,11 @@ function Spiel({ level, onBackToDashboard, onLevelComplete }) {
         <div className="text-xl text-white">Geld: {money}$</div>
         <div className="text-xl text-white">akt. Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
         <div className="text-xl text-white">max. Wasserstand: {maxWaterLevel}m</div>
+        </div>
+        
+      {/* Aktuelle Leben-Anzeige */}
+      <div className="absolute top-8 left-4">
+        <div className="text-xl text-white">Leben: {leben}</div>
       </div>
 
       {/* Aktuelle Welle-Anzeige */}
