@@ -1,6 +1,6 @@
 import React from 'react';
 import './navbar.css'; // Importiere die CSS-Datei
-import coin from './images/Dollar Coin.png';
+import coin from './images/Dollar_Coin.png';
 import profil from './images/Profil.png';
 
 const Navbar = () => {

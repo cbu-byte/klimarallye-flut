@@ -19,7 +19,7 @@ import map33 from "./Map/Level3/Map33.jpg";
 import map34 from "./Map/Level3/Map34.jpg";
 
 import scientistImage from './images/scientist.png'; // Bild des Wissenschaftlers importieren
-
+import coin from './images/Dollar_Coin.png';
 
 import BuildingList from './BuildingList'; // Importiere die BuildingList
 
@@ -294,224 +294,299 @@ useEffect(() => {
 
 
 
-  return (
+return (
     
-    <div>
-     {/* Rendere Bonusfragen nur, wenn showBonusfragen true ist */}
-     
-     {showBonusfragen && (
-                <Bonusfragen onBeendet={handleBonusFragenBeendet} onClose={() => setShowBonusfragen(false)} />
-            )}
-     {/* <Bonusfragen onBeendet={handleBonusFragenBeendet} onClose={() => setShowBonusfragen(false)} />  */}
-    <div className="relative p-4 m-1 h-[580px] flex items-center justify-center text-white overflow-hidden">
-      <img
-        src={mapImage}
-        alt="Map"
-        className="absolute top-0 left-1/2 transform -translate-x-1/2 max-h-full"
-        style={{ maxHeight: '100vh' }}
-      />
+  <div>
+   {/* Rendere Bonusfragen nur, wenn showBonusfragen true ist */}
+   
+   {showBonusfragen && (
+              <Bonusfragen onBeendet={handleBonusFragenBeendet} onClose={() => setShowBonusfragen(false)} />
+          )}
+   {/* <Bonusfragen onBeendet={handleBonusFragenBeendet} onClose={() => setShowBonusfragen(false)} />  */}
+  <div className="relative p-4 m-1 h-[580px] flex items-center justify-center text-white overflow-hidden">
+    <img
+      src={mapImage}
+      alt="Map"
+      className="absolute top-0 left-1/2 transform -translate-x-1/2 max-h-full"
+      style={{ maxHeight: '100vh' }}
+    />
+    
+    
+
+    {/* Info-Fenster */}
+    {infoText && (
+        <div
+        className="absolute top-20 left-1/2 transform -translate-x-1/2 p-6 border rounded shadow-lg z-50"
+        style={{ backgroundColor: '#003A2C' }}
+      >
+          <p>{infoText}</p>
+          <button className="mt-4 bg-gray-300 hover:bg-gray-400 text-white-700 py-2 px-4 rounded" onClick={() => setInfoText(null)}>Schließen</button>
+        </div>
+    )}
+
+    {/* Die beiden Anzeigen für den aktuellen und den maximalen Wasserstand */}
+    <div className="absolute top-4 right-4">
       
+    
+    
+    <div className="flex items-center space-x-4 text-xl "
+    style ={{
+    marginRight: "-60px",
+    fontFamily: '"Papyrus"',
+    fontWeight: 'bold',
+    fontSize: "22px",
+    color: '#BFC205',
+    position: 'absolute',
+    width:'200px',
+    height:'30px',
+    top: '0',
+    right: '0',
+    padding: '9px',
+    backgroundColor: 'rgba(121, 121, 121, 0.9)',
+    borderRadius: '12px', 
+    border: '1px solid #000000',
+    
       
-
-      {/* Info-Fenster */}
-      {infoText && (
-        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white p-6 border rounded shadow-lg z-50">
-            <p>{infoText}</p>
-            <button className="mt-4 bg-gray-300 hover:bg-gray-400 text-white-700 py-2 px-4 rounded" onClick={() => setInfoText(null)}>Schließen</button>
-          </div>
-      )}
-
-      {sandsackShown && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <img src={sandsackImage} alt="Sandsack" className="w-24 h-24" />
-        </div>
-      )}
-
-      {/* Die beiden Anzeigen für den aktuellen und den maximalen Wasserstand */}
-      <div className="absolute top-4 right-4">
-        <div className="text-xl text-white">Geld: {money}$</div>
-        <div className="text-xl text-white">akt. Wasserstand: {currentWaterLevel.toFixed(1)}m</div>
-        <div className="text-xl text-white">max. Wasserstand: {maxWaterLevel}m</div>
-        </div>
-        
-      {/* Aktuelle Leben-Anzeige */}
-      <div className="absolute top-8 left-4">
-        <div className="text-xl text-white">Leben: {leben}</div>
-      </div>
-
-      {/* Aktuelle Welle-Anzeige */}
-      <div className="absolute top-4 left-4">
-        <div className="text-xl text-white">Welle: {currentWave}/3</div>
-      </div>
-
-      {/* Anzeige Welle starten */}
-      {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-    <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
-  </div>
-)}
-
-      {/* Anzeige Zeit */}
-      {waveActive && (
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-          <div className="text-xl text-white">Zeit: {timer}s</div>
-        </div>
-      )}
-
-      {/* Anzeige Spiel gewonnen */}
-      {currentLevel === 4 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <div className="text-4xl text-yellow-500 mb-4">Spiel gewonnen</div>
-          <div className="text-2xl text-white mb-4">Score: {calculateScore()}</div>
-          <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
-        </div>
-      )}
-
-      {/* Anzeige Spiel verloren */}
-      {currentLevel === 5 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <div className="text-3xl text-red-500 mb-4">Game Over</div>
-          <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
-        </div>
-      )}
-
-   {/* Dialog (Geschichte) */}
-   {dialogVisible && (
-  <div
-    className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-90 z-50"
-  >
-    <div
-      className="flex items-center rounded-lg p-4 shadow-lg"
+    }} >
+      {/* Text */}
+      Geld: {money}
+      {/* Bild */}
+      <img src={coin} alt="Geld" className="w-22 h-7" />
+    </div>
+  
+      <div className="text-xl"
       style={{
-        backgroundColor: '#003A2C',
-        width: '400px',  // Feste Breite
-        height: '150px', // Feste Höhe
-        borderRadius: '23px',
+        //fontFamily: '"Times New Roman"',
+        fontWeight: 'normal',
+        fontSize: "20px",
+        marginTop:'50px',
+        marginRight: '240px',
+        marginLeft:"15px",
+        //background: 'linear-gradient(0deg, rgba(1, 178, 254, 0.8), rgba(245, 182, 66, 0.8))',
+        backgroundColor: 'rgba(173, 175, 247, 0.8)',
+        borderRadius: '8px', 
+        border: '0px solid #F5C65A',
+        color:'#132c52',
+        padding: "4px",
       }}
-    >
-      <img src={scientistImage} alt="Scientist" className="w-24 h-24 mr-4" />
-      <div className="text-white flex-grow">
-        <p>{dialogs[currentDialogIndex]}</p>
-        <div className="mt-4 flex justify-between">
-          <button
-            className="btn text-white"
-            onClick={handleDialogPrev}
-            disabled={currentDialogIndex === 0}
-          >
-            Zurück
-          </button>
-          <button
-            className="btn btn-secondary"
-            onClick={handleDialogNext}
-          >
-            {currentDialogIndex === dialogs.length - 1 ? 'Schließen' : 'Weiter'}
-          </button>
-        </div>
+      >
+        Pegel: {currentWaterLevel.toFixed(1)}m</div>
+      <div className="text-xl"
+      
+      style={{
+        fontSize: "19px",
+        fontWeight: "normal",
+        marginTop:'2px',
+        marginRight: '240px',
+        marginLeft:"15px",
+        //background: 'linear-gradient(0deg, rgba(19, 44, 82, 0.8), rgba(1, 178, 254, 0.8))',
+        backgroundColor: 'rgba(19, 44, 82, 0.8)',
+        borderRadius: '8px', 
+        border: '0px solid #B8BBFF',
+        color: '#D6D7FF',
+        padding: "4px",
+
+      }}
+      >max. Pegel: {maxWaterLevel}m</div>
+    </div>
+    
+    {/* Aktuelle Welle-Anzeige */}
+    <div className="absolute top-4 left-4">
+      <div className="text-xl"
+      style={{
+        marginTop:'0px',
+        marginLeft: '0px',
+        backgroundColor: 'rgba(121, 121, 121, 0.9)',
+        borderRadius: '8px', 
+        border: '0px solid #B8BBFF',
+        color: '#cfd1fa',
+        padding: "6px",
+        
+
+      }}>Welle: {currentWave}/3</div>
+    </div>
+
+    {/* Anzeige Welle starten */}
+    {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
+  <div className="absolute bottom-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  style={{
+    transform: 'translateY(90px)',
+
+  }}>
+  <button className="px-6 py-2 bg-[#1a4080] text-white font-semibold rounded-lg border border-[#ffffff] hover:bg-[#0f1e38] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
+    </div>
+  )}
+
+    {/* Anzeige Zeit */}
+    {waveActive && (
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+        <div className=
+        "text-xl"
+        style={{
+          backgroundColor:'rgba(121, 121, 121, 0.8)',
+          borderRadius:"5px",
+          color: "#dedfff",
+          fontWeight:"normal",
+          padding: "6px",
+          marginTop:"-1px",
+        }}>Zeit: {timer}s</div>
+      </div>
+    )}
+
+    {/* Anzeige Spiel gewonnen */}
+    {currentLevel === 4 && (
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
+        <div className="text-4xl text-yellow-500 mb-4">Spiel gewonnen</div>
+        <div className="text-2xl text-white mb-4">Score: {calculateScore()}</div>
+        <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
+      </div>
+    )}
+
+    {/* Anzeige Spiel verloren */}
+    {currentLevel === 5 && (
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
+        <div className="text-3xl text-red-500 mb-4">Game Over</div>
+        <button className="btn btn-secondary" onClick={onBackToDashboard}>Level Auswahl</button>
+      </div>
+    )}
+
+    {/* Aktuelle Leben-Anzeige */}
+    <div className="absolute top-8 left-4">
+      <div className="text-xl"
+      style={{
+
+
+        backgroundColor:'rgba(252, 101, 101, 0.7)',
+        borderRadius:"7px",
+        color: "#700000",
+        fontWeight:"normal",
+        padding: "3px",
+        marginLeft: "296px",
+        marginTop: "20px",
+        border: '1px solid #000000',
+
+      }}
+      >Leben: {leben}</div>
+    </div>
+
+ {/* Dialog (Geschichte) */}
+ {dialogVisible && (
+<div
+  className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-90 z-50"
+>
+  <div
+    className="flex items-center rounded-lg p-4 shadow-lg"
+    style={{
+      backgroundColor: '#003A2C',
+      width: '400px',  // Feste Breite
+      height: '150px', // Feste Höhe
+      borderRadius: '23px',
+    }}
+  >
+    <img src={scientistImage} alt="Scientist" className="w-24 h-24 mr-4" />
+    <div className="text-white flex-grow">
+      <p>{dialogs[currentDialogIndex]}</p>
+      <div className="mt-4 flex justify-between">
+        <button
+          className="btn text-white"
+          onClick={handleDialogPrev}
+          disabled={currentDialogIndex === 0}
+        >
+          Zurück
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={handleDialogNext}
+        >
+          {currentDialogIndex === dialogs.length - 1 ? 'Schließen' : 'Weiter'}
+        </button>
       </div>
     </div>
   </div>
-)}
-
-
- {/* Anzeige Welle starten */}
- {!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
-  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-    <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
-  </div>
-)}
-
-{/* Anzeige Welle 1/3 */}
-<div className="absolute top-4 left-4">
-  <div className="text-xl text-white">Welle: {currentWave}/3</div>
 </div>
+)}
+
+
+{/* Anzeige Welle starten
+{!waveActive && !dialogVisible && currentLevel < 4 && currentLevel < 5 && (
+<div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+  <button className="px-6 py-2 bg-[#4caf50] text-white font-semibold rounded-lg border border-[#388e3c] hover:bg-[#45a049] focus:outline-none focus:ring-2 focus:ring-[#2e7d32] focus:ring-opacity-50" onClick={startWave}>Welle starten</button>
+</div>
+)} */}
+
+
 
 {!bonusFragenBeendet && (
-  <div className="absolute" style={{ top: 'calc(4rem + 20px)', left: '4rem' }}>
-    <img
-      src={questionMarkImage}
-      alt="Fragezeichen"
-      className="w-8 h-8 cursor-pointer"
-      onClick={() => setShowBonusfragen(true)} // Öffne Bonusfragen
-    />
-  </div>
+<div className="absolute" style={{ top: 'calc(0rem + 100px)', right: '1rem' }}>
+  <img
+    src={questionMarkImage}
+    alt="Fragezeichen"
+    className="w-10 h-10 cursor-pointer"
+    onClick={() => setShowBonusfragen(true)} // Öffne Bonusfragen
+  />
+</div>
 )}
-
-
-
-
-    
-
-    
-{/* Gebäude und Drag and Drop */}
-{/* Fehlernachricht */}
-{errorMessage && (
-  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">
-    {errorMessage}
-  </div>
-)}
-{/* Bauzonen */}
+  {/* Bauzonen */}
 {zones.map(zone => (
-  <div
-    key={zone.id}
-    className="fixed flex items-center justify-center"
-    style={{
-      left: zone.position.left,
-      top: zone.position.top,
-      width: '100px',
-      height: '100px',
-      backgroundColor: zone.occupied ? 'transparent' : 'rgba(128, 128, 128, 0.5)', // Grauer Platzhalter nur, wenn nicht belegt
-      border: zone.occupied ? 'none' : '2px solid gray', // Graue Umrandung nur, wenn nicht belegt
-    }}
-    onDragOver={(e) => e.preventDefault()}
-    onDrop={() => handleDrop(zone.id)}
-  >
-   {zone.building && (
-  <div className="text-center z-50" onClick={() => handleBuildingClick(zone.id)}>
-    <img src={zone.building.image} alt={zone.building.name} className="w-full h-full cursor-pointer" />
-    <div className="text-sm font-bold text-black">Level: {zone.building.level}</div> {/* Level Anzeige */}
-    {isBuildingClicked === zone.id && (
-      <div className="mt-2">
-        <button className="bg-blue-500 text-white py-1 px-2 rounded z-50" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
-        <button className="bg-red-500 text-white py-1 px-2 rounded z-50" onClick={() => handleSell(zone.id)}>Verkaufen</button>
-      </div>
-    )}
-  </div>
-)}
-            </div>
-          
+<div
+  key={zone.id}
+  className="fixed flex items-center justify-center"
+  style={{
+    left: zone.position.left,
+    top: zone.position.top,
+    width: '80px',
+    height: '80px',
+    backgroundColor: zone.occupied ? 'transparent' : 'rgba(128, 128, 128, 0.5)', // Grauer Platzhalter nur, wenn nicht belegt
+    border: zone.occupied ? 'none' : '2px solid gray', // Graue Umrandung nur, wenn nicht belegt
+  }}
+  onDragOver={(e) => e.preventDefault()}
+  onDrop={() => handleDrop(zone.id)}
+>
+ {zone.building && (
+              <div className="text-center" onClick={() => handleBuildingClick(zone.id)}>
+                <img src={zone.building.image} alt={zone.building.name} className="w-full h-full cursor-pointer" />
+                <div className="text-sm font-bold text-black">Level: {zone.building.level}</div> {/* Level Anzeige */}
+                {isBuildingClicked === zone.id && ( // Optionen werden nur in diesem Zustand angezeigt
+                  <div className="mt-2">
+                    <button className="bg-blue-500 text-white py-1 px-2 rounded" onClick={() => handleUpgrade(zone.id)}>Upgrade</button>
+                    <button className="bg-red-500 text-white py-1 px-2 rounded" onClick={() => handleSell(zone.id)}>Verkaufen</button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         ))}
-      
-    
+
+
+
   </div>
 
+  
+  {/* Gebäude und Drag and Drop */}
+    {/* Fehlernachricht */}
+    {errorMessage && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 rounded-lg">{errorMessage}</div>}
 
 
 
 {/* <div className="fixed flex items-center justify-center transform ">
-  <BuildingList onSelectBuilding={handleDragStart} />
+<BuildingList onSelectBuilding={handleDragStart} />
 </div> */}
 
 
+  
+
     
 
-      
-{/* Gebäude Drag and Drop */}
 <div className="relative bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center items-center w-4/5">
-  <div className="flex space-x-4"> {/* Container für die Elemente in einer horizontalen Reihe */}
-    <BuildingList onSelectBuilding={handleDragStart} onShowInfo={handleShowInfo} />
-  </div>
+<div className="flex space-x-4"> {/* horizontalen Reihe */}
+  <BuildingList onSelectBuilding={handleDragStart} onShowInfo={handleShowInfo} />
+</div>
 </div>
 
-      
     
-    
-
-      
-
-</div>
-  )
+    </div>
+  )
 }
-
 
 
 export default Spiel;
