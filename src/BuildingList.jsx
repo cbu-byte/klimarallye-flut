@@ -115,7 +115,8 @@ const BuildingList = ({ onSelectBuilding, onShowInfo }) => {
             alt={building.name}
             className="w-full h-full object-cover cursor-pointer"
             draggable
-            onDragStart={() => onSelectBuilding(building)} // Drag Start
+            onDragStart={() => onSelectBuilding(building)}
+            onTouchStart={() => onSelectBuilding(building)}
           />
           <button
             className="absolute top-2 right-2 bg-gray-800 text-white text-xs rounded-full w-8 h-8 flex items-center justify-center"
@@ -124,8 +125,8 @@ const BuildingList = ({ onSelectBuilding, onShowInfo }) => {
             <img src={infoIcon} alt="Info" className="w-4 h-4" />
           </button>
         </div>
-    ))}
-  </div>
+      ))}
+    </div>
   
 
   );

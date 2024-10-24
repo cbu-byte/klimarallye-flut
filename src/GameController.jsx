@@ -24,8 +24,6 @@ function GameController() {
   };
 
   // Wenn die Komponente gerendert wird, wird das API-Level über `FlutMaxLevel` geladen
-  
-  
     const loadFlutMaxLevel = (maxLevel) => {
       if (maxLevel > flutMaxLevel) {
         setFlutMaxLevel(maxLevel); // Setzt den maximalen Level-Fortschritt nur, wenn der neue Wert größer ist

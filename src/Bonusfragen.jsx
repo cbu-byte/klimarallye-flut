@@ -196,6 +196,10 @@ const Bonusfragen = ({ onBeendet, onClose }) => {
         }, 2000); // 2 Sekunden wird die Lösung angezeigt
     };
 
+    const calculateCoins = () => {
+        return score * 500; // 500 Coins für jede richtige Antwort
+    };
+
     return (
         <div className="relative min-h-screen flex items-center justify-center">
             <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${BackgroundImage})` }}></div>
@@ -203,14 +207,23 @@ const Bonusfragen = ({ onBeendet, onClose }) => {
             <div className="relative bg-[#102717a0] p-6 rounded-lg w-full max-w-md">
                 {showScore ? (
                     <div className="bg-[#515b4c]/60 rounded-[13px] p-4 text-center text-[#d9d7d7] text-xl font-normal font-['Inter']">
-                        Du hast {score} von {selectedQuestions.length} Fragen richtig beantwortet
+                        Du hast {score} von {selectedQuestions.length} Fragen richtig beantwortet.
+                        <br />
+                        Du hast {calculateCoins()} Coins verdient.
                     </div>
                 ) : (
                     <div className="bg-[#515b4c]/60 rounded-[13px] p-4">
                         <img className="w-[136px] h-[194px] rounded-[23px] mx-auto" src={Bega} alt="Quiz" />
+                        
+                        {/* Verdiente Coins Anzeige */}
+                        <div className="text-center text-[#ffd700] text-lg font-bold font-['Inter'] mt-2 mb-4">
+                            Verdiente Coins: {score * 500}
+                        </div>
+
                         <div className="text-center text-[#d9d7d7] text-xl font-normal font-['Inter'] mt-4 mb-2">
                             {selectedQuestions[currentQuestion].questionText}
                         </div>
+                        
                         {selectedQuestions[currentQuestion].answerOptions.map((answerOption, index) => (
                             <button
                                 key={index}
